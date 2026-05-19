@@ -1,6 +1,6 @@
 export default function WhiteLabel() {
   return (
-    <section className="py-24" style={{ background: "white" }}>
+    <section className="py-32 md:py-40" style={{ background: "white" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div
           className="rounded-3xl p-14 flex flex-col md:flex-row items-center justify-between gap-10"

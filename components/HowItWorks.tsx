@@ -18,7 +18,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-32 relative overflow-hidden" id="how" style={{ background: "white" }}>
+    <section className="py-32 md:py-40 relative overflow-hidden" id="how" style={{ background: "white" }}>
       {/* Subtle blue glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -29,7 +29,7 @@ export default function HowItWorks() {
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="section-eyebrow">The socialX system</div>
+        <div className="section-eyebrow">[ The socialX system ]</div>
         <h2 className="section-title">
           A social media engine that<br />
           runs <span className="gradient-text">without you</span>.

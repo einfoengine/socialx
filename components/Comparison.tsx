@@ -26,11 +26,11 @@ function YesNo({ value }: { value: boolean }) {
 export default function Comparison() {
   return (
     <section
-      className="py-32"
+      className="py-32 md:py-40"
       style={{ background: "#F4F2EF" }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="section-eyebrow">vs. The rest</div>
+        <div className="section-eyebrow">[ vs. The rest ]</div>
         <h2 className="section-title">
           Your real options.<br />
           What each one actually costs.

@@ -1,6 +1,8 @@
+import Image from 'next/image';
+
 export default function Hero() {
   return (
-    <section className="relative py-28 lg:py-36 overflow-hidden" style={{ background: "#F4F2EF" }}>
+    <section className="relative py-32 lg:py-48 overflow-hidden" style={{ background: "#F4F2EF" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
@@ -16,7 +18,7 @@ export default function Hero() {
               }}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-blue-neon animate-pulse-dot shrink-0" />
-              For HighLevel SaaS resellers
+              [ For HighLevel SaaS resellers ]
             </div>
 
             {/* H1 */}
@@ -59,11 +61,11 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── RIGHT: blue blob + floating post card ── */}
-          <div className="hidden lg:flex flex-col items-center relative">
+          {/* ── RIGHT: blue blob + floating hand image ── */}
+          <div className="hidden lg:flex flex-col items-center relative w-full h-[600px] justify-center">
 
             {/* Aurora blob (the Crunchy-style visual) */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
               <div
                 style={{
                   width: "520px",
@@ -77,120 +79,52 @@ export default function Hero() {
               />
             </div>
 
-            {/* Queue pill */}
+            {/* Hand Image */}
+            <div className="relative z-10 w-full max-w-[500px] animate-float drop-shadow-[0_20px_50px_rgba(43,80,220,0.4)] rounded-[2.5rem] overflow-hidden border-[1px] border-white/20">
+              <Image 
+                src="/hero-hand.png" 
+                alt="Social Media Automation" 
+                width={600} 
+                height={600} 
+                className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                priority
+              />
+              {/* Optional overlay for blending */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/10 to-transparent pointer-events-none mix-blend-overlay"></div>
+            </div>
+            
+            {/* Floating Element 1 */}
             <div
-              className="absolute top-4 right-4 z-20 px-4 py-1.5 rounded-full font-grotesk text-xs font-semibold"
+              className="absolute top-12 -right-4 z-20 px-5 py-2.5 rounded-full font-grotesk text-xs font-semibold animate-float flex items-center gap-2 backdrop-blur-md"
               style={{
-                background: "white",
+                background: "rgba(255, 255, 255, 0.8)",
                 border: "1px solid rgba(43,80,220,0.2)",
                 color: "#2B50DC",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                animationDelay: "1.5s"
               }}
             >
-              30 posts queued this month ✓
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+              Social Networks Synced
             </div>
 
-            {/* Back card */}
+            {/* Floating Element 2 */}
             <div
-              className="absolute -bottom-3 left-6 right-0 h-24 rounded-2xl -z-10 -rotate-2"
+              className="absolute bottom-16 -left-8 z-20 px-5 py-2.5 rounded-2xl font-grotesk text-xs font-semibold animate-float flex items-center gap-3 backdrop-blur-md"
               style={{
-                background: "rgba(255,255,255,0.6)",
-                border: "1px solid rgba(0,0,0,0.07)",
-              }}
-            />
-
-            {/* Front post card */}
-            <div
-              className="w-full max-w-95 rounded-3xl p-6 animate-float relative z-10"
-              style={{
-                background: "white",
-                border: "1px solid rgba(0,0,0,0.08)",
-                boxShadow: "0 20px 60px rgba(43,80,220,0.15), 0 4px 16px rgba(0,0,0,0.06)",
+                background: "rgba(255, 255, 255, 0.9)",
+                border: "1px solid rgba(43,80,220,0.15)",
+                color: "#111827",
+                boxShadow: "0 15px 40px rgba(0,0,0,0.12)",
+                animationDelay: "0.5s"
               }}
             >
-              {/* Post header */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full gradient-bg shrink-0 flex items-center justify-center font-grotesk font-bold text-sm text-white">
-                  YS
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-grotesk font-semibold text-sm text-gray-900 truncate">
-                      Your SaaS Co.
-                    </span>
-                    <span
-                      className="text-[10px] font-grotesk font-bold px-1.5 py-0.5 rounded shrink-0"
-                      style={{ background: "rgba(10,102,194,0.12)", color: "#0A66C2" }}
-                    >
-                      in
-                    </span>
-                  </div>
-                  <div className="font-grotesk text-xs text-gray-400 mt-0.5">
-                    Just now · LinkedIn
-                  </div>
-                </div>
+              <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white font-bold">
+                ✓
               </div>
-
-              {/* Post body */}
-              <p className="text-sm text-gray-700 leading-relaxed mb-4">
-                Stop losing 5-star reviews before they go public. HighLevel&apos;s
-                Reputation Manager catches every request automatically. 🔥
-              </p>
-
-              {/* Post graphic */}
-              <div className="h-36 rounded-2xl mb-4 relative overflow-hidden gradient-bg flex items-center justify-center">
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 20px)",
-                  }}
-                />
-                <div className="relative text-center px-4">
-                  <div className="font-grotesk font-semibold text-sm text-white/90">
-                    HL Reputation Management
-                  </div>
-                  <div className="font-grotesk text-xs text-white/60 mt-1">
-                    Feature spotlight · socialX
-                  </div>
-                </div>
-              </div>
-
-              {/* Engagement row */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 font-grotesk text-xs text-gray-400">
-                  <span>❤️ 47</span>
-                  <span>💬 8</span>
-                </div>
-                <div
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-full font-grotesk text-xs font-semibold"
-                  style={{ background: "rgba(43,80,220,0.1)", color: "#2B50DC" }}
-                >
-                  <span>✓</span>
-                  <span>Scheduled to HL</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Second mini card */}
-            <div
-              className="w-full max-w-95 mt-3 rounded-2xl px-5 py-3 flex items-center gap-3 relative z-10"
-              style={{
-                background: "white",
-                border: "1px solid rgba(0,0,0,0.07)",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-              }}
-            >
-              <div className="w-8 h-8 rounded-full gradient-bg shrink-0 flex items-center justify-center font-grotesk font-bold text-xs text-white">
-                YS
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-grotesk text-xs text-gray-600 truncate">
-                  HighLevel AI Employee just changed how our clients handle…
-                </div>
-                <div className="font-grotesk text-[10px] text-gray-400 mt-0.5">
-                  Scheduled · Facebook · Tomorrow 9am
-                </div>
+              <div className="flex flex-col">
+                <span className="text-gray-900">Done for You</span>
+                <span className="text-gray-500 font-normal text-[10px]">Auto-scheduled</span>
               </div>
             </div>
           </div>

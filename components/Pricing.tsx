@@ -87,11 +87,11 @@ export default function Pricing() {
   const cfg = PERIODS.find((p) => p.key === period)!;
 
   return (
-    <section className="py-24" id="pricing" style={{ background: "white" }}>
+    <section className="py-32 md:py-40" id="pricing" style={{ background: "white" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="section-eyebrow">Pricing</div>
+          <div className="section-eyebrow">[ Pricing ]</div>
           <h2 className="section-title">
             Pick your tier.<br />Cancel anytime.
           </h2>

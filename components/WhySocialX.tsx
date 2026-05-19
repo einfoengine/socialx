@@ -24,11 +24,11 @@ const reasons = [
 export default function WhySocialX() {
   return (
     <section
-      className="py-32"
+      className="py-32 md:py-40"
       style={{ background: "#EEF2FF" }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="section-eyebrow">Why socialX</div>
+        <div className="section-eyebrow">[ Why socialX ]</div>
         <h2 className="section-title">
           Not a generic social service.<br />
           An <span className="gradient-text">HL-native one</span>.

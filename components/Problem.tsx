@@ -23,9 +23,9 @@ const problems = [
 
 export default function Problem() {
   return (
-    <section className="py-32" id="problem" style={{ background: "#F4F2EF" }}>
+    <section className="py-32 md:py-40" id="problem" style={{ background: "#F4F2EF" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="section-eyebrow">The reseller&apos;s social problem</div>
+        <div className="section-eyebrow">[ The reseller&apos;s social problem ]</div>
         <h2 className="section-title">
           Your prospects research you<br />before booking. What do they find?
         </h2>

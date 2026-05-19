@@ -1,6 +1,6 @@
 export default function FinalCTA() {
   return (
-    <section className="py-36 text-center relative overflow-hidden" style={{ background: "#EEF2FF" }}>
+    <section className="py-40 md:py-48 text-center relative overflow-hidden" style={{ background: "#EEF2FF" }}>
       {/* Blob */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
