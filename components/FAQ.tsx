@@ -4,84 +4,115 @@ import { useState } from "react";
 
 const faqs = [
   {
-    q: 'What does "customization" actually mean?',
-    a: "Starter swaps your logo, colors, and CTAs into library posts. Growth adds full voice adaptation with niche-specific examples. Scale personalizes every post around your services, wins, and audience pain points.",
+    q: "What does 'customization' actually mean?",
+    a: "socialX is not generic AI-generated content. For Starter, we swap your brand assets and styles into our proven templates. For Growth, we adapt the copies to your exact tone of voice and vertical niche. For Scale, we build highly specialized posts targeting your specific SaaS client testimonials, visual wins, and software features.",
   },
   {
     q: "How does onboarding work?",
-    a: "After signup you fill out a brand intake form — logo, colors, voice, ICP, platforms. Most clients finish within 24–48 hours. Your first batch ships within your tier's SLA from there.",
+    a: "Onboarding takes less than 15 minutes. After sign-up, you submit a brief brand form (logo, colors, voice guidelines, ICP). Our native HighLevel copywriters and designers build your first batch within 7 business days. You approve, and it goes live.",
   },
   {
-    q: "How does HL Social Planner scheduling work?",
-    a: "You grant us limited access during onboarding. Once posts are approved, we load them directly into your HL Social Planner at the agreed schedule. No exports, no third-party tools.",
+    q: "How does the HighLevel Social Planner sync work?",
+    a: "You grant us secure, restricted content manager access to your subaccounts during onboarding. Once you approve a batch in your socialX dashboard, we schedule the posts directly inside your HighLevel Social Planner. No manual copy-pasting, CSV files, or third-party platforms.",
   },
   {
-    q: "Can I change plans or billing cycles?",
-    a: "Upgrade anytime — the price difference is prorated to your next batch. Downgrade or switch billing cycles at the end of your current period. No fees, no penalties.",
+    q: "Can I change plans or pause anytime?",
+    a: "Yes. All our monthly reseller plans operate on a flexible cancel-anytime model. You can upgrade, downgrade, or pause your subscriptions at the end of your billing cycle directly from your customer portal with zero drama.",
   },
   {
-    q: "What if my niche is highly specialized?",
-    a: "The library is built around HL features, which are universal across niches. Customization adapts the posts to your audience. We've worked with resellers serving chiropractors, law firms, e-commerce, and more.",
+    q: "What if my reseller agency serves highly specialized niches?",
+    a: "HighLevel features (missed call text-back, review request builders, visual pipelines) are universal across local business niches. Our custom copywriters adapt the examples, graphics, and hooks to speak directly to plumbers, dentists, gym owners, or whatever vertical your SaaS platform serves.",
   },
   {
-    q: "Can I cancel or pause anytime?",
-    a: "Monthly plans cancel anytime — your month finishes, no further charges. Multi-month plans can be paused up to 2 months per cycle. No drama, no fees.",
+    q: "Is there a setup fee or contract lock-in?",
+    a: "Absolutely not. We believe in transparent partnerships. There are zero onboarding fees, zero setup costs, and zero long-term contract lock-ins. You pay only the flat monthly plan price.",
   },
 ];
+
+function FAQItem({ 
+  faq, 
+  isOpen, 
+  onToggle 
+}: { 
+  faq: typeof faqs[0]; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+}) {
+  return (
+    <div
+      onClick={onToggle}
+      className={`border transition-all duration-300 p-6 mb-4 select-none cursor-pointer bg-white ${
+        isOpen 
+          ? "border-[#2B50DC]/40 shadow-[0_12px_24px_rgba(43,80,220,0.03)]" 
+          : "border-black/10 hover:border-[#2B50DC]/25"
+      }`}
+    >
+      <div className="flex justify-between items-center gap-6">
+        <span 
+          className={`font-grotesk text-lg font-semibold transition-colors duration-300 ${
+            isOpen ? "text-[#2B50DC]" : "text-gray-900"
+          }`}
+        >
+          {faq.q}
+        </span>
+        <button
+          className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] transition-all duration-300 ${
+            isOpen 
+              ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180" 
+              : "bg-white border-black/10 text-gray-500 hover:text-gray-900 hover:border-black/20"
+          }`}
+        >
+          {isOpen ? "−" : "+"}
+        </button>
+      </div>
+
+      <div
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{ 
+          maxHeight: isOpen ? "300px" : "0",
+          marginTop: isOpen ? "16px" : "0"
+        }}
+      >
+        <p className="font-chillax text-sm text-gray-500 leading-relaxed pr-10">
+          {faq.a}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 md:py-40" id="gw-faq" style={{ background: "#F4F2EF" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-32 md:py-40 relative overflow-hidden border-t border-black/5" id="gw-faq" style={{ background: "#F4F2EF" }}>
+      {/* Subtle Grid Background Pattern */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow">[ Frequently Asked ]</div>
         <h2 className="section-title">
           The questions resellers<br />actually ask us.
         </h2>
+        <p className="section-sub mb-20 text-gray-600">
+          Simple, transparent answers about our white-label SaaS content service.
+        </p>
 
-        <div className="max-w-205 mx-auto mt-16">
-          {faqs.map((faq, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div
-                key={i}
-                style={{
-                  borderTop: i === 0 ? "1px solid rgba(0,0,0,0.09)" : "none",
-                  borderBottom: "1px solid rgba(0,0,0,0.09)",
-                }}
-              >
-                <button
-                  className="w-full flex justify-between items-center gap-6 py-7 font-grotesk text-[18px] font-medium text-left cursor-pointer transition-colors"
-                  style={{ color: isOpen ? "#2B50DC" : "#111118" }}
-                  onClick={() => setOpenIndex((prev) => (prev === i ? null : i))}
-                >
-                  <span>{faq.q}</span>
-                  <span
-                    className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-light text-[18px] transition-all duration-300"
-                    style={{
-                      background: isOpen ? "var(--gradient-x)" : "white",
-                      border: isOpen ? "none" : "1px solid rgba(0,0,0,0.1)",
-                      transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      color: isOpen ? "white" : "#555",
-                      boxShadow: isOpen ? "none" : "0 1px 4px rgba(0,0,0,0.06)",
-                    }}
-                  >
-                    +
-                  </span>
-                </button>
-
-                <div
-                  className="overflow-hidden transition-all duration-400"
-                  style={{ maxHeight: isOpen ? "400px" : "0" }}
-                >
-                  <p className="text-base text-gray-500 leading-[1.7] pb-7 pr-14">
-                    {faq.a}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+        <div className="max-w-3xl mx-auto">
+          {faqs.map((faq, i) => (
+            <FAQItem
+              key={i}
+              faq={faq}
+              isOpen={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
+          ))}
         </div>
       </div>
     </section>
