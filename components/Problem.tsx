@@ -72,7 +72,7 @@ function MatrixCanvas() {
         const char = Math.random() > 0.5 ? "1" : "0";
 
         // Bright leading character
-        ctx.fillStyle = "rgba(30, 58, 175, 1)";
+        ctx.fillStyle = "#00219b";
         ctx.fillText(char, i * fontSize, y);
 
         if (y > canvas.height && Math.random() > 0.97) {
