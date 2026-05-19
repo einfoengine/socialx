@@ -72,7 +72,7 @@ function MatrixCanvas() {
         const char = Math.random() > 0.5 ? "1" : "0";
 
         // Bright leading character
-        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.fillStyle = "rgba(30, 58, 175, 1)";
         ctx.fillText(char, i * fontSize, y);
 
         if (y > canvas.height && Math.random() > 0.97) {
@@ -93,7 +93,7 @@ function MatrixCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none opacity-25"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-40"
     />
   );
 }

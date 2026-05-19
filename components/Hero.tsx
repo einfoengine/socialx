@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section 
       id="gw-hero"
-      className="relative py-32 lg:py-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]" 
+      className="relative pt-16 pb-32 lg:pt-20 lg:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]" 
       style={{ background: "#F4F2EF" }}
     >
       {/* Interactive Cursor Spotlight */}

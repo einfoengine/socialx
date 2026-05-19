@@ -6,14 +6,14 @@ const stats = [
 
 export default function Guarantees() {
   return (
-    <section id="gw-guarantees" className="py-32 md:py-40 relative overflow-hidden">
+    <section id="gw-guarantees" className="py-32 md:py-40 relative overflow-hidden" style={{ background: "#000877" }}>
       {/* Video background */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover opacity-20"
       >
         <source src="/section-bg.mp4" type="video/mp4" />
       </video>
