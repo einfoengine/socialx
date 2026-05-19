@@ -1,26 +1,129 @@
+@import url('https://api.fontshare.com/v2/css?f[]=chillax@200,300,400,500,600,700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-navy: #111118;
+  --color-navy-lift: #1E1E2E;
+  --color-blue-dark: #1535C0;
+  --color-blue-sky: #5B8DEF;
+  --color-blue-neon: #2B50DC;
+  --color-cream: #F4F2EF;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-grotesk: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  --font-chillax: 'Chillax', -apple-system, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --gradient-x: linear-gradient(135deg, #2B50DC 0%, #5B8DEF 100%);
 }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-chillax);
+  background-color: #F4F2EF;
+  color: #111118;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
+
+/* ====== UTILITY CLASSES ====== */
+
+.gradient-text {
+  background: var(--gradient-x);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-bg {
+  background: var(--gradient-x);
+}
+
+.section-eyebrow {
+  font-family: var(--font-grotesk);
+  font-size: 13px;
+  color: #2B50DC;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-grotesk);
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -1.8px;
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.08;
+  color: #111118;
+}
+
+@media (max-width: 768px) {
+  .section-title { font-size: 34px; letter-spacing: -1px; }
+}
+
+.section-sub {
+  color: #55555E;
+  font-size: 19px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .section-sub { font-size: 16px; }
+}
+
+/* ====== CARD VARIANTS ====== */
+
+.card-sky {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+.card-sky:hover {
+  border-color: rgba(43, 80, 220, 0.2);
+  box-shadow: 0 8px 32px rgba(43, 80, 220, 0.1);
+  transform: translateY(-2px);
+}
+
+.card-red {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+.card-red:hover {
+  border-color: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.07);
+  transform: translateY(-2px);
+}
+
+/* ====== ANIMATIONS ====== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(43, 80, 220, 0.7); }
+  70%       { opacity: 0.7; box-shadow: 0 0 0 8px rgba(43, 80, 220, 0); }
+}
+
+.animate-float     { animation: float 5s ease-in-out infinite; }
+.animate-fade-up   { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+.animate-pulse-dot { animation: pulseDot 2.5s ease-in-out infinite; }
