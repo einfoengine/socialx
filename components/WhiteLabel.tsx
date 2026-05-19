@@ -24,7 +24,7 @@ export default function WhiteLabel() {
           </div>
           <a
             href="#"
-            className="gradient-bg text-white px-7 py-4 rounded-full font-grotesk font-semibold inline-flex items-center gap-2 whitespace-nowrap transition-transform hover:-translate-y-0.5 shrink-0"
+            className="gradient-bg text-white px-7 py-4 rounded-[3px] font-grotesk font-semibold inline-flex items-center gap-2 whitespace-nowrap transition-transform hover:-translate-y-0.5 shrink-0"
           >
             Get on the list →
           </a>

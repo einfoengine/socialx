@@ -175,7 +175,7 @@ export default function Comparison() {
           </div>
           <a 
             href="#gw-pricing" 
-            className="px-6 py-3 bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-sm transition-all shadow-[0_4px_12px_rgba(43,80,220,0.2)] hover:shadow-[0_6px_20px_rgba(43,80,220,0.3)] shrink-0"
+            className="px-6 py-3 bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-sm transition-all shadow-[0_4px_12px_rgba(43,80,220,0.2)] hover:shadow-[0_6px_20px_rgba(43,80,220,0.3)] shrink-0 rounded-[3px]"
           >
             See Our Reseller Plans →
           </a>

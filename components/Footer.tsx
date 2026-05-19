@@ -110,8 +110,8 @@ export default function Footer() {
             <p className="text-xs text-gray-500 font-chillax mb-4">
               High-converting social graphics and copies dropped straight to your inbox weekly.
             </p>
-            {subscribed ? (
-              <div className="p-3 border border-blue-neon/20 bg-blue-neon/[0.02] text-xs text-blue-sky font-grotesk font-semibold">
+             {subscribed ? (
+              <div className="p-3 border border-blue-neon/20 bg-blue-neon/[0.02] text-xs text-blue-sky font-grotesk font-semibold rounded-[3px]">
                 ✓ Successful! We've sent your first template batch.
               </div>
             ) : (
@@ -122,11 +122,11 @@ export default function Footer() {
                   placeholder="Enter your agency email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-chillax text-white focus:outline-hidden focus:border-[#2B50DC]/50 flex-1 rounded-none placeholder-gray-600"
+                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-chillax text-white focus:outline-hidden focus:border-[#2B50DC]/50 flex-1 rounded-[3px] placeholder-gray-600"
                 />
                 <button
                   type="submit"
-                  className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white px-5 py-2 font-grotesk text-xs font-semibold tracking-wider uppercase transition-colors rounded-none"
+                  className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white px-5 py-2 font-grotesk text-xs font-semibold tracking-wider uppercase transition-colors rounded-[3px]"
                 >
                   Join →
                 </button>

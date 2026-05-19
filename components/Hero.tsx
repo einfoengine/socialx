@@ -78,7 +78,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-5 items-center justify-center">
           <a
             href="#gw-pricing"
-            className="group relative gradient-bg text-white px-10 py-5 rounded-full font-grotesk font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(43,80,220,0.3)] overflow-hidden"
+            className="group relative gradient-bg text-white px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(43,80,220,0.3)] overflow-hidden"
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <span className="relative">See pricing</span>
@@ -86,7 +86,7 @@ export default function Hero() {
           </a>
           <a
             href="#gw-how"
-            className="group text-gray-700 px-10 py-5 rounded-full font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-gray-50"
+            className="group text-gray-700 px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-gray-50"
             style={{
               background: "white",
               border: "1px solid rgba(0,0,0,0.1)",

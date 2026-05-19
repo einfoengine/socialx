@@ -107,7 +107,7 @@ export default function Pricing() {
             Billing cycle
           </div>
           <div
-            className="inline-flex items-center p-1.5 rounded-full flex-wrap justify-center gap-1"
+            className="inline-flex items-center p-1.5 rounded-[3px] flex-wrap justify-center gap-1"
             style={{
               background: "rgba(0,0,0,0.04)",
               border: "1px solid rgba(0,0,0,0.07)",
@@ -117,7 +117,7 @@ export default function Pricing() {
               <button
                 key={p.key}
                 onClick={() => setPeriod(p.key)}
-                className="font-grotesk text-sm font-medium px-5 py-2.5 rounded-full flex items-center gap-2 transition-all duration-200 whitespace-nowrap cursor-pointer"
+                className="font-grotesk text-sm font-medium px-5 py-2.5 rounded-[3px] flex items-center gap-2 transition-all duration-200 whitespace-nowrap cursor-pointer"
                 style={{
                   background: period === p.key ? "#111118" : "transparent",
                   color: period === p.key ? "white" : "#555560",
@@ -127,7 +127,7 @@ export default function Pricing() {
                 {p.label}
                 {p.savings && (
                   <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                    className="text-[11px] font-semibold px-2 py-0.5 rounded-[3px]"
                     style={{
                       background: period === p.key ? "rgba(255,255,255,0.15)" : "rgba(43,80,220,0.1)",
                       color: period === p.key ? "rgba(255,255,255,0.9)" : "#2B50DC",
@@ -159,7 +159,7 @@ export default function Pricing() {
             >
               {tier.featured && (
                 <div
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-full tracking-[0.8px] uppercase whitespace-nowrap"
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-[3px] tracking-[0.8px] uppercase whitespace-nowrap"
                   style={{ background: "#111118", color: "white" }}
                 >
                   Most Popular
@@ -226,7 +226,7 @@ export default function Pricing() {
 
               {/* CTA */}
               <button
-                className="w-full py-4 rounded-xl font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer"
+                className="w-full py-4 rounded-[3px] font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer"
                 style={
                   tier.featured
                     ? { background: "white", color: "#111118" }

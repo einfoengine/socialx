@@ -31,7 +31,7 @@ export default function FinalCTA() {
         </p>
         <a
           href="#gw-pricing"
-          className="gradient-bg text-white px-10 py-4.5 rounded-full font-grotesk font-semibold text-base inline-flex items-center gap-2 transition-transform hover:-translate-y-0.5"
+          className="gradient-bg text-white px-10 py-4.5 rounded-[3px] font-grotesk font-semibold text-base inline-flex items-center gap-2 transition-transform hover:-translate-y-0.5"
           style={{ boxShadow: "0 8px 32px rgba(43,80,220,0.3)" }}
         >
           See plans →

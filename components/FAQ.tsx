@@ -56,7 +56,7 @@ function FAQItem({
           {faq.q}
         </span>
         <button
-          className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] transition-all duration-300 ${
+          className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] rounded-[3px] transition-all duration-300 ${
             isOpen 
               ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180" 
               : "bg-white border-black/10 text-gray-500 hover:text-gray-900 hover:border-black/20"
