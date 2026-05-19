@@ -1,69 +1,89 @@
+"use client";
+
+import React from "react";
+
 const stats = [
-  { num: "$0",   label: "Setup fee",             sub: "No onboarding charges." },
-  { num: "0",    label: "Long-term contracts",   sub: "Cancel or pause anytime." },
-  { num: "100%", label: "White-label ready",     sub: "Your brand. Your voice." },
+  { 
+    num: "$0",   
+    label: "Setup Fees",             
+    sub: "No hidden onboarding charges. Pay only your plan price." 
+  },
+  { 
+    num: "0",    
+    label: "Long-term Contracts",   
+    sub: "Zero lock-ins. Cancel, pause, or scale your plan anytime." 
+  },
+  { 
+    num: "100%", 
+    label: "White-Label Ready",     
+    sub: "Delivered strictly in your brand voice and visual style." 
+  },
 ];
 
 export default function Guarantees() {
   return (
-    <section id="gw-guarantees" className="py-32 md:py-40 relative overflow-hidden" style={{ background: "#000877" }}>
-      {/* Video background */}
+    <section id="gw-guarantees" className="py-32 md:py-40 bg-[#0a0a0f] relative overflow-hidden border-t border-b border-white/5">
+      {/* Subtle Black and White Background Video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.07] pointer-events-none z-0 filter grayscale"
       >
         <source src="/section-bg.mp4" type="video/mp4" />
       </video>
-      {/* Dark overlay to keep text readable */}
-      <div
-        className="absolute inset-0"
+
+      {/* Subtle Grid Background Pattern */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
         style={{
-          background:
-            "linear-gradient(135deg, rgba(0,8,119,0.75) 0%, rgba(0,163,255,0.15) 100%)",
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
         }}
       />
-      {/* Glowing top edge */}
+
+      {/* Subtle bottom-centered spotlight */}
       <div
-        className="absolute top-0 left-0 right-0 h-px"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none rounded-full filter blur-[120px] opacity-[0.04]"
         style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, rgba(0,163,255,0.6) 50%, transparent 100%)",
-        }}
-      />
-      {/* Glowing bottom edge */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, rgba(0,163,255,0.3) 50%, transparent 100%)",
+          background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
         }}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
-          {stats.map((s) => (
+        {/* Consistent Section Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <div className="section-eyebrow text-blue-sky/80">[ No-Risk Commitment ]</div>
+          <h2 className="section-title" style={{ color: "white" }}>
+            Grow with confidence.<br />
+            We remove <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">all the friction</span>.
+          </h2>
+          <p className="section-sub max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.6)" }}>
+            No setup fees, no long-term contract lock-ins, and 100% white-label ready content. Simple, transparent partnerships built for software resellers.
+          </p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid sm:grid-cols-3 gap-0 border border-white/5 bg-black/40 backdrop-blur-md">
+          {stats.map((s, index) => (
             <div
               key={s.label}
-              className="rounded-2xl px-8 py-10 flex flex-col items-center"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                backdropFilter: "blur(12px)",
-              }}
+              className={`p-8 md:p-12 flex flex-col items-center text-center transition-all duration-300 hover:bg-white/[0.02] ${
+                index !== 2 ? "border-b sm:border-b-0 sm:border-r border-white/5" : ""
+              }`}
             >
               <div
-                className="font-grotesk font-bold text-white mb-3 leading-none"
-                style={{ fontSize: "64px", letterSpacing: "-2px" }}
+                className="font-grotesk font-bold text-white mb-4 leading-none tracking-[-2px] text-5xl md:text-6xl"
               >
                 {s.num}
               </div>
-              <div className="font-grotesk text-[16px] font-semibold text-white/90 mb-1">
+              <div className="font-grotesk text-base font-semibold text-white mb-2 uppercase tracking-[0.5px]">
                 {s.label}
               </div>
-              <div className="font-grotesk text-sm text-white/55">{s.sub}</div>
+              <p className="font-chillax text-xs text-gray-500 leading-relaxed max-w-[240px]">
+                {s.sub}
+              </p>
             </div>
           ))}
         </div>

@@ -5,45 +5,78 @@ import React from "react";
 const comparisonData = [
   {
     metric: "HL Native Expertise",
-    socialX: "100% Native (HL-fluent)",
-    agency: "No (Requires training)",
-    va: "Rare (Heavy training)",
-    fiverr: "No (Zero HL context)",
-    diy: "Depends on you"
+    socialX: true,
+    agency: false,
+    va: false,
+    fiverr: false,
+    diy: false
   },
   {
     metric: "Social Planner Sync",
-    socialX: "Direct Sync (One-click)",
-    agency: "No (Use external portals)",
-    va: "Requires manual login",
-    fiverr: "Deliver raw files only",
-    diy: "Manual scheduling"
+    socialX: true,
+    agency: false,
+    va: false,
+    fiverr: false,
+    diy: false
   },
   {
-    metric: "Management Overhead",
-    socialX: "Zero (Set & forget)",
-    agency: "Medium (Review calls)",
-    va: "High (Daily supervision)",
-    fiverr: "High (Back & forth files)",
-    diy: "Extreme (4-6 hrs/week)"
+    metric: "Zero Mgmt Overhead",
+    socialX: true,
+    agency: false,
+    va: false,
+    fiverr: false,
+    diy: false
   },
   {
     metric: "Motion Videos & Graphics",
-    socialX: "Included natively",
-    agency: "Extra charge ($$$)",
-    va: "Rare (Requires editor)",
-    fiverr: "Extra charge per asset",
-    diy: "Static Canva templates"
+    socialX: true,
+    agency: false,
+    va: false,
+    fiverr: false,
+    diy: false
   },
   {
     metric: "Monthly Cost",
-    socialX: "Starts at $197/mo",
-    agency: "$1,500 – $3,000/mo",
-    va: "$600 – $1,200/mo",
-    fiverr: "Variable ($200 - $500/mo)",
-    diy: "Free (Costs your time)"
+    isPrice: true,
+    socialX: "$197/mo",
+    agency: "$1,500+/mo",
+    va: "$600+/mo",
+    fiverr: "$200+/mo",
+    diy: "Free (Costs Time)"
   }
 ];
+
+function CellValue({ 
+  value, 
+  isPrice, 
+  isHighlighted 
+}: { 
+  value: any; 
+  isPrice?: boolean; 
+  isHighlighted?: boolean; 
+}) {
+  if (isPrice) {
+    return (
+      <span className={isHighlighted ? "text-[#2B50DC] font-bold text-[15px] font-grotesk" : "text-gray-700 font-chillax text-[14.5px]"}>
+        {value}
+      </span>
+    );
+  }
+  
+  if (value === true) {
+    return (
+      <div className="flex items-center justify-center">
+        <span className="text-[#2B50DC] font-black text-xl leading-none" title="Yes / Included">✓</span>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex items-center justify-center">
+      <span className="text-gray-300 font-bold text-base leading-none" title="No / Missing">✗</span>
+    </div>
+  );
+}
 
 export default function Comparison() {
   return (
@@ -78,16 +111,16 @@ export default function Comparison() {
                 <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-bold text-white bg-[#2B50DC] text-center w-[220px]">
                   ✨ socialX (Done-for-you)
                 </th>
-                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50 text-center">
                   Generic SMM Agency
                 </th>
-                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50 text-center">
                   In-House VA (Upwork)
                 </th>
-                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50 text-center">
                   Fiverr Freelancers
                 </th>
-                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50 text-center">
                   DIY (Canva + AI)
                 </th>
               </tr>
@@ -101,31 +134,28 @@ export default function Comparison() {
                   </td>
                   
                   {/* socialX Column (Highlighted Column) */}
-                  <td className="p-6 text-center font-grotesk font-bold text-[#2B50DC] bg-blue-50/40 border-x border-[#2B50DC]/20">
-                    <span className="flex items-center justify-center gap-1.5 text-blue-neon">
-                      {index !== 4 && <span>✓</span>}
-                      {row.socialX}
-                    </span>
+                  <td className="p-6 text-center bg-blue-50/40 border-x border-[#2B50DC]/20">
+                    <CellValue value={row.socialX} isPrice={row.isPrice} isHighlighted={true} />
                   </td>
 
                   {/* Generic Agency */}
-                  <td className="p-6 text-gray-600 font-chillax">
-                    {row.agency}
+                  <td className="p-6 text-center">
+                    <CellValue value={row.agency} isPrice={row.isPrice} />
                   </td>
 
                   {/* In-House VA */}
-                  <td className="p-6 text-gray-600 font-chillax">
-                    {row.va}
+                  <td className="p-6 text-center">
+                    <CellValue value={row.va} isPrice={row.isPrice} />
                   </td>
 
                   {/* Fiverr */}
-                  <td className="p-6 text-gray-600 font-chillax">
-                    {row.fiverr}
+                  <td className="p-6 text-center">
+                    <CellValue value={row.fiverr} isPrice={row.isPrice} />
                   </td>
 
                   {/* DIY */}
-                  <td className="p-6 text-gray-600 font-chillax">
-                    {row.diy}
+                  <td className="p-6 text-center">
+                    <CellValue value={row.diy} isPrice={row.isPrice} />
                   </td>
                 </tr>
               ))}
