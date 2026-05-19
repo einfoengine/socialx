@@ -19,6 +19,17 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section className="py-32 md:py-40 relative overflow-hidden" id="gw-how" style={{ background: "white" }}>
+      {/* Subtle Grid Background */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)'
+        }}
+      />
+
       {/* Subtle blue glow */}
       <div
         className="absolute inset-0 pointer-events-none"
