@@ -1,101 +1,154 @@
-const rows = [
-  { option: "DIY (Canva + scheduling yourself)", cost: "$0", posts: "5–10", quality: "mid", qualityLabel: "Amateur", hlFluent: true, time: "4–6 hrs/week", isSocialX: false },
-  { option: "Fiverr designers + writers", cost: "~$200", posts: "15–30", quality: "mid", qualityLabel: "Variable", hlFluent: false, time: "2–3 hrs/week mgmt", isSocialX: false },
-  { option: "socialX Starter", cost: "$197", posts: "8", quality: "yes", qualityLabel: "Pro", hlFluent: true, time: "Zero", isSocialX: true },
-  { option: "Generic productized SMM tools", cost: "$200–$400", posts: "20–40 (AI-gen)", quality: "mid", qualityLabel: "OK", hlFluent: false, time: "Light mgmt", isSocialX: false },
-  { option: "socialX Growth", cost: "$397", posts: "16 + 2 videos", quality: "yes", qualityLabel: "Pro", hlFluent: true, time: "Zero", isSocialX: true },
-  { option: "Dedicated VA from Upwork", cost: "$600–$1,000", posts: "40+", quality: "mid", qualityLabel: "OK", hlFluent: false, time: "Heavy mgmt + training", isSocialX: false },
-  { option: "socialX Scale", cost: "$597", posts: "30 + 4 videos", quality: "yes", qualityLabel: "Pro", hlFluent: true, time: "Zero", isSocialX: true },
-  { option: "Custom SMM agency", cost: "$1,500–$3,000", posts: "25–40", quality: "yes", qualityLabel: "Pro", hlFluent: false, time: "Calls + reviews", isSocialX: false },
+"use client";
+
+import React from "react";
+
+const comparisonData = [
+  {
+    metric: "HL Native Expertise",
+    socialX: "100% Native (HL-fluent)",
+    agency: "No (Requires training)",
+    va: "Rare (Heavy training)",
+    fiverr: "No (Zero HL context)",
+    diy: "Depends on you"
+  },
+  {
+    metric: "Social Planner Sync",
+    socialX: "Direct Sync (One-click)",
+    agency: "No (Use external portals)",
+    va: "Requires manual login",
+    fiverr: "Deliver raw files only",
+    diy: "Manual scheduling"
+  },
+  {
+    metric: "Management Overhead",
+    socialX: "Zero (Set & forget)",
+    agency: "Medium (Review calls)",
+    va: "High (Daily supervision)",
+    fiverr: "High (Back & forth files)",
+    diy: "Extreme (4-6 hrs/week)"
+  },
+  {
+    metric: "Motion Videos & Graphics",
+    socialX: "Included natively",
+    agency: "Extra charge ($$$)",
+    va: "Rare (Requires editor)",
+    fiverr: "Extra charge per asset",
+    diy: "Static Canva templates"
+  },
+  {
+    metric: "Monthly Cost",
+    socialX: "Starts at $197/mo",
+    agency: "$1,500 – $3,000/mo",
+    va: "$600 – $1,200/mo",
+    fiverr: "Variable ($200 - $500/mo)",
+    diy: "Free (Costs your time)"
+  }
 ];
-
-function QualityBadge({ quality, label }: { quality: string; label: string }) {
-  if (quality === "yes") return <span className="text-blue-neon font-medium">{label}</span>;
-  if (quality === "mid") return <span style={{ color: "rgba(217,119,6,0.9)" }}>{label}</span>;
-  return <span style={{ color: "rgba(220,38,38,0.7)" }}>{label}</span>;
-}
-
-function YesNo({ value }: { value: boolean }) {
-  return value ? (
-    <span className="text-blue-neon font-semibold">✓</span>
-  ) : (
-    <span style={{ color: "rgba(220,38,38,0.6)" }}>✗</span>
-  );
-}
 
 export default function Comparison() {
   return (
-    <section
-      id="gw-comparison"
-      className="py-32 md:py-40"
-      style={{ background: "#F4F2EF" }}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="section-eyebrow">[ vs. The rest ]</div>
+    <section id="gw-comparison" className="py-32 md:py-40 relative overflow-hidden" style={{ background: "#F4F2EF" }}>
+      {/* Background Subtle Grid Pattern */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div className="section-eyebrow">[ Comparison Matrix ]</div>
         <h2 className="section-title">
-          Your real options.<br />
-          What each one actually costs.
+          Stop bleeding time.<br />
+          Start selling software.
         </h2>
-        <p className="section-sub mb-16">
-          A reseller&apos;s typical alternatives. Look at the trade-offs honestly.
+        <p className="section-sub mb-20 text-gray-600">
+          How socialX stacks up against the typical options. Look at the trade-offs honestly.
         </p>
 
-        <div
-          className="overflow-x-auto rounded-none"
-          style={{
-            background: "white",
-            border: "1px solid rgba(0,0,0,0.08)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.05)",
-          }}
-        >
-          <table className="w-full border-collapse text-[15px]" style={{ minWidth: "760px" }}>
+        {/* Comparison Table Card */}
+        <div className="overflow-x-auto rounded-none border border-black/10 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.04)]">
+          <table className="w-full border-collapse text-[14.5px] text-left" style={{ minWidth: "920px" }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-                {["Option", "Cost/month", "Posts/month", "Quality", "HL-fluent", "Your time"].map((h) => (
-                  <th
-                    key={h}
-                    className="font-grotesk text-[12px] uppercase tracking-[1px] font-medium text-gray-400 text-left px-5 py-4.5"
-                    style={{ background: "rgba(0,0,0,0.02)" }}
-                  >
-                    {h}
-                  </th>
-                ))}
+              <tr className="border-b border-black/10">
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-400 bg-gray-50/50 w-[240px]">
+                  Feature / Dimension
+                </th>
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-bold text-white bg-[#2B50DC] text-center w-[220px]">
+                  ✨ socialX (Done-for-you)
+                </th>
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                  Generic SMM Agency
+                </th>
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                  In-House VA (Upwork)
+                </th>
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                  Fiverr Freelancers
+                </th>
+                <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-50/50">
+                  DIY (Canva + AI)
+                </th>
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
-                <tr
-                  key={row.option}
-                  style={{
-                    background: row.isSocialX
-                      ? "linear-gradient(90deg, rgba(43,80,220,0.06) 0%, rgba(43,80,220,0.02) 100%)"
-                      : "transparent",
-                    borderBottom: "1px solid rgba(0,0,0,0.04)",
-                  }}
-                >
-                  <td
-                    className="px-5 py-4.5 text-gray-800"
-                    style={row.isSocialX ? { borderLeft: "3px solid #2B50DC", paddingLeft: "17px" } : {}}
-                  >
-                    {row.isSocialX ? <strong className="font-semibold text-gray-900">{row.option}</strong> : row.option}
+              {comparisonData.map((row, index) => (
+                <tr key={index} className="border-b border-black/5 hover:bg-gray-50/30 transition-colors">
+                  {/* Dimension Name */}
+                  <td className="p-6 font-grotesk font-semibold text-gray-900 border-r border-black/5">
+                    {row.metric}
                   </td>
-                  <td className="px-5 py-4.5 text-gray-800">
-                    {row.isSocialX ? <strong className="font-semibold text-gray-900">{row.cost}</strong> : row.cost}
+                  
+                  {/* socialX Column (Highlighted Column) */}
+                  <td className="p-6 text-center font-grotesk font-bold text-[#2B50DC] bg-blue-50/40 border-x border-[#2B50DC]/20">
+                    <span className="flex items-center justify-center gap-1.5 text-blue-neon">
+                      {index !== 4 && <span>✓</span>}
+                      {row.socialX}
+                    </span>
                   </td>
-                  <td className="px-5 py-4.5 text-gray-800">
-                    {row.isSocialX ? <strong className="font-semibold text-gray-900">{row.posts}</strong> : row.posts}
+
+                  {/* Generic Agency */}
+                  <td className="p-6 text-gray-600 font-chillax">
+                    {row.agency}
                   </td>
-                  <td className="px-5 py-4.5"><QualityBadge quality={row.quality} label={row.qualityLabel} /></td>
-                  <td className="px-5 py-4.5"><YesNo value={row.hlFluent} /></td>
-                  <td className="px-5 py-4.5 text-gray-800">
-                    {row.isSocialX
-                      ? <strong className="font-semibold text-blue-neon">{row.time}</strong>
-                      : row.time}
+
+                  {/* In-House VA */}
+                  <td className="p-6 text-gray-600 font-chillax">
+                    {row.va}
+                  </td>
+
+                  {/* Fiverr */}
+                  <td className="p-6 text-gray-600 font-chillax">
+                    {row.fiverr}
+                  </td>
+
+                  {/* DIY */}
+                  <td className="p-6 text-gray-600 font-chillax">
+                    {row.diy}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* High-Converting Bottom Text Banner */}
+        <div className="mt-14 p-8 border border-blue-neon/20 bg-blue-neon/[0.02] flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h4 className="font-grotesk text-lg font-bold text-gray-900 leading-snug">
+              Stop acting like a content manager. Start acting like a software CEO.
+            </h4>
+            <p className="text-gray-600 text-sm mt-1">
+              Delegating your socials to socialX costs less than a single client subscription.
+            </p>
+          </div>
+          <a 
+            href="#gw-pricing" 
+            className="px-6 py-3 bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-sm transition-all shadow-[0_4px_12px_rgba(43,80,220,0.2)] hover:shadow-[0_6px_20px_rgba(43,80,220,0.3)] shrink-0"
+          >
+            See Our Reseller Plans →
+          </a>
         </div>
       </div>
     </section>
