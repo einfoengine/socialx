@@ -7,12 +7,22 @@ const stats = [
 export default function Guarantees() {
   return (
     <section id="gw-guarantees" className="py-32 md:py-40 relative overflow-hidden">
-      {/* Gradient background */}
+      {/* Video background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/section-bg.mp4" type="video/mp4" />
+      </video>
+      {/* Dark overlay to keep text readable */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(0,8,119,0.95) 0%, rgba(0,163,255,0.22) 100%)",
+            "linear-gradient(135deg, rgba(0,8,119,0.75) 0%, rgba(0,163,255,0.15) 100%)",
         }}
       />
       {/* Glowing top edge */}
@@ -33,9 +43,17 @@ export default function Guarantees() {
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="grid sm:grid-cols-3 gap-10 max-w-3xl mx-auto text-center">
+        <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
           {stats.map((s) => (
-            <div key={s.label}>
+            <div
+              key={s.label}
+              className="rounded-2xl px-8 py-10 flex flex-col items-center"
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
               <div
                 className="font-grotesk font-bold text-white mb-3 leading-none"
                 style={{ fontSize: "64px", letterSpacing: "-2px" }}

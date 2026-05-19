@@ -43,25 +43,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Floating Decorative Badges */}
-      <div className="hidden md:flex absolute top-[20%] left-10 lg:left-20 animate-float z-10 items-center gap-3 px-4 py-2.5 rounded-none bg-white/60 backdrop-blur-md border border-white/40 shadow-xl">
-        <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold">HL</div>
-        <div className="flex flex-col text-left">
-          <span className="text-xs font-semibold text-gray-900">100% Native</span>
-          <span className="text-[10px] text-gray-500">API Integrated</span>
-        </div>
-      </div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
 
-      <div className="hidden md:flex absolute bottom-[25%] right-10 lg:right-20 animate-float z-10 items-center gap-3 px-4 py-2.5 rounded-none bg-white/60 backdrop-blur-md border border-white/40 shadow-xl" style={{ animationDelay: '1.5s' }}>
-        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">✓</div>
-        <div className="flex flex-col text-left">
-          <span className="text-xs font-semibold text-gray-900">Auto-Scheduled</span>
-          <span className="text-[10px] text-gray-500">Set it & forget it</span>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
-        
         {/* Eyebrow */}
         <div
           className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 backdrop-blur-sm"
@@ -77,11 +60,10 @@ export default function Hero() {
         {/* H1 */}
         <h1
           className="font-grotesk font-bold leading-[1.05] tracking-[-2px] mb-8 text-gray-900 drop-shadow-sm"
-          style={{ fontSize: "clamp(48px, 7vw, 84px)" }}
+          style={{ fontSize: "clamp(52px, 7.5vw, 96px)" }}
         >
-          Social media for<br />
-          HighLevel resellers.<br />
-          <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF]">Done for you.</span><br />
+          Social media for HighLevel resellers.<br />
+          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span><br />
           Not by you.
         </h1>
 
