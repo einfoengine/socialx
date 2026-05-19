@@ -13,6 +13,7 @@ import WhiteLabel from "@/components/WhiteLabel";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+import FooterReveal from "@/components/FooterReveal";
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
+      <FooterReveal />
     </>
   );
 }

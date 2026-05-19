@@ -35,7 +35,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="pt-20 pb-12 bg-[#0a0a0f] relative overflow-hidden border-t border-white/5">
+    <footer className="pt-20 pb-12 bg-[#0a0a0f] relative z-10 overflow-hidden border-t border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.9)] mb-[180px] md:mb-[260px]">
       {/* Subtle Grid Background Pattern */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
