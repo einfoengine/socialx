@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TrustStrip from "@/components/TrustStrip";
 import Problem from "@/components/Problem";
+import PortfolioMarquee from "@/components/PortfolioMarquee";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import Comparison from "@/components/Comparison";
@@ -21,6 +22,7 @@ export default function Home() {
         <Hero />
         <TrustStrip />
         <Problem />
+        <PortfolioMarquee />
         <HowItWorks />
         <Pricing />
         <Comparison />
