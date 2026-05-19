@@ -6,7 +6,7 @@ const stats = [
 
 export default function Guarantees() {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden">
+    <section id="gw-guarantees" className="py-32 md:py-40 relative overflow-hidden">
       {/* Gradient background */}
       <div
         className="absolute inset-0"

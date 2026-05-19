@@ -18,7 +18,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden" id="how" style={{ background: "white" }}>
+    <section className="py-32 md:py-40 relative overflow-hidden" id="gw-how" style={{ background: "white" }}>
       {/* Subtle blue glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -42,7 +42,7 @@ export default function HowItWorks() {
           {steps.map((s, i) => (
             <div
               key={s.num}
-              className="card-sky rounded-2xl p-10 animate-fade-up"
+              className="card-sky rounded-none p-10 animate-fade-up"
               style={{ animationDelay: `${i * 0.12}s` }}
             >
               <div

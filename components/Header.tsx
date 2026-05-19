@@ -22,9 +22,9 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { label: "How it works", href: "#how" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "FAQ", href: "#faq" },
+    { label: "How it works", href: "#gw-how" },
+    { label: "Pricing", href: "#gw-pricing" },
+    { label: "FAQ", href: "#gw-faq" },
   ];
 
   return (
@@ -52,7 +52,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#pricing"
+              href="#gw-pricing"
               className="gradient-bg text-white font-grotesk font-semibold text-[15px] px-6 py-2.5 rounded-full transition-transform hover:-translate-y-px"
             >
               Get started
@@ -101,7 +101,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#pricing"
+              href="#gw-pricing"
               onClick={() => setOpen(false)}
               className="gradient-bg text-white font-grotesk font-semibold text-base text-center py-3.5 rounded-full mt-2"
             >

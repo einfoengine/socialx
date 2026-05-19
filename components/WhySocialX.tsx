@@ -24,6 +24,7 @@ const reasons = [
 export default function WhySocialX() {
   return (
     <section
+      id="gw-why-socialx"
       className="py-32 md:py-40"
       style={{ background: "#EEF2FF" }}
     >
@@ -41,7 +42,7 @@ export default function WhySocialX() {
           {reasons.map((r, i) => (
             <div
               key={r.num}
-              className="card-sky rounded-2xl p-10 animate-fade-up"
+              className="card-sky rounded-none p-10 animate-fade-up"
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               <div className="font-grotesk text-sm font-semibold text-blue-neon tracking-widest mb-4">

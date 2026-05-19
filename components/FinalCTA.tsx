@@ -1,6 +1,6 @@
 export default function FinalCTA() {
   return (
-    <section className="py-40 md:py-48 text-center relative overflow-hidden" style={{ background: "#EEF2FF" }}>
+    <section id="gw-final-cta" className="py-40 md:py-48 text-center relative overflow-hidden" style={{ background: "#EEF2FF" }}>
       {/* Blob */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -30,7 +30,7 @@ export default function FinalCTA() {
           fee. No contracts. No agency theater.
         </p>
         <a
-          href="#pricing"
+          href="#gw-pricing"
           className="gradient-bg text-white px-10 py-4.5 rounded-full font-grotesk font-semibold text-base inline-flex items-center gap-2 transition-transform hover:-translate-y-0.5"
           style={{ boxShadow: "0 8px 32px rgba(43,80,220,0.3)" }}
         >

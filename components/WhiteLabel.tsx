@@ -1,9 +1,9 @@
 export default function WhiteLabel() {
   return (
-    <section className="py-32 md:py-40" style={{ background: "white" }}>
+    <section id="gw-white-label" className="py-32 md:py-40" style={{ background: "white" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div
-          className="rounded-3xl p-14 flex flex-col md:flex-row items-center justify-between gap-10"
+          className="rounded-none p-14 flex flex-col md:flex-row items-center justify-between gap-10"
           style={{
             background: "linear-gradient(135deg, rgba(43,80,220,0.07) 0%, rgba(91,141,239,0.04) 100%)",
             border: "1px solid rgba(43,80,220,0.15)",

@@ -1,27 +1,39 @@
 export default function TrustStrip() {
+  const benefits = [
+    "100% Native to HighLevel",
+    "Auto-Scheduled to Social Planner",
+    "Feature-Specific Content",
+    "No CSV Exports",
+    "White-labeled",
+    "Updates When HL Ships",
+    "Sales Enablement Focused",
+    "Zero Client Management"
+  ];
+
+  // Duplicate to allow seamless infinite scrolling (translateX -50%)
+  const marqueeItems = [...benefits, ...benefits];
+
   return (
     <div
-      className="py-7"
+      className="py-5 overflow-hidden flex relative"
       style={{
-        background: "white",
-        borderTop: "1px solid rgba(0,0,0,0.07)",
-        borderBottom: "1px solid rgba(0,0,0,0.07)",
+        background: "#111118",
+        borderTop: "1px solid rgba(0,0,0,0.1)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-          <p className="font-grotesk text-sm text-gray-500 text-center">
-            Built by the team behind{" "}
-            <strong className="text-gray-800 font-medium">GHL Explainer</strong>,{" "}
-            <strong className="text-gray-800 font-medium">GHL Animation Studios</strong>, and{" "}
-            <strong className="text-gray-800 font-medium">GHL Video</strong>
-          </p>
-          <div className="w-px h-5 bg-gray-200 hidden sm:block" />
-          <p className="font-grotesk text-sm text-gray-500 text-center">
-            <strong className="text-gray-900 font-semibold">800+</strong>{" "}
-            HL SaaS clients served since 2021
-          </p>
-        </div>
+      {/* Gradient masks for smooth fade on edges */}
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#111118] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#111118] to-transparent z-10 pointer-events-none" />
+
+      <div className="flex animate-marquee whitespace-nowrap w-max items-center">
+        {marqueeItems.map((benefit, i) => (
+          <div key={i} className="flex items-center mx-8">
+            <span className="text-[#2B50DC] mr-4 text-xl leading-none">✦</span>
+            <span className="font-grotesk text-[13px] font-semibold text-white/80 uppercase tracking-[1.5px]">
+              {benefit}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

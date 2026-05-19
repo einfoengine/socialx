@@ -1,135 +1,137 @@
-import Image from 'next/image';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 
 export default function Hero() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <section className="relative py-32 lg:py-48 overflow-hidden" style={{ background: "#F4F2EF" }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section 
+      id="gw-hero"
+      className="relative py-32 lg:py-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]" 
+      style={{ background: "#F4F2EF" }}
+    >
+      {/* Interactive Cursor Spotlight */}
+      {isMounted && (
+        <div 
+          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40 blur-[100px] transition-transform duration-75 ease-linear z-0"
+          style={{
+            background: "radial-gradient(circle, rgba(43,80,220,0.3) 0%, rgba(91,141,239,0.1) 50%, transparent 70%)",
+            transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)`
+          }}
+        />
+      )}
+      
+      {/* Subtle Grid Background */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)'
+        }}
+      />
 
-          {/* ── LEFT: copy ── */}
-          <div>
-            {/* Eyebrow */}
-            <div
-              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase"
-              style={{
-                background: "rgba(43,80,220,0.08)",
-                border: "1px solid rgba(43,80,220,0.18)",
-                color: "#2B50DC",
-              }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-neon animate-pulse-dot shrink-0" />
-              [ For HighLevel SaaS resellers ]
-            </div>
-
-            {/* H1 */}
-            <h1
-              className="font-grotesk font-semibold leading-[1.02] tracking-[-2.5px] mb-7 text-gray-900"
-              style={{ fontSize: "clamp(44px, 6vw, 76px)" }}
-            >
-              Social media for<br />
-              HighLevel resellers.<br />
-              <span className="gradient-text">Done for you.</span><br />
-              Not by you.
-            </h1>
-
-            {/* Sub */}
-            <p className="text-[20px] text-gray-500 leading-relaxed mb-10 max-w-150 lg:max-w-none">
-              We pull HighLevel-feature-targeted posts from a library that updates
-              every time HL ships. Customized to your brand. Scheduled straight to
-              your HL Social Planner. Your job ends at approval.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="#pricing"
-                className="gradient-bg text-white px-9 py-4.5 rounded-full font-grotesk font-semibold text-base inline-flex items-center gap-2 transition-transform hover:-translate-y-0.5"
-              >
-                See pricing →
-              </a>
-              <a
-                href="#how"
-                className="text-gray-700 px-9 py-4.5 rounded-full font-grotesk font-medium text-base inline-flex items-center gap-2 transition-all hover:-translate-y-0.5"
-                style={{
-                  background: "white",
-                  border: "1px solid rgba(0,0,0,0.1)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-                }}
-              >
-                How it works
-              </a>
-            </div>
-          </div>
-
-          {/* ── RIGHT: blue blob + floating hand image ── */}
-          <div className="hidden lg:flex flex-col items-center relative w-full h-[600px] justify-center">
-
-            {/* Aurora blob (the Crunchy-style visual) */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div
-                style={{
-                  width: "520px",
-                  height: "520px",
-                  borderRadius: "50%",
-                  background:
-                    "radial-gradient(circle, #2B50DC 0%, #5B8DEF 40%, transparent 70%)",
-                  filter: "blur(90px)",
-                  opacity: 0.38,
-                }}
-              />
-            </div>
-
-            {/* Hand Image */}
-            <div className="relative z-10 w-full max-w-[500px] animate-float drop-shadow-[0_20px_50px_rgba(43,80,220,0.4)] rounded-[2.5rem] overflow-hidden border-[1px] border-white/20">
-              <Image 
-                src="/hero-hand.png" 
-                alt="Social Media Automation" 
-                width={600} 
-                height={600} 
-                className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700 ease-out"
-                priority
-              />
-              {/* Optional overlay for blending */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/10 to-transparent pointer-events-none mix-blend-overlay"></div>
-            </div>
-            
-            {/* Floating Element 1 */}
-            <div
-              className="absolute top-12 -right-4 z-20 px-5 py-2.5 rounded-full font-grotesk text-xs font-semibold animate-float flex items-center gap-2 backdrop-blur-md"
-              style={{
-                background: "rgba(255, 255, 255, 0.8)",
-                border: "1px solid rgba(43,80,220,0.2)",
-                color: "#2B50DC",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                animationDelay: "1.5s"
-              }}
-            >
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-              Social Networks Synced
-            </div>
-
-            {/* Floating Element 2 */}
-            <div
-              className="absolute bottom-16 -left-8 z-20 px-5 py-2.5 rounded-2xl font-grotesk text-xs font-semibold animate-float flex items-center gap-3 backdrop-blur-md"
-              style={{
-                background: "rgba(255, 255, 255, 0.9)",
-                border: "1px solid rgba(43,80,220,0.15)",
-                color: "#111827",
-                boxShadow: "0 15px 40px rgba(0,0,0,0.12)",
-                animationDelay: "0.5s"
-              }}
-            >
-              <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white font-bold">
-                ✓
-              </div>
-              <div className="flex flex-col">
-                <span className="text-gray-900">Done for You</span>
-                <span className="text-gray-500 font-normal text-[10px]">Auto-scheduled</span>
-              </div>
-            </div>
-          </div>
-
+      {/* Floating Decorative Badges */}
+      <div className="hidden md:flex absolute top-[20%] left-10 lg:left-20 animate-float z-10 items-center gap-3 px-4 py-2.5 rounded-none bg-white/60 backdrop-blur-md border border-white/40 shadow-xl">
+        <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-bold">HL</div>
+        <div className="flex flex-col text-left">
+          <span className="text-xs font-semibold text-gray-900">100% Native</span>
+          <span className="text-[10px] text-gray-500">API Integrated</span>
         </div>
+      </div>
+
+      <div className="hidden md:flex absolute bottom-[25%] right-10 lg:right-20 animate-float z-10 items-center gap-3 px-4 py-2.5 rounded-none bg-white/60 backdrop-blur-md border border-white/40 shadow-xl" style={{ animationDelay: '1.5s' }}>
+        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">✓</div>
+        <div className="flex flex-col text-left">
+          <span className="text-xs font-semibold text-gray-900">Auto-Scheduled</span>
+          <span className="text-[10px] text-gray-500">Set it & forget it</span>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
+        
+        {/* Eyebrow */}
+        <div
+          className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 backdrop-blur-sm"
+          style={{
+            border: "1px solid rgba(43,80,220,0.18)",
+            color: "#2B50DC",
+          }}
+        >
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
+          [ For HighLevel SaaS resellers ]
+        </div>
+
+        {/* H1 */}
+        <h1
+          className="font-grotesk font-bold leading-[1.05] tracking-[-2px] mb-8 text-gray-900 drop-shadow-sm"
+          style={{ fontSize: "clamp(48px, 7vw, 84px)" }}
+        >
+          Social media for<br />
+          HighLevel resellers.<br />
+          <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF]">Done for you.</span><br />
+          Not by you.
+        </h1>
+
+        {/* Sub */}
+        <p className="text-[20px] md:text-[22px] text-gray-600 leading-relaxed mb-12 max-w-2xl mx-auto">
+          We pull HighLevel-feature-targeted posts from a library that updates
+          every time HL ships. Customized to your brand. Scheduled straight to
+          your HL Social Planner. Your job ends at approval.
+        </p>
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-5 items-center justify-center">
+          <a
+            href="#gw-pricing"
+            className="group relative gradient-bg text-white px-10 py-5 rounded-full font-grotesk font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(43,80,220,0.3)] overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            <span className="relative">See pricing</span>
+            <span className="relative group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+          <a
+            href="#gw-how"
+            className="group text-gray-700 px-10 py-5 rounded-full font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-gray-50"
+            style={{
+              background: "white",
+              border: "1px solid rgba(0,0,0,0.1)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            }}
+          >
+            How it works
+          </a>
+        </div>
+
+        {/* Mini Trust Indicator */}
+        <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 bg-white/50 px-6 py-3 rounded-full border border-gray-200 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
+          <div className="flex -space-x-2">
+            {[1, 2, 3].map((i) => (
+              <div 
+                key={i} 
+                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] bg-gray-200 shadow-sm" 
+                style={{ 
+                  backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`, 
+                  backgroundSize: 'cover' 
+                }} 
+              />
+            ))}
+          </div>
+          <span>Trusted by 800+ HL Resellers</span>
+        </div>
+
       </div>
     </section>
   );

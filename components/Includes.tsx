@@ -33,7 +33,7 @@ const items = [
 
 export default function Includes() {
   return (
-    <section className="py-32 md:py-40" style={{ background: "white" }}>
+    <section id="gw-includes" className="py-32 md:py-40" style={{ background: "white" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow">[ Standard across all plans ]</div>
         <h2 className="section-title">
@@ -42,9 +42,9 @@ export default function Includes() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
           {items.map((item) => (
-            <div key={item.title} className="card-sky rounded-2xl p-7">
+            <div key={item.title} className="card-sky rounded-none p-7">
               <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-5"
+                className="w-11 h-11 rounded-none flex items-center justify-center text-xl mb-5"
                 style={{ background: "rgba(43,80,220,0.08)", color: "#2B50DC" }}
               >
                 {item.icon}

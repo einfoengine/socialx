@@ -33,7 +33,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 md:py-40" id="faq" style={{ background: "#F4F2EF" }}>
+    <section className="py-32 md:py-40" id="gw-faq" style={{ background: "#F4F2EF" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow">[ Frequently Asked ]</div>
         <h2 className="section-title">

@@ -87,7 +87,7 @@ export default function Pricing() {
   const cfg = PERIODS.find((p) => p.key === period)!;
 
   return (
-    <section className="py-32 md:py-40" id="pricing" style={{ background: "white" }}>
+    <section className="py-32 md:py-40" id="gw-pricing" style={{ background: "white" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -95,7 +95,7 @@ export default function Pricing() {
           <h2 className="section-title">
             Pick your tier.<br />Cancel anytime.
           </h2>
-          <p className="section-sub">
+          <p className="section-sub mb-16">
             Plans start at $197. No setup fee. No long-term contracts. Discount
             when you commit to longer cycles.
           </p>
@@ -146,7 +146,7 @@ export default function Pricing() {
           {TIERS.map((tier, i) => (
             <div
               key={tier.name}
-              className="relative flex flex-col rounded-3xl p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up"
+              className="relative flex flex-col rounded-none p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up"
               style={{
                 animationDelay: `${i * 0.1 + 0.05}s`,
                 background: tier.featured ? "var(--gradient-x)" : "white",

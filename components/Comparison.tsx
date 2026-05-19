@@ -26,6 +26,7 @@ function YesNo({ value }: { value: boolean }) {
 export default function Comparison() {
   return (
     <section
+      id="gw-comparison"
       className="py-32 md:py-40"
       style={{ background: "#F4F2EF" }}
     >
@@ -40,7 +41,7 @@ export default function Comparison() {
         </p>
 
         <div
-          className="overflow-x-auto rounded-2xl"
+          className="overflow-x-auto rounded-none"
           style={{
             background: "white",
             border: "1px solid rgba(0,0,0,0.08)",
