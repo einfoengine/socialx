@@ -43,7 +43,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 xl:px-0 relative z-10 flex flex-col items-center text-center">
 
         {/* Eyebrow */}
         <div
@@ -59,16 +59,16 @@ export default function Hero() {
 
         {/* H1 */}
         <h1
-          className="font-grotesk font-bold leading-[1.05] tracking-[-2px] mb-8 text-gray-900 drop-shadow-sm"
-          style={{ fontSize: "clamp(52px, 7.5vw, 96px)" }}
+          className="font-grotesk font-bold leading-[1.05] tracking-[-1.5px] sm:tracking-[-2.5px] mb-8 text-gray-900 drop-shadow-sm"
+          style={{ fontSize: "clamp(32px, 4.8vw, 64px)" }}
         >
-          Social media for HighLevel resellers.<br />
-          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span>
+          <span className="block md:inline-block md:whitespace-nowrap">Social media for HighLevel resellers.</span><br />
+          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span><br />
           Not by you.
         </h1>
 
         {/* Sub */}
-        <p className="text-[20px] md:text-[22px] text-gray-600 leading-relaxed mb-12 max-w-2xl mx-auto">
+        <p className="text-[20px] md:text-[22px] text-gray-600 leading-relaxed mb-12 max-w-3xl mx-auto">
           We pull HighLevel-feature-targeted posts from a library that updates
           every time HL ships. Customized to your brand. Scheduled straight to
           your HL Social Planner. Your job ends at approval.
