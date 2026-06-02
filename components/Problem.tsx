@@ -128,6 +128,7 @@ function ProblemCard({ p }: { p: (typeof problems)[0] }) {
       <video
         ref={videoRef}
         src="/hover-bg.mp4"
+        preload="none"
         muted
         loop
         playsInline

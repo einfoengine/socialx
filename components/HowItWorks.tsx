@@ -52,6 +52,7 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
       <video
         ref={videoRef}
         src="/hover-bg-2.mp4"
+        preload="none"
         muted
         loop
         playsInline
