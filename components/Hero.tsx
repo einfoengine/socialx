@@ -16,14 +16,14 @@ export default function Hero() {
   }, []);
 
   return (
-    <section 
+    <section
       id="gw-hero"
-      className="relative pt-16 pb-32 lg:pt-20 lg:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]" 
+      className="relative pt-16 pb-32 lg:pt-20 lg:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]"
       style={{ background: "#F4F2EF" }}
     >
       {/* Interactive Cursor Spotlight */}
       {isMounted && (
-        <div 
+        <div
           className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40 blur-[100px] transition-transform duration-75 ease-linear z-0"
           style={{
             background: "radial-gradient(circle, rgba(43,80,220,0.3) 0%, rgba(91,141,239,0.1) 50%, transparent 70%)",
@@ -31,9 +31,9 @@ export default function Hero() {
           }}
         />
       )}
-      
+
       {/* Subtle Grid Background */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none z-0"
         style={{
           backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
@@ -63,7 +63,7 @@ export default function Hero() {
           style={{ fontSize: "clamp(52px, 7.5vw, 96px)" }}
         >
           Social media for HighLevel resellers.<br />
-          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span><br />
+          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span>
           Not by you.
         </h1>
 
@@ -101,13 +101,13 @@ export default function Hero() {
         <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 bg-white/50 px-6 py-3 rounded-full border border-gray-200 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
           <div className="flex -space-x-2">
             {[1, 2, 3].map((i) => (
-              <div 
-                key={i} 
-                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] bg-gray-200 shadow-sm" 
-                style={{ 
-                  backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`, 
-                  backgroundSize: 'cover' 
-                }} 
+              <div
+                key={i}
+                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] bg-gray-200 shadow-sm"
+                style={{
+                  backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
+                  backgroundSize: 'cover'
+                }}
               />
             ))}
           </div>

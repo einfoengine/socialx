@@ -35,19 +35,28 @@ function MatrixCanvas() {
     if (!ctx) return;
 
     const fontSize = 13;
-    let cols: number;
-    let drops: number[];
+    let cols = 0;
+    let drops: number[] = [];
 
-    const init = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      cols = Math.floor(canvas.width / fontSize);
-      drops = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
+    const resize = (width: number, height: number) => {
+      const w = Math.floor(width);
+      const h = Math.floor(height);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        cols = Math.floor(w / fontSize);
+        drops = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
+      }
     };
 
-    init();
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        resize(width, height);
+      }
+    });
 
-    const observer = new ResizeObserver(init);
+    resize(canvas.offsetWidth, canvas.offsetHeight);
     observer.observe(canvas);
 
     let rafId: number;

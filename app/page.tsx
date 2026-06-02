@@ -5,6 +5,7 @@ import Problem from "@/components/Problem";
 import PortfolioMarquee from "@/components/PortfolioMarquee";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
+import ClientLogos from "@/components/ClientLogos";
 import Comparison from "@/components/Comparison";
 import WhySocialX from "@/components/WhySocialX";
 import Includes from "@/components/Includes";
@@ -26,6 +27,7 @@ export default function Home() {
         <PortfolioMarquee />
         <HowItWorks />
         <Pricing />
+        <ClientLogos />
         <Comparison />
         <WhySocialX />
         <Includes />
