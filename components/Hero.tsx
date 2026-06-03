@@ -18,8 +18,7 @@ export default function Hero() {
   return (
     <section
       id="gw-hero"
-      className="relative pt-16 pb-32 lg:pt-20 lg:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]"
-      style={{ background: "#F4F2EF" }}
+      className="relative pt-16 pb-32 lg:pt-20 lg:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh] bg-[#F4F2EF] dark:bg-[#050508] transition-colors duration-300"
     >
       {/* Interactive Cursor Spotlight */}
       {isMounted && (
@@ -34,10 +33,8 @@ export default function Hero() {
 
       {/* Subtle Grid Background */}
       <div
-        className="absolute inset-0 pointer-events-none z-0"
+        className="absolute inset-0 pointer-events-none z-0 subtle-grid"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
           maskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)'
         }}
@@ -47,11 +44,7 @@ export default function Hero() {
 
         {/* Eyebrow */}
         <div
-          className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 backdrop-blur-sm"
-          style={{
-            border: "1px solid rgba(43,80,220,0.18)",
-            color: "#2B50DC",
-          }}
+          className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF]"
         >
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
           [ For HighLevel SaaS resellers ]
@@ -59,7 +52,7 @@ export default function Hero() {
 
         {/* H1 */}
         <h1
-          className="font-grotesk font-bold leading-[1.05] tracking-[-1.5px] sm:tracking-[-2.5px] mb-8 text-gray-900 drop-shadow-sm"
+          className="font-grotesk font-bold leading-[1.05] tracking-[-1.5px] sm:tracking-[-2.5px] mb-8 text-gray-900 dark:text-white drop-shadow-sm transition-colors duration-300"
           style={{ fontSize: "clamp(32px, 4.8vw, 64px)" }}
         >
           <span className="block md:inline-block md:whitespace-nowrap">Social media for HighLevel resellers.</span><br />
@@ -68,7 +61,7 @@ export default function Hero() {
         </h1>
 
         {/* Sub */}
-        <p className="text-[20px] md:text-[22px] text-gray-600 leading-relaxed mb-12 max-w-3xl mx-auto">
+        <p className="text-[20px] md:text-[22px] text-gray-600 dark:text-gray-400 leading-relaxed mb-12 max-w-3xl mx-auto transition-colors duration-300">
           We pull HighLevel-feature-targeted posts from a library that updates
           every time HL ships. Customized to your brand. Scheduled straight to
           your HL Social Planner. Your job ends at approval.
@@ -86,24 +79,19 @@ export default function Hero() {
           </a>
           <a
             href="#gw-how"
-            className="group text-gray-700 px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:bg-gray-50"
-            style={{
-              background: "white",
-              border: "1px solid rgba(0,0,0,0.1)",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-            }}
+            className="group text-gray-700 dark:text-gray-300 px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 bg-white dark:bg-[#111118] hover:bg-gray-50 dark:hover:bg-gray-800 border border-black/10 dark:border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-md"
           >
             How it works
           </a>
         </div>
 
         {/* Mini Trust Indicator */}
-        <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 bg-white/50 px-6 py-3 rounded-full border border-gray-200 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
+        <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/50 dark:bg-white/5 px-6 py-3 rounded-full border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
           <div className="flex -space-x-2">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] bg-gray-200 shadow-sm"
+                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
                 style={{
                   backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
                   backgroundSize: 'cover'

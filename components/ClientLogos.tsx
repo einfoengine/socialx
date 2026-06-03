@@ -77,7 +77,7 @@ const METRICS = [
 
 export default function ClientLogos() {
   return (
-    <section className="py-28 md:py-36 relative overflow-hidden" style={{ background: "#0c0c10" }}>
+    <section id="gw-client-logos" className="py-28 md:py-36 relative overflow-hidden bg-[#F4F2EF] dark:bg-[#0c0c10] transition-colors duration-300">
       {/* Background Subtle Gradient & Glow */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none filter blur-[120px] opacity-15"
@@ -87,22 +87,18 @@ export default function ClientLogos() {
       />
       
       <div 
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-        }}
+        className="absolute inset-0 pointer-events-none z-0 subtle-grid"
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="section-eyebrow" style={{ color: "#5B8DEF" }}>[ Client Spotlight ]</div>
-          <h2 className="section-title text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight" style={{ color: "white" }}>
+          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Client Spotlight ]</div>
+          <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight transition-colors duration-300">
             Loved by fast-scaling<br />
             SaaS & Agency partners.
           </h2>
-          <p className="section-sub text-gray-400 mt-4 max-w-2xl mx-auto font-chillax text-[16px] md:text-[18px]" style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+          <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-chillax text-[16px] md:text-[18px] transition-colors duration-300">
             We turn social presence into a compound growth engine. Here are some of the market-leading brands socialX keeps in the limelight.
           </p>
         </div>
@@ -112,12 +108,7 @@ export default function ClientLogos() {
           {LOGOS.map((logo, i) => (
             <div
               key={logo.name}
-              className="group relative flex flex-col p-6 rounded-none transition-all duration-300 hover:-translate-y-1"
-              style={{
-                background: "rgba(255, 255, 255, 0.02)",
-                border: "1px solid rgba(255, 255, 255, 0.05)",
-                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
-              }}
+              className="group relative flex flex-col p-6 rounded-none transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-white/2 border border-black/5 dark:border-white/5 shadow-xs dark:shadow-[0_4px_20px_rgba(0, 0, 0, 0.2)]"
             >
               {/* Active glow hover border overlay */}
               <div className="absolute inset-0 border border-transparent group-hover:border-blue-sky/30 transition-colors duration-300 pointer-events-none" />
@@ -130,10 +121,10 @@ export default function ClientLogos() {
               </div>
               
               <div>
-                <h4 className="font-grotesk text-sm font-semibold text-white leading-tight mb-1">
+                <h4 className="font-grotesk text-sm font-semibold text-gray-900 dark:text-white leading-tight mb-1 transition-colors duration-300">
                   {logo.name}
                 </h4>
-                <p className="text-[11px] text-gray-500 group-hover:text-gray-400 transition-colors font-chillax">
+                <p className="text-[11px] text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-400 transition-colors font-chillax">
                   {logo.description}
                 </p>
               </div>
@@ -143,17 +134,13 @@ export default function ClientLogos() {
 
         {/* Metrics Banner */}
         <div 
-          className="p-8 md:p-12 relative rounded-none flex flex-col md:flex-row items-center justify-between gap-10 md:gap-6"
-          style={{
-            background: "rgba(255, 255, 255, 0.01)",
-            border: "1px solid rgba(255, 255, 255, 0.04)",
-          }}
+          className="p-8 md:p-12 relative rounded-none flex flex-col md:flex-row items-center justify-between gap-10 md:gap-6 bg-white/40 dark:bg-white/1 border border-black/5 dark:border-white/4 transition-colors duration-300"
         >
           {METRICS.map((metric, i) => (
             <div key={metric.label} className="flex-1 text-center md:text-left relative">
               {/* Divider for desktop */}
               {i > 0 && (
-                <div className="hidden md:block absolute left-[-20%] top-1/2 -translate-y-1/2 h-12 w-px bg-white/10" />
+                <div className="hidden md:block absolute left-[-20%] top-1/2 -translate-y-1/2 h-12 w-px bg-black/10 dark:bg-white/10" />
               )}
               
               <div className="font-grotesk text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
@@ -161,10 +148,10 @@ export default function ClientLogos() {
                   {metric.value}
                 </span>
               </div>
-              <div className="font-grotesk text-xs font-semibold text-gray-300 uppercase tracking-[1.2px] mb-1">
+              <div className="font-grotesk text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-[1.2px] mb-1 transition-colors">
                 {metric.label}
               </div>
-              <p className="text-xs text-gray-500 font-chillax">
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-chillax transition-colors">
                 {metric.desc}
               </p>
             </div>

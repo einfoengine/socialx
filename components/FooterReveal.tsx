@@ -4,7 +4,8 @@ import React from "react";
 
 export default function FooterReveal() {
   return (
-    <div 
+    <section 
+      id="gw-footer-reveal"
       className="fixed bottom-0 left-0 right-0 -z-50 h-[280px] md:h-[380px] bg-[#050508] flex flex-col items-center justify-center overflow-hidden border-t border-white/5 pointer-events-none"
     >
       {/* Background Subtle Grid Pattern */}
@@ -34,6 +35,6 @@ export default function FooterReveal() {
       <div className="font-grotesk text-[10px] md:text-xs text-white/20 uppercase tracking-[3px] mt-4 relative z-10 font-bold">
         [ Productized SaaS Socials by growX ]
       </div>
-    </div>
+    </section>
   );
 }

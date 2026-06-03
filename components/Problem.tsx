@@ -148,7 +148,7 @@ function ProblemCard({ p }: { p: (typeof problems)[0] }) {
 
 export default function Problem() {
   return (
-    <section className="relative py-32 md:py-40 overflow-hidden" id="gw-problem" style={{ background: "#2B50DC" }}>
+    <section id="gw-problem" className="relative py-32 md:py-40 overflow-hidden" style={{ background: "#2B50DC" }}>
       <MatrixCanvas />
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow text-white/80" style={{ color: "rgba(255,255,255,0.8)" }}>[ The reseller&apos;s social problem ]</div>

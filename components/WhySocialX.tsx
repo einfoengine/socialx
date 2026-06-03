@@ -39,7 +39,7 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
 
   return (
     <div
-      className="relative overflow-hidden bg-white border border-black/10 p-10 animate-fade-up transition-all duration-500 hover:scale-[1.02] hover:border-[#2B50DC]/30 hover:shadow-[0_20px_40px_rgba(43,80,220,0.05)] select-none"
+      className="relative overflow-hidden bg-white dark:bg-[#111118] border border-black/10 dark:border-white/10 p-10 animate-fade-up transition-all duration-500 hover:scale-[1.02] hover:border-[#2B50DC]/30 hover:shadow-[0_20px_40px_rgba(43,80,220,0.05)] dark:hover:shadow-md select-none"
       style={{ animationDelay: `${i * 0.1}s` }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -67,10 +67,10 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
         <span className="font-grotesk text-xs font-bold uppercase tracking-[2px] text-blue-neon bg-[#2B50DC]/5 px-2.5 py-1 mb-6 inline-block">
           {r.num}
         </span>
-        <h3 className="font-grotesk text-2xl font-bold leading-tight tracking-[-0.6px] mb-4 text-gray-900">
+        <h3 className="font-grotesk text-2xl font-bold leading-tight tracking-[-0.6px] mb-4 text-gray-900 dark:text-white transition-colors duration-300">
           {r.title}
         </h3>
-        <p className="text-gray-500 text-[15px] leading-relaxed font-chillax">
+        <p className="text-gray-500 dark:text-gray-400 text-[15px] leading-relaxed font-chillax transition-colors duration-300">
           {r.body}
         </p>
       </div>
@@ -80,14 +80,10 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
 
 export default function WhySocialX() {
   return (
-    <section id="gw-why-socialx" className="py-32 md:py-40 bg-[#EEF2FF] relative overflow-hidden border-t border-black/5">
+    <section id="gw-why-socialx" className="py-32 md:py-40 bg-[#EEF2FF] dark:bg-[#0c0c10] relative overflow-hidden border-t border-black/5 dark:border-white/5 transition-colors duration-300">
       {/* Interactive Grid Background */}
       <div 
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
+        className="absolute inset-0 pointer-events-none z-0 subtle-grid-why"
       />
 
       {/* Ambient Blue Core Glow */}
@@ -100,11 +96,11 @@ export default function WhySocialX() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow text-blue-neon/80">[ Why socialX ]</div>
-        <h2 className="section-title text-gray-900">
+        <h2 className="section-title text-gray-900 dark:text-white transition-colors duration-300">
           Not a generic social service.<br />
           An <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">HL-native one</span>.
         </h2>
-        <p className="section-sub mb-20 text-gray-600">
+        <p className="section-sub mb-20 text-gray-600 dark:text-gray-400 transition-colors duration-300">
           Built strictly around HighLevel features, by pioneers in the SaaS ecosystem since 2019.
         </p>
 

@@ -87,7 +87,7 @@ export default function Pricing() {
   const cfg = PERIODS.find((p) => p.key === period)!;
 
   return (
-    <section className="py-32 md:py-40" id="gw-pricing" style={{ background: "white" }}>
+    <section id="gw-pricing" className="py-32 md:py-40 bg-white dark:bg-[#050508] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -107,31 +107,26 @@ export default function Pricing() {
             Billing cycle
           </div>
           <div
-            className="inline-flex items-center p-1.5 rounded-[3px] flex-wrap justify-center gap-1"
-            style={{
-              background: "rgba(0,0,0,0.04)",
-              border: "1px solid rgba(0,0,0,0.07)",
-            }}
+            className="inline-flex items-center p-1.5 rounded-[3px] flex-wrap justify-center gap-1 bg-black/4 dark:bg-white/4 border border-black/7 dark:border-white/8 transition-colors duration-300"
           >
             {PERIODS.map((p) => (
               <button
                 key={p.key}
                 onClick={() => setPeriod(p.key)}
-                className="font-grotesk text-sm font-medium px-5 py-2.5 rounded-[3px] flex items-center gap-2 transition-all duration-200 whitespace-nowrap cursor-pointer"
-                style={{
-                  background: period === p.key ? "#111118" : "transparent",
-                  color: period === p.key ? "white" : "#555560",
-                  boxShadow: period === p.key ? "0 2px 8px rgba(0,0,0,0.15)" : "none",
-                }}
+                className={`font-grotesk text-sm font-medium px-5 py-2.5 rounded-[3px] flex items-center gap-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                  period === p.key
+                    ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
+                    : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                }`}
               >
                 {p.label}
                 {p.savings && (
                   <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded-[3px]"
-                    style={{
-                      background: period === p.key ? "rgba(255,255,255,0.15)" : "rgba(43,80,220,0.1)",
-                      color: period === p.key ? "rgba(255,255,255,0.9)" : "#2B50DC",
-                    }}
+                    className={`text-[11px] font-semibold px-2 py-0.5 rounded-[3px] transition-colors duration-200 ${
+                      period === p.key
+                        ? "bg-white/15 text-white/90 dark:bg-black/10 dark:text-black/80"
+                        : "bg-[#2B50DC]/10 text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
+                    }`}
                   >
                     {p.savings}
                   </span>
@@ -146,36 +141,35 @@ export default function Pricing() {
           {TIERS.map((tier, i) => (
             <div
               key={tier.name}
-              className="relative flex flex-col rounded-none p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up"
+              className={`relative flex flex-col rounded-none p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
+                tier.featured
+                  ? "gradient-bg border-none shadow-[0_24px_64px_rgba(43,80,220,0.35)] scale-[1.03]"
+                  : "bg-white dark:bg-[#111118] border border-black/8 dark:border-white/8 shadow-sm dark:shadow-md scale-100"
+              }`}
               style={{
                 animationDelay: `${i * 0.1 + 0.05}s`,
-                background: tier.featured ? "var(--gradient-x)" : "white",
-                border: tier.featured ? "none" : "1px solid rgba(0,0,0,0.08)",
-                boxShadow: tier.featured
-                  ? "0 24px 64px rgba(43,80,220,0.35)"
-                  : "0 2px 16px rgba(0,0,0,0.05)",
-                transform: tier.featured ? "scale(1.03)" : "scale(1)",
               }}
             >
               {tier.featured && (
                 <div
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-[3px] tracking-[0.8px] uppercase whitespace-nowrap"
-                  style={{ background: "#111118", color: "white" }}
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-[3px] tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
                 >
                   Most Popular
                 </div>
               )}
 
               <div
-                className="font-grotesk text-sm font-medium uppercase tracking-[1.5px] mb-2"
-                style={{ color: tier.featured ? "rgba(255,255,255,0.8)" : "#2B50DC" }}
+                className={`font-grotesk text-sm font-medium uppercase tracking-[1.5px] mb-2 ${
+                  tier.featured ? "text-white/80" : "text-[#2B50DC] dark:text-[#5B8DEF]"
+                }`}
               >
                 {tier.name}
               </div>
               <div
-                className="text-[15px] leading-relaxed mb-8"
+                className={`text-[15px] leading-relaxed mb-8 ${
+                  tier.featured ? "text-white/70" : "text-gray-600 dark:text-gray-400"
+                }`}
                 style={{
-                  color: tier.featured ? "rgba(255,255,255,0.7)" : "#55555E",
                   minHeight: "70px",
                 }}
               >
@@ -186,39 +180,44 @@ export default function Pricing() {
               <div className="mb-7" style={{ minHeight: "120px" }}>
                 {period !== "monthly" && (
                   <div
-                    className="font-grotesk text-base line-through mb-1"
-                    style={{ color: tier.featured ? "rgba(255,255,255,0.4)" : "#9CA3AF" }}
+                    className={`font-grotesk text-base line-through mb-1 ${
+                      tier.featured ? "text-white/40" : "text-gray-400 dark:text-gray-500"
+                    }`}
                   >
                     ${fmt(tier.prices.monthly)}/month
                   </div>
                 )}
                 <div className="flex items-baseline gap-1.5 mb-1.5">
                   <span
-                    className="font-grotesk text-2xl font-medium"
-                    style={{ color: tier.featured ? "rgba(255,255,255,0.7)" : "#9CA3AF" }}
+                    className={`font-grotesk text-2xl font-medium ${
+                      tier.featured ? "text-white/70" : "text-gray-400 dark:text-gray-500"
+                    }`}
                   >
                     $
                   </span>
                   <span
-                    className="font-grotesk font-semibold leading-none"
+                    className={`font-grotesk font-semibold leading-none ${
+                      tier.featured ? "text-white" : "text-gray-900 dark:text-white"
+                    }`}
                     style={{
                       fontSize: "64px",
                       letterSpacing: "-2px",
-                      color: tier.featured ? "white" : "#111118",
                     }}
                   >
                     {fmt(tier.prices[period])}
                   </span>
                   <span
-                    className="font-grotesk text-base"
-                    style={{ color: tier.featured ? "rgba(255,255,255,0.6)" : "#9CA3AF" }}
+                    className={`font-grotesk text-base ${
+                      tier.featured ? "text-white/60" : "text-gray-400 dark:text-gray-500"
+                    }`}
                   >
                     /month
                   </span>
                 </div>
                 <div
-                  className="font-grotesk text-sm"
-                  style={{ color: tier.featured ? "rgba(255,255,255,0.5)" : "#9CA3AF" }}
+                  className={`font-grotesk text-sm ${
+                    tier.featured ? "text-white/50" : "text-gray-400 dark:text-gray-500"
+                  }`}
                 >
                   {priceNote(tier, period, cfg.months)}
                 </div>
@@ -226,26 +225,25 @@ export default function Pricing() {
 
               {/* CTA */}
               <button
-                className="w-full py-4 rounded-[3px] font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer"
-                style={
+                className={`w-full py-4 rounded-[3px] font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer ${
                   tier.featured
-                    ? { background: "white", color: "#111118" }
-                    : { background: "#111118", color: "white" }
-                }
+                    ? "bg-white text-[#111118] hover:bg-gray-100"
+                    : "bg-[#111118] text-white hover:bg-black dark:bg-white dark:text-[#111118] dark:hover:bg-gray-100"
+                }`}
               >
                 {tier.cta}
               </button>
 
               {/* Features */}
               <div
-                className="h-px mb-6"
-                style={{
-                  background: tier.featured ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.07)",
-                }}
+                className={`h-px mb-6 ${
+                  tier.featured ? "bg-white/20" : "bg-black/7 dark:bg-white/8"
+                }`}
               />
               <div
-                className="font-grotesk text-[11px] uppercase tracking-[1.2px] font-medium mb-4"
-                style={{ color: tier.featured ? "rgba(255,255,255,0.5)" : "#9CA3AF" }}
+                className={`font-grotesk text-[11px] uppercase tracking-[1.2px] font-medium mb-4 ${
+                  tier.featured ? "text-white/50" : "text-gray-400 dark:text-gray-500"
+                }`}
               >
                 {tier.featuresLabel}
               </div>
@@ -253,24 +251,20 @@ export default function Pricing() {
                 {tier.features.map((f, j) => (
                   <li key={j} className="flex items-start gap-3 text-[15px] leading-relaxed">
                     <span
-                      className="shrink-0 w-4.5 h-4.5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5"
-                      style={
+                      className={`shrink-0 w-4.5 h-4.5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 ${
                         tier.featured
-                          ? { background: "rgba(255,255,255,0.2)", color: "white" }
-                          : f.video
-                          ? { background: "rgba(43,80,220,0.1)", color: "#2B50DC" }
-                          : { background: "rgba(43,80,220,0.1)", color: "#2B50DC" }
-                      }
+                          ? "bg-white/20 text-white"
+                          : "bg-[#2B50DC]/10 dark:bg-[#2B50DC]/20 text-[#2B50DC] dark:text-[#5B8DEF]"
+                      }`}
                     >
                       {f.video ? "▶" : "✓"}
                     </span>
                     <span
-                      style={{
-                        color: tier.featured
-                          ? f.hi ? "white" : "rgba(255,255,255,0.75)"
-                          : f.hi ? "#2B50DC" : "#374151",
-                        fontWeight: f.hi ? 500 : 400,
-                      }}
+                      className={`${
+                        tier.featured
+                          ? f.hi ? "text-white" : "text-white/75"
+                          : f.hi ? "text-[#2B50DC] dark:text-[#5B8DEF]" : "text-gray-700 dark:text-gray-300"
+                      } ${f.hi ? "font-medium" : "font-normal"}`}
                     >
                       {f.text}
                     </span>

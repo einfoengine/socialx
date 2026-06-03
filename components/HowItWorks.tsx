@@ -79,14 +79,14 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
         </div>
         <h3 
           className={`font-grotesk text-[21px] font-semibold mb-3 leading-snug tracking-[-0.4px] transition-colors duration-300 ${
-            isHovered ? "text-white" : "text-gray-900"
+            isHovered ? "text-white" : "text-gray-900 dark:text-white"
           }`}
         >
           {s.title}
         </h3>
         <p 
           className={`text-[15px] leading-relaxed transition-colors duration-300 ${
-            isHovered ? "text-gray-300" : "text-gray-500"
+            isHovered ? "text-gray-300" : "text-gray-500 dark:text-gray-400"
           }`}
         >
           {s.body}
@@ -98,13 +98,11 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
 
 export default function HowItWorks() {
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden" id="gw-how" style={{ background: "white" }}>
+    <section id="gw-how" className="py-32 md:py-40 relative overflow-hidden bg-white dark:bg-[#0c0c10] transition-colors duration-300">
       {/* Subtle Grid Background */}
       <div 
-        className="absolute inset-0 pointer-events-none z-0"
+        className="absolute inset-0 pointer-events-none z-0 subtle-grid"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
           maskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(ellipse at top center, black 20%, transparent 70%)'
         }}
@@ -135,7 +133,7 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        <p className="text-center mt-14 font-grotesk text-[17px] font-medium text-blue-neon">
+        <p className="text-center mt-14 font-grotesk text-[17px] font-medium text-blue-neon dark:text-blue-sky transition-colors duration-300">
           First batch in 7 days. After that, it just runs.
         </p>
       </div>

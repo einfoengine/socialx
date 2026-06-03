@@ -1,6 +1,8 @@
 @import url('https://api.fontshare.com/v2/css?f[]=chillax@200,300,400,500,600,700&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-navy: #111118;
   --color-navy-lift: #1E1E2E;
@@ -8,6 +10,18 @@
   --color-blue-sky: #5B8DEF;
   --color-blue-neon: #2B50DC;
   --color-cream: #F4F2EF;
+
+  --animate-marquee: marquee 35s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 35s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
 }
 
 @theme inline {
@@ -23,8 +37,7 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-chillax);
-  background-color: #F4F2EF;
-  color: #111118;
+  @apply bg-[#F4F2EF] dark:bg-[#050508] text-[#111118] dark:text-[#F4F2EF] transition-colors duration-300;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -61,7 +74,7 @@ body {
   text-align: center;
   margin-bottom: 16px;
   line-height: 1.08;
-  color: #111118;
+  @apply text-[#111118] dark:text-white transition-colors duration-300;
 }
 
 @media (max-width: 768px) {
@@ -69,7 +82,7 @@ body {
 }
 
 .section-sub {
-  color: #55555E;
+  @apply text-[#55555E] dark:text-gray-400 transition-colors duration-300;
   font-size: 19px;
   text-align: center;
   max-width: 680px;
@@ -84,27 +97,38 @@ body {
 /* ====== CARD VARIANTS ====== */
 
 .card-sky {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  @apply bg-white dark:bg-[#111118] border border-black/[0.07] dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-md transition-all duration-300;
 }
 .card-sky:hover {
-  border-color: rgba(43, 80, 220, 0.2);
-  box-shadow: 0 8px 32px rgba(43, 80, 220, 0.1);
-  transform: translateY(-2px);
+  @apply border-[#2B50DC]/20 dark:border-[#2B50DC]/40 shadow-[0_8px_32px_rgba(43,80,220,0.1)] dark:shadow-[0_8px_32px_rgba(43,80,220,0.2)] -translate-y-[2px];
 }
 
 .card-red {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  @apply bg-white dark:bg-[#111118] border border-black/[0.07] dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-md transition-all duration-300;
 }
 .card-red:hover {
-  border-color: rgba(239, 68, 68, 0.2);
-  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.07);
-  transform: translateY(-2px);
+  @apply border-red-500/20 dark:border-red-500/40 shadow-[0_8px_32px_rgba(239,68,68,0.07)] dark:shadow-[0_8px_32px_rgba(239,68,68,0.15)] -translate-y-[2px];
+}
+
+/* ====== GRID HELPER UTILITIES ====== */
+.subtle-grid {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+html.dark .subtle-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.subtle-grid-why {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+html.dark .subtle-grid-why {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
 }
 
 /* ====== ANIMATIONS ====== */
@@ -127,11 +151,3 @@ body {
 .animate-float     { animation: float 5s ease-in-out infinite; }
 .animate-fade-up   { animation: fadeUp 0.6s ease forwards; opacity: 0; }
 .animate-pulse-dot { animation: pulseDot 2.5s ease-in-out infinite; }
-
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-.animate-marquee {
-  animation: marquee 35s linear infinite;
-}

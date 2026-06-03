@@ -1,6 +1,6 @@
 export default function FinalCTA() {
   return (
-    <section id="gw-final-cta" className="py-40 md:py-48 text-center relative overflow-hidden" style={{ background: "#EEF2FF" }}>
+    <section id="gw-final-cta" className="py-40 md:py-48 text-center relative overflow-hidden bg-[#EEF2FF] dark:bg-[#050508] transition-colors duration-300">
       {/* Blob */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -19,13 +19,13 @@ export default function FinalCTA() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <h2
-          className="font-grotesk font-semibold tracking-[-2.2px] mb-5 leading-[1.05] text-gray-900"
+          className="font-grotesk font-semibold tracking-[-2.2px] mb-5 leading-[1.05] text-gray-900 dark:text-white transition-colors duration-300"
           style={{ fontSize: "clamp(36px, 5.5vw, 64px)" }}
         >
           Stop fighting blank<br />
           <span className="gradient-text">content calendars</span>.
         </h2>
-        <p className="text-[19px] text-gray-500 max-w-140 mx-auto mb-10 leading-relaxed">
+        <p className="text-[19px] text-gray-500 dark:text-gray-400 max-w-140 mx-auto mb-10 leading-relaxed transition-colors duration-300">
           Your social can be running in your HL Social Planner in 7 days. No setup
           fee. No contracts. No agency theater.
         </p>

@@ -41,16 +41,16 @@ function FAQItem({
   return (
     <div
       onClick={onToggle}
-      className={`border transition-all duration-300 p-6 mb-4 select-none cursor-pointer bg-white ${
+      className={`border transition-all duration-300 p-6 mb-4 select-none cursor-pointer bg-white dark:bg-[#111118] ${
         isOpen 
-          ? "border-[#2B50DC]/40 shadow-[0_12px_24px_rgba(43,80,220,0.03)]" 
-          : "border-black/10 hover:border-[#2B50DC]/25"
+          ? "border-[#2B50DC]/40 dark:border-[#2B50DC]/60 shadow-[0_12px_24px_rgba(43,80,220,0.03)]" 
+          : "border-black/10 dark:border-white/10 hover:border-[#2B50DC]/25 dark:hover:border-[#2B50DC]/40"
       }`}
     >
       <div className="flex justify-between items-center gap-6">
         <span 
           className={`font-grotesk text-lg font-semibold transition-colors duration-300 ${
-            isOpen ? "text-[#2B50DC]" : "text-gray-900"
+            isOpen ? "text-[#2B50DC] dark:text-[#5B8DEF]" : "text-gray-900 dark:text-white"
           }`}
         >
           {faq.q}
@@ -59,7 +59,7 @@ function FAQItem({
           className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] rounded-[3px] transition-all duration-300 ${
             isOpen 
               ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180" 
-              : "bg-white border-black/10 text-gray-500 hover:text-gray-900 hover:border-black/20"
+              : "bg-white dark:bg-[#111118] border-black/10 dark:border-white/10 text-gray-500 hover:text-gray-900 dark:hover:text-white hover:border-black/20 dark:hover:border-white/20"
           }`}
         >
           {isOpen ? "−" : "+"}
@@ -73,7 +73,7 @@ function FAQItem({
           marginTop: isOpen ? "16px" : "0"
         }}
       >
-        <p className="font-chillax text-sm text-gray-500 leading-relaxed pr-10">
+        <p className="font-chillax text-sm text-gray-500 dark:text-gray-400 leading-relaxed pr-10 transition-colors duration-300">
           {faq.a}
         </p>
       </div>
@@ -85,14 +85,10 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 md:py-40 relative overflow-hidden border-t border-black/5" id="gw-faq" style={{ background: "#F4F2EF" }}>
+    <section id="gw-faq" className="py-32 md:py-40 relative overflow-hidden border-t border-black/5 dark:border-white/5 bg-[#F4F2EF] dark:bg-[#050508] transition-colors duration-300">
       {/* Subtle Grid Background Pattern */}
       <div 
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
+        className="absolute inset-0 pointer-events-none z-0 subtle-grid"
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">

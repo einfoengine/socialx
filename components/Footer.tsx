@@ -35,7 +35,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="pt-20 pb-12 bg-[#0a0a0f] relative z-10 overflow-hidden border-t border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.9)] mb-[180px] md:mb-[260px]">
+    <footer id="gw-footer" className="pt-20 pb-12 bg-[#0a0a0f] relative z-10 overflow-hidden border-t border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.9)] mb-[180px] md:mb-[260px]">
       {/* Subtle Grid Background Pattern */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
@@ -62,9 +62,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <a href="#" className="flex items-baseline gap-0.5 no-underline">
-              <span className="font-grotesk text-[26px] font-medium text-white">social</span>
-              <span className="font-grotesk text-[30px] font-bold gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky leading-none">X</span>
+            <a href="#" className="flex items-center no-underline">
+              <img
+                src="/socialX-logo-white.png"
+                alt="socialX logo"
+                className="h-8 w-auto object-contain"
+              />
             </a>
             <p className="mt-4 text-sm text-gray-500 leading-relaxed max-w-sm font-chillax">
               Productized social media built exclusively for HighLevel SaaS resellers. Showcase your software features on autopilot. 800+ HL agencies served since 2019.
