@@ -98,7 +98,7 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
 
 export default function HowItWorks() {
   return (
-    <section id="gw-how" className="py-32 md:py-40 relative overflow-hidden bg-white dark:bg-[#0c0c10] transition-colors duration-300">
+    <section id="gw-how" className="py-32 md:py-40 relative overflow-hidden bg-[#F4F2EF] dark:bg-[#070913] transition-colors duration-300">
       {/* Subtle Grid Background */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 subtle-grid"

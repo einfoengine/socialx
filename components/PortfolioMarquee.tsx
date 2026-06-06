@@ -105,13 +105,11 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
 }
 
 export default function PortfolioMarquee() {
-  const portfolioItemsReverse = [...portfolioItems.slice().reverse()];
-
   return (
     <section id="gw-portfolio" className="bg-black py-0 relative overflow-hidden w-full border-b border-white/5">
       <div className="w-full flex flex-col md:flex-row items-stretch bg-black overflow-hidden">
         {/* Left Side: Solid Box */}
-        <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center bg-[#111118] border-b md:border-b-0 md:border-r border-white/5 md:w-[380px] lg:w-[420px] shrink-0 z-10 pl-6 md:pl-16 lg:pl-24 xl:pl-32 2xl:pl-40">
+        <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center bg-[#111118] border-b md:border-b-0 md:border-r border-white/10 md:w-[380px] lg:w-[420px] shrink-0 z-10 pl-6 md:pl-16 lg:pl-24 xl:pl-32 2xl:pl-40">
           <span className="text-[11px] font-grotesk text-blue-sky uppercase tracking-[1.5px] mb-3 block">
             [ Live Content Proof ]
           </span>
@@ -124,31 +122,15 @@ export default function PortfolioMarquee() {
         </div>
 
         {/* Right Side: Attached Portfolio Marquee (No Gaps, Welded Grid) */}
-        <div className="relative flex-1 overflow-hidden flex flex-col bg-black">
-          {/* Row 1: Leftward Scrolling */}
-          <div className="relative overflow-hidden flex items-center">
-            <div className="flex gap-0 w-max animate-marquee py-0 whitespace-nowrap hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
-              {/* Double arrays for perfect looping */}
-              {portfolioItems.map((item, index) => (
-                <PortfolioCard key={`${item.brand}-${index}`} item={item} />
-              ))}
-              {portfolioItems.map((item, index) => (
-                <PortfolioCard key={`${item.brand}-dup-${index}`} item={item} />
-              ))}
-            </div>
-          </div>
-
-          {/* Row 2: Rightward Scrolling */}
-          <div className="relative overflow-hidden flex items-center border-t border-white/10">
-            <div className="flex gap-0 w-max animate-marquee-reverse py-0 whitespace-nowrap hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
-              {/* Double arrays for perfect looping */}
-              {portfolioItemsReverse.map((item, index) => (
-                <PortfolioCard key={`${item.brand}-rev-${index}`} item={item} />
-              ))}
-              {portfolioItemsReverse.map((item, index) => (
-                <PortfolioCard key={`${item.brand}-rev-dup-${index}`} item={item} />
-              ))}
-            </div>
+        <div className="relative flex-1 overflow-hidden flex items-center bg-black">
+          <div className="flex gap-0 w-max animate-marquee py-0 whitespace-nowrap hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
+            {/* Double arrays for perfect looping */}
+            {portfolioItems.map((item, index) => (
+              <PortfolioCard key={`${item.brand}-${index}`} item={item} />
+            ))}
+            {portfolioItems.map((item, index) => (
+              <PortfolioCard key={`${item.brand}-dup-${index}`} item={item} />
+            ))}
           </div>
         </div>
       </div>

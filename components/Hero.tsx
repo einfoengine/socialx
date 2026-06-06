@@ -56,7 +56,7 @@ export default function Hero() {
           style={{ fontSize: "clamp(32px, 4.8vw, 64px)" }}
         >
           <span className="block md:inline-block md:whitespace-nowrap">Social media for HighLevel resellers.</span><br />
-          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span><br />
+          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span> &nbsp;
           Not by you.
         </h1>
 
