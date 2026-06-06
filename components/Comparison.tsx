@@ -80,7 +80,7 @@ function CellValue({
 
 export default function Comparison() {
   return (
-    <section id="gw-comparison" className="py-32 md:py-40 relative overflow-hidden bg-[#F4F2EF] dark:bg-[#050508] transition-colors duration-300">
+    <section id="gw-comparison" className="py-32 md:py-40 relative overflow-hidden bg-white dark:bg-[#050508] transition-colors duration-300">
       {/* Background Subtle Grid Pattern */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 subtle-grid"
@@ -97,7 +97,7 @@ export default function Comparison() {
         </p>
 
         {/* Comparison Table Card */}
-        <div className="overflow-x-auto rounded-none border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300">
+        <div className="overflow-x-auto rounded-none border border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-[#111118] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300">
           <table className="w-full border-collapse text-[14.5px] text-left" style={{ minWidth: "920px" }}>
             <thead>
               <tr className="border-b border-black/10 dark:border-white/10">

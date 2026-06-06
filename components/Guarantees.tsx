@@ -22,7 +22,7 @@ const stats = [
 
 export default function Guarantees() {
   return (
-    <section id="gw-guarantees" className="py-32 md:py-40 bg-white dark:bg-[#0a0a0f] relative overflow-hidden border-t border-b border-black/10 dark:border-white/5 transition-colors duration-300">
+    <section id="gw-guarantees" className="py-32 md:py-40 bg-[#F4F2EF] dark:bg-[#0c0c10] relative overflow-hidden border-t border-b border-black/10 dark:border-white/5 transition-colors duration-300">
       {/* Subtle Black and White Background Video - Disabled for performance optimization (20.4MB)
       <video
         autoPlay

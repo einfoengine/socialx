@@ -16,7 +16,7 @@ export default function TrustStrip() {
   return (
     <section
       id="gw-trust-strip"
-      className="py-6 overflow-hidden relative bg-[#111118] dark:bg-[#050508] border-t border-black/10 dark:border-white/10 transition-colors duration-300"
+      className="py-6 overflow-hidden relative bg-[#111118] dark:bg-[#111118] border-t border-black/10 dark:border-white/10 transition-colors duration-300"
     >
       {/* Gradient masks for smooth fade on edges */}
       <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#111118] dark:from-[#050508] to-transparent z-10 pointer-events-none transition-colors duration-300" />

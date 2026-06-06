@@ -85,7 +85,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="gw-faq" className="py-32 md:py-40 relative overflow-hidden border-t border-black/5 dark:border-white/5 bg-[#F4F2EF] dark:bg-[#050508] transition-colors duration-300">
+    <section id="gw-faq" className="py-32 md:py-40 relative overflow-hidden border-t border-black/5 dark:border-white/5 bg-[#F4F2EF] dark:bg-[#0c0c10] transition-colors duration-300">
       {/* Subtle Grid Background Pattern */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 subtle-grid"
