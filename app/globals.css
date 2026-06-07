@@ -1,6 +1,7 @@
 @import url('https://api.fontshare.com/v2/css?f[]=chillax@200,300,400,500,600,700&display=swap');
 @import "tailwindcss";
 
+/* Force CSS compiler to rebuild. Enable class-based manual dark mode strategy for Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
