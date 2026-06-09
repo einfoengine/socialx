@@ -2,56 +2,7 @@
 
 import React from "react";
 
-const portfolioItems = [
-  {
-    brand: "ApexCRM",
-    logoBg: "bg-blue-600",
-    logoLetter: "A",
-    handle: "@apexcrm",
-    tag: "Auto-Scheduling",
-    time: "4h • 🌐",
-    content: "Are you still losing clients because you take hours to reply to booking requests? Our auto-scheduler books leads directly into your calendar 24/7. No friction, just booked appointments. 📆✨",
-    image: "/portfolio-post-1.png",
-    likes: "142",
-    comments: "18"
-  },
-  {
-    brand: "LaunchPad CRM",
-    logoBg: "bg-purple-600",
-    logoLetter: "L",
-    handle: "@launchpad",
-    tag: "Lead Conversion",
-    time: "1d • 🌐",
-    content: "62% of calls to local businesses go unanswered—and 85% of those prospects won't call back. Our Missed Call Text-Back automatically texts prospects back instantly so you never lose a deal again. 📲",
-    image: "/portfolio-post-2.png",
-    likes: "285",
-    comments: "37"
-  },
-  {
-    brand: "GrowthCRM",
-    logoBg: "bg-emerald-600",
-    logoLetter: "G",
-    handle: "@growthcrm",
-    tag: "Visual Pipelines",
-    time: "2d • 🌐",
-    content: "Stop paying separate bills for activecampaign, Mailchimp, and Twilio. Our consolidated workflow builder runs all your SMS, email, and pipeline automations under one single login. Consolidate & scale. 🛠️",
-    image: "/portfolio-post-3.png",
-    likes: "342",
-    comments: "42"
-  },
-  {
-    brand: "Zeta CRM",
-    logoBg: "bg-amber-600",
-    logoLetter: "Z",
-    handle: "@zetacrm",
-    tag: "Reputation Engine",
-    time: "3d • 🌐",
-    content: "93% of customers read local reviews before booking. Our automated engine reaches out to clients right after service delivery to collect 5-star Google reviews on autopilot. Sell on trust. ⭐📈",
-    image: "/portfolio-post-4.png",
-    likes: "198",
-    comments: "24"
-  }
-];
+import portfolioItems from "@/public/portfolio.json";
 
 function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
   return (
@@ -79,7 +30,7 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
       </div>
 
       {/* Client Graphic Image Mockup */}
-      <div className="w-full h-48 overflow-hidden mb-4 border border-white/5 bg-navy-lift">
+      <div className="w-full h-[280px] overflow-hidden mb-4 border border-white/5 bg-navy-lift">
         <img 
           src={item.image} 
           alt={`${item.brand} Feature Visual`} 
@@ -123,7 +74,7 @@ export default function PortfolioMarquee() {
 
         {/* Right Side: Attached Portfolio Marquee (No Gaps, Welded Grid) */}
         <div className="relative flex-1 overflow-hidden flex items-center bg-black">
-          <div className="flex gap-0 w-max animate-marquee py-0 whitespace-nowrap hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
+          <div className="flex gap-0 w-max animate-[marquee_120s_linear_infinite] py-0 whitespace-nowrap hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
             {/* Double arrays for perfect looping */}
             {portfolioItems.map((item, index) => (
               <PortfolioCard key={`${item.brand}-${index}`} item={item} />

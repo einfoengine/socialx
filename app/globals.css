@@ -14,6 +14,7 @@
 
   --animate-marquee: marquee 35s linear infinite;
   --animate-marquee-reverse: marquee-reverse 35s linear infinite;
+  --animate-marquee-slow: marquee 120s linear infinite;
 
   @keyframes marquee {
     0% { transform: translateX(0%); }
