@@ -97,8 +97,8 @@ export default function WhySocialX() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow text-blue-neon/80">[ Why socialX ]</div>
         <h2 className="section-title text-gray-900 dark:text-white transition-colors duration-300">
-          Not a generic social service.<br />
-          An <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">HL-native one</span>.
+          Not another social media agency.<br />
+          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Built for HighLevel, only</span>.
         </h2>
         <p className="section-sub mb-20 text-gray-600 dark:text-gray-400 transition-colors duration-300">
           Built strictly around HighLevel features, by pioneers in the SaaS ecosystem since 2019.

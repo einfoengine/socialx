@@ -114,10 +114,10 @@ export default function PortfolioMarquee() {
             [ Live Content Proof ]
           </span>
           <h4 className="font-grotesk text-2xl lg:text-3xl font-bold leading-tight text-white tracking-[-0.8px] mb-4">
-            They could have find you <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">like them</span>.
+            This is how <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">prospects should find you</span>.
           </h4>
           <p className="text-gray-400 text-[13.5px] leading-relaxed font-chillax">
-            This is the exact high-fidelity visual content socialX automatically publishes to show off your SaaS CRM features.
+            Real posts, engineered around real HighLevel features, in your branding, published automatically. Not stock filler with a logo on top.
           </p>
         </div>
 

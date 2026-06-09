@@ -1,13 +1,13 @@
 export default function TrustStrip() {
   const benefits = [
-    "100% Native to HighLevel",
-    "Auto-Scheduled to Social Planner",
-    "Feature-Specific Content",
-    "No CSV Exports",
+    "100% native to HighLevel",
+    "Scheduled to your Social Planner",
+    "Feature-specific content",
+    "No CSV exports",
     "White-labeled",
-    "Updates When HL Ships",
-    "Sales Enablement Focused",
-    "Zero Client Management"
+    "Updates when HL ships",
+    "Built to sell software",
+    "Zero content busywork"
   ];
 
   // Duplicate to allow seamless infinite scrolling (translateX -50%)

@@ -47,7 +47,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF]"
         >
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
-          [ For HighLevel SaaS resellers ]
+          [ Social Media Management For HighLevel SaaS ]
         </div>
 
         {/* H1 */}
@@ -55,16 +55,15 @@ export default function Hero() {
           className="font-grotesk font-bold leading-[1.05] tracking-[-1.5px] sm:tracking-[-2.5px] mb-8 text-gray-900 dark:text-white drop-shadow-sm transition-colors duration-300"
           style={{ fontSize: "clamp(32px, 4.8vw, 64px)" }}
         >
-          <span className="block md:inline-block md:whitespace-nowrap">Social media for HighLevel resellers.</span><br />
-          <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span> &nbsp;
-          Not by you.
+          {/* <span className="block md:inline-block md:whitespace-nowrap">Social Media Management<br></br><span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>for HighLevel resellers.</span></span><br /> */}
+          {/* <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span> &nbsp;
+          Not by you. */}
+          Make your <span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>HighLevel SaaS look like the market leader.</span> Without writing a single post.
         </h1>
 
         {/* Sub */}
         <p className="text-[20px] md:text-[22px] text-gray-600 dark:text-gray-400 leading-relaxed mb-12 max-w-3xl mx-auto transition-colors duration-300">
-          We pull HighLevel-feature-targeted posts from a library that updates
-          every time HL ships. Customized to your brand. Scheduled straight to
-          your HL Social Planner. Your job ends at approval.
+          We design and write feature-targeted posts, customize them to your brand and voice, and schedule them straight into your HL Social Planner. You review, you approve, we handle the rest.
         </p>
 
         {/* CTAs */}
