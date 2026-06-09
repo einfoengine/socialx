@@ -70,9 +70,9 @@ const LOGOS = [
 ];
 
 const METRICS = [
-  { value: "450+", label: "Active Brands Served", desc: "Enterprise and high-growth SaaS founders" },
-  { value: "18.4M+", label: "Total Views Generated", desc: "Organic engagement across all platforms" },
-  { value: "99.2%", label: "Client Retention Rate", desc: "Unmatched content quality & support score" },
+  { value: "800+", label: "HL SaaS Businesses", desc: "served by the founding team" },
+  { value: "Since 2019", label: "HighLevel Ecosystem", desc: "active and building GHL-native solutions" },
+  { value: "100%", label: "HL-Native Team", desc: "writers & designers, no GHL onboarding needed" },
 ];
 
 export default function ClientLogos() {
