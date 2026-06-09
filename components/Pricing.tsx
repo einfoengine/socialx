@@ -1,144 +1,137 @@
 "use client";
-
+ 
 import { useState } from "react";
-
+ 
 type Period = "monthly" | "quarterly" | "halfyearly" | "yearly";
-
+ 
 const PERIODS: { key: Period; label: string; months: number }[] = [
   { key: "monthly",    label: "Monthly",     months: 1  },
   { key: "quarterly",  label: "Quarterly",   months: 3  },
   { key: "halfyearly", label: "Half-Yearly", months: 6  },
   { key: "yearly",     label: "Yearly",      months: 12 },
 ];
-
+ 
 const TIERS = [
   {
     name: "Starter",
-    tagline: "Show up consistently. Look professional. Without the agency price tag.",
+    tagline: "Show up consistently and look professional, without the agency price tag.",
     baseMonthlyPrice: 197,
     cta: "Start with Starter",
     featured: false,
-    featuresLabel: "What you get",
+    customization: {
+      level: "Light customization",
+      desc: "Your logo, colors, and CTAs dropped into proven, feature-targeted posts. Strong copy, wearing your brand."
+    },
     features: [
-      { text: "8 customized posts/month (2 per week)", hi: true },
+      { text: "8 posts per month (2 per week)", hi: true },
       { text: "2 platforms of your choice", hi: true },
-      { text: "Light customization — brand, CTAs, voice basics" },
       { text: "Scheduled to your HL Social Planner" },
-      { text: "First batch in 7 days" },
       { text: "1 revision round per batch" },
+      { text: "First batch live in 7 days" },
     ],
   },
   {
     name: "Growth",
-    tagline: "Library posts plus custom content and motion videos about your actual business.",
+    tagline: "Content that sounds like you and speaks to your niche, plus custom posts and motion video.",
     baseMonthlyPrice: 397,
     cta: "Start with Growth",
     featured: true,
-    featuresLabel: "Everything in Starter, plus",
+    customization: {
+      level: "Heavy customization",
+      desc: "Rewritten in your voice, angled to your niche and the exact services your SaaS sells, with your positioning woven in. Tailored, not templated."
+    },
     features: [
-      { text: "16 posts/month — 12 library + 2 custom + 2 motion videos", hi: true },
-      { text: "2 motion videos (30+ sec) per month", hi: true, video: true },
-      { text: "3 platforms — LinkedIn, Facebook, Instagram", hi: true },
-      { text: "Full voice adaptation plus client examples" },
-      { text: "Custom posts: wins, onboardings, milestones" },
-      { text: "First batch in 5 days" },
+      { text: "16 posts per month (12 library, 2 custom, 2 motion videos)", hi: true },
+      { text: "2 motion videos, around 30 seconds", hi: true, video: true },
+      { text: "3 platforms: LinkedIn, Facebook, Instagram", hi: true },
+      { text: "Custom posts for wins, onboardings, milestones" },
       { text: "2 revision rounds per batch" },
-      { text: "Monthly 30-min content review call", hi: true },
+      { text: "Monthly 30-minute content review call", hi: true },
+      { text: "First batch live in 7 days" },
     ],
   },
   {
     name: "Scale",
-    tagline: "Daily presence, full personalization, your choice of 4th platform. Agency-grade.",
+    tagline: "A content partner that works from your business, not a template library. Daily presence, fully bespoke.",
     baseMonthlyPrice: 597,
     cta: "Start with Scale",
     featured: false,
-    featuresLabel: "Everything in Growth, plus",
+    customization: {
+      level: "Built around your business",
+      desc: "No fixed formula. We study your offer and audience, then decide post by post: rebuild a library piece completely for you, or write one from scratch. Whatever sells your software best."
+    },
     features: [
-      { text: "30 posts/month — 22 library + 4 custom + 4 motion videos", hi: true },
-      { text: "4 motion videos (30+ sec) per month", hi: true, video: true },
-      { text: "4 platforms — LI + FB + IG + TikTok or X", hi: true },
-      { text: "Heavy customization, full personalization" },
-      { text: "First batch in 3 days — priority queue" },
+      { text: "24 posts per month (20 static, 4 motion videos), built bespoke for you", hi: true },
+      { text: "Motion videos run around 30 seconds", hi: true, video: true },
+      { text: "4 platforms: LinkedIn, Facebook, Instagram, plus TikTok or X", hi: true },
+      { text: "Real-time content for launches, wins, and feedback" },
       { text: "Unlimited revisions" },
-      { text: "Real-time content for wins and feedback" },
-      { text: "Monthly 30-min content review call", hi: true },
+      { text: "Monthly 30-minute strategy call", hi: true },
+      { text: "First batch live in 5 days, priority queue" },
     ],
   },
 ];
-
+ 
 function fmt(n: number) {
   return n.toLocaleString("en-US");
 }
-
+ 
 function getDiscountPercent(period: Period, isLaunch: boolean): number {
-  if (!isLaunch) return 0;
-  const discountMap: Record<Period, number> = {
-    monthly: 0,
-    quarterly: 0.30,
-    halfyearly: 0.40,
-    yearly: 0.50,
-  };
-  return discountMap[period];
+  if (isLaunch) {
+    const launchDiscounts: Record<Period, number> = {
+      monthly: 0,
+      quarterly: 0.30,
+      halfyearly: 0.40,
+      yearly: 0.50,
+    };
+    return launchDiscounts[period];
+  } else {
+    const regularDiscounts: Record<Period, number> = {
+      monthly: 0,
+      quarterly: 0.05,
+      halfyearly: 0.10,
+      yearly: 0.20,
+    };
+    return regularDiscounts[period];
+  }
 }
-
+ 
 function getEffectivePrice(basePrice: number, period: Period, isLaunch: boolean): number {
   const discount = getDiscountPercent(period, isLaunch);
   return Math.round(basePrice * (1 - discount));
 }
-
-function priceNote(effectivePrice: number, period: Period, months: number) {
-  const total = effectivePrice * months;
-  if (period === "monthly") return "Billed monthly. Cancel anytime.";
-  const suffix: Record<Exclude<Period, "monthly">, string> = {
-    quarterly:  `$${fmt(total)} billed every 3 months.`,
-    halfyearly: `$${fmt(total)} billed every 6 months.`,
-    yearly:     `$${fmt(total)} billed annually.`,
+ 
+function getCycleNote(period: Period) {
+  const notes: Record<Period, string> = {
+    monthly: "billed monthly",
+    quarterly: "billed quarterly",
+    halfyearly: "billed half-yearly",
+    yearly: "billed yearly",
   };
-  return suffix[period as Exclude<Period, "monthly">];
+  return notes[period];
 }
-
-function getSetupChargeText(period: Period) {
-  if (period === "monthly") {
-    return "+ $100 USD Profile Optimization Charge";
-  } else {
-    return "✓ FREE Profile Optimization Included";
-  }
-}
-
+ 
 export default function Pricing() {
   const [period, setPeriod] = useState<Period>("monthly");
   const [showLaunchDiscount, setShowLaunchDiscount] = useState<boolean>(true);
-  const cfg = PERIODS.find((p) => p.key === period)!;
-
-  const getTabSavings = (key: Period) => {
-    if (!showLaunchDiscount) return null;
-    const savingsMap: Record<Period, string> = {
-      monthly: "",
-      quarterly: "−30%",
-      halfyearly: "−40%",
-      yearly: "−50%",
-    };
-    return savingsMap[key] || null;
-  };
-
+ 
   return (
     <section id="gw-pricing" className="py-32 md:py-40 bg-white dark:bg-[#050508] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="section-eyebrow">[ Pricing ]</div>
-          <h2 className="section-title">
-            Pick your tier.<br />Cancel anytime.
+        <div className="text-center mb-16">
+          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Pricing ]</div>
+          <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
+            Pick your tier. Cancel anytime.
           </h2>
-          <p className="section-sub mb-12">
-            Plans start at $197. No setup fee. No long-term contracts. Discount
-            when you commit to longer cycles.
+          <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-chillax text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
+            Every plan is customized to your brand and scheduled into your HL Social Planner for you. The higher the tier, the deeper we tailor: from <strong>brand-matched posts</strong>, to content <strong>rewritten in your voice</strong>, to a <strong>fully bespoke feed</strong> built around your business.
           </p>
         </div>
-
+ 
         {/* Launch Promotion Callout & Toggle */}
-        <div className="flex flex-col items-center gap-3 mb-10 text-center">
-          <div className="font-grotesk text-sm font-semibold tracking-wide text-rose-500 dark:text-rose-400 flex items-center gap-1.5 animate-pulse">
+        <div className="flex flex-col items-center gap-3 mb-12 text-center animate-fade-up">
+          <div className="font-grotesk text-[13px] font-bold tracking-[1.5px] uppercase text-rose-500 dark:text-rose-400 flex items-center gap-2">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
@@ -149,7 +142,7 @@ export default function Pricing() {
           <div className="inline-flex items-center p-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 shadow-inner">
             <button
               onClick={() => setShowLaunchDiscount(false)}
-              className={`font-grotesk text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap ${
+              className={`font-grotesk text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap ${
                 !showLaunchDiscount
                   ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_6px_rgba(0,0,0,0.15)]"
                   : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
@@ -159,7 +152,7 @@ export default function Pricing() {
             </button>
             <button
               onClick={() => setShowLaunchDiscount(true)}
-              className={`font-grotesk text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 flex items-center gap-1 cursor-pointer whitespace-nowrap ${
+              className={`font-grotesk text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 showLaunchDiscount
                   ? "bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white shadow-[0_2px_6px_rgba(43,80,220,0.3)]"
                   : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
@@ -169,55 +162,56 @@ export default function Pricing() {
             </button>
           </div>
         </div>
-
-        {/* Billing cycle */}
-        <div className="flex flex-col items-center gap-4 mb-14">
-          <div className="font-grotesk text-[13px] text-gray-400 uppercase tracking-[1.2px] font-medium">
+ 
+        {/* Billing cycle tabs */}
+        <div className="flex flex-col items-center gap-4 mb-20">
+          <div className="font-grotesk text-[13px] text-gray-400 dark:text-gray-500 uppercase tracking-[1.2px] font-semibold">
             Billing cycle
           </div>
           <div
-            className="inline-flex items-center p-1.5 rounded-[3px] flex-wrap justify-center gap-1 bg-black/4 dark:bg-white/4 border border-black/7 dark:border-white/8 transition-colors duration-300"
+            className="inline-flex items-center p-1.5 rounded-none flex-wrap justify-center gap-1 bg-black/4 dark:bg-white/4 border border-black/7 dark:border-white/8 transition-colors duration-300"
           >
-            {PERIODS.map((p) => (
-              <button
-                key={p.key}
-                onClick={() => setPeriod(p.key)}
-                className={`font-grotesk text-sm font-medium px-5 py-2.5 rounded-[3px] flex items-center gap-2 transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                  period === p.key
-                    ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
-                    : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                }`}
-              >
-                {p.label}
-                {getTabSavings(p.key) && (
-                  <span
-                    className={`text-[11px] font-semibold px-2 py-0.5 rounded-[3px] transition-colors duration-200 ${
-                      period === p.key
-                        ? "bg-white/15 text-white/90 dark:bg-black/10 dark:text-black/80"
-                        : "bg-[#2B50DC]/10 text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
-                    }`}
-                  >
-                    {getTabSavings(p.key)}
-                  </span>
-                )}
-              </button>
-            ))}
+            {PERIODS.map((p) => {
+              const discountPercent = getDiscountPercent(p.key, showLaunchDiscount);
+              return (
+                <button
+                  key={p.key}
+                  onClick={() => setPeriod(p.key)}
+                  className={`font-grotesk text-sm font-medium px-5 py-2.5 rounded-none flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                    period === p.key
+                      ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
+                      : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  }`}
+                >
+                  {p.label}
+                  {discountPercent > 0 && (
+                    <span
+                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-none transition-colors duration-200 ${
+                        period === p.key
+                          ? "bg-white/15 text-white/90 dark:bg-black/10 dark:text-black/80"
+                          : "bg-[#2B50DC]/10 text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
+                      }`}
+                    >
+                      {Math.round(discountPercent * 100)}% off
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
-
-        {/* Cards */}
+ 
+        {/* Cards Grid */}
         <div className="grid lg:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto lg:max-w-none">
           {TIERS.map((tier, i) => {
             const effectivePrice = getEffectivePrice(tier.baseMonthlyPrice, period, showLaunchDiscount);
             const discountPercent = getDiscountPercent(period, showLaunchDiscount);
             const hasDiscount = discountPercent > 0;
-            const isFree = period !== "monthly";
-            const setupText = getSetupChargeText(period);
-
+ 
             return (
               <div
                 key={tier.name}
-                className={`relative flex flex-col rounded-none p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
+                className={`relative flex flex-col rounded-none p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
                   tier.featured
                     ? "gradient-bg border-none shadow-[0_24px_64px_rgba(43,80,220,0.35)] scale-[1.03]"
                     : "bg-white dark:bg-[#111118] border border-black/8 dark:border-white/8 shadow-sm dark:shadow-md scale-100"
@@ -228,34 +222,35 @@ export default function Pricing() {
               >
                 {tier.featured && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-[3px] tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-none tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
                   >
                     Most Popular
                   </div>
                 )}
-
+ 
+                {/* Header info */}
                 <div
-                  className={`font-grotesk text-sm font-medium uppercase tracking-[1.5px] mb-2 ${
+                  className={`font-grotesk text-sm font-semibold uppercase tracking-[1.5px] mb-2.5 ${
                     tier.featured ? "text-white/80" : "text-[#2B50DC] dark:text-[#5B8DEF]"
                   }`}
                 >
                   {tier.name}
                 </div>
                 <div
-                  className={`text-[15px] leading-relaxed mb-8 ${
+                  className={`text-[14.5px] leading-relaxed mb-6 font-chillax ${
                     tier.featured ? "text-white/70" : "text-gray-600 dark:text-gray-400"
                   }`}
                   style={{
-                    minHeight: "70px",
+                    minHeight: "48px",
                   }}
                 >
                   {tier.tagline}
                 </div>
-
+ 
                 {/* Price block */}
-                <div className="mb-7 flex flex-col justify-end" style={{ minHeight: "155px" }}>
+                <div className="mb-7 flex flex-col justify-end" style={{ minHeight: "105px" }}>
                   {hasDiscount ? (
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-1.5">
                       <span
                         className={`font-grotesk text-sm line-through ${
                           tier.featured ? "text-white/40" : "text-gray-400 dark:text-gray-500"
@@ -264,7 +259,7 @@ export default function Pricing() {
                         ${fmt(tier.baseMonthlyPrice)}/month
                       </span>
                       <span
-                        className={`font-grotesk text-[11px] font-bold px-2 py-0.5 rounded-[3px] uppercase tracking-[0.5px] ${
+                        className={`font-grotesk text-[10px] font-bold px-2 py-0.5 rounded-none uppercase tracking-[0.5px] ${
                           tier.featured
                             ? "bg-white text-[#2B50DC]"
                             : "bg-rose-500 text-white"
@@ -276,7 +271,7 @@ export default function Pricing() {
                   ) : (
                     <div className="h-6" />
                   )}
-                  <div className="flex items-baseline gap-1.5 mb-1.5">
+                  <div className="flex items-baseline gap-1.5 mb-1">
                     <span
                       className={`font-grotesk text-2xl font-medium ${
                         tier.featured ? "text-white/70" : "text-gray-400 dark:text-gray-500"
@@ -289,7 +284,7 @@ export default function Pricing() {
                         tier.featured ? "text-white" : "text-gray-900 dark:text-white"
                       }`}
                       style={{
-                        fontSize: "64px",
+                        fontSize: "60px",
                         letterSpacing: "-2px",
                       }}
                     >
@@ -300,34 +295,42 @@ export default function Pricing() {
                         tier.featured ? "text-white/60" : "text-gray-400 dark:text-gray-500"
                       }`}
                     >
-                      /month
+                      /mo
                     </span>
                   </div>
                   <div
-                    className={`font-grotesk text-sm ${
+                    className={`font-grotesk text-xs uppercase tracking-[0.5px] ${
                       tier.featured ? "text-white/50" : "text-gray-400 dark:text-gray-500"
                     }`}
                   >
-                    {priceNote(effectivePrice, period, cfg.months)}
-                  </div>
-                  <div
-                    className={`font-grotesk text-[13px] font-bold mt-2 tracking-wide uppercase ${
-                      tier.featured
-                        ? isFree
-                          ? "text-emerald-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)] animate-pulse"
-                          : "text-yellow-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]"
-                        : isFree
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-[#2B50DC] dark:text-[#5B8DEF]"
-                    }`}
-                  >
-                    {setupText}
+                    {getCycleNote(period)}
                   </div>
                 </div>
-
-                {/* CTA */}
+ 
+                {/* Customization Level Box */}
+                <div className={`mb-8 p-5 border transition-colors duration-300 rounded-none ${
+                  tier.featured
+                    ? "bg-white/10 border-white/10"
+                    : "bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/5"
+                }`}>
+                  <div className={`flex items-center gap-1.5 font-grotesk text-[12px] font-bold uppercase tracking-[0.8px] ${
+                    tier.featured ? "text-white" : "text-gray-900 dark:text-white"
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                      tier.featured ? "bg-cyan-300 animate-pulse" : "bg-[#2B50DC]"
+                    }`} />
+                    {tier.customization.level}
+                  </div>
+                  <p className={`text-[12.5px] leading-relaxed mt-2 font-chillax ${
+                    tier.featured ? "text-white/85" : "text-gray-500 dark:text-gray-400"
+                  }`}>
+                    {tier.customization.desc}
+                  </p>
+                </div>
+ 
+                {/* CTA Button */}
                 <button
-                  className={`w-full py-4 rounded-[3px] font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer ${
+                  className={`w-full py-4 rounded-none font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer ${
                     tier.featured
                       ? "bg-white text-[#111118] hover:bg-gray-100"
                       : "bg-[#111118] text-white hover:bg-black dark:bg-white dark:text-[#111118] dark:hover:bg-gray-100"
@@ -335,38 +338,39 @@ export default function Pricing() {
                 >
                   {tier.cta}
                 </button>
-
-                {/* Features */}
+ 
+                {/* Features List */}
                 <div
                   className={`h-px mb-6 ${
                     tier.featured ? "bg-white/20" : "bg-black/7 dark:bg-white/8"
                   }`}
                 />
-                <div
-                  className={`font-grotesk text-[11px] uppercase tracking-[1.2px] font-medium mb-4 ${
-                    tier.featured ? "text-white/50" : "text-gray-400 dark:text-gray-500"
-                  }`}
-                >
-                  {tier.featuresLabel}
-                </div>
-                <ul className="flex flex-col gap-3 flex-1">
+                <ul className="flex flex-col gap-3.5 flex-1">
                   {tier.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3 text-[15px] leading-relaxed">
-                      <span
-                        className={`shrink-0 w-4.5 h-4.5 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 ${
-                          tier.featured
-                            ? "bg-white/20 text-white"
-                            : "bg-[#2B50DC]/10 dark:bg-[#2B50DC]/20 text-[#2B50DC] dark:text-[#5B8DEF]"
-                        }`}
-                      >
-                        {f.video ? "▶" : "✓"}
+                    <li key={j} className="flex items-start gap-3.5 text-[14.5px] leading-relaxed font-chillax">
+                      <span className="shrink-0 mt-0.5">
+                        <svg 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2.4" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                          className={`w-4.5 h-4.5 ${
+                            tier.featured
+                              ? "text-cyan-300"
+                              : "text-blue-neon dark:text-blue-sky"
+                          }`}
+                        >
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
                       </span>
                       <span
                         className={`${
                           tier.featured
-                            ? f.hi ? "text-white" : "text-white/75"
-                            : f.hi ? "text-[#2B50DC] dark:text-[#5B8DEF]" : "text-gray-700 dark:text-gray-300"
-                        } ${f.hi ? "font-medium" : "font-normal"}`}
+                            ? f.hi ? "text-white" : "text-white/80"
+                            : f.hi ? "text-[#2B50DC] dark:text-[#5B8DEF] font-medium" : "text-gray-700 dark:text-gray-300"
+                        }`}
                       >
                         {f.text}
                       </span>
@@ -377,6 +381,12 @@ export default function Pricing() {
             );
           })}
         </div>
+ 
+        {/* Footer info banner */}
+        <p className="text-center mt-16 text-sm text-gray-500 dark:text-gray-400 font-chillax transition-colors">
+          <span className="font-semibold text-gray-900 dark:text-white">No setup fee. No contracts. Cancel anytime.</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;Longer billing cycles save you up to {showLaunchDiscount ? "50%" : "20%"}.
+        </p>
       </div>
     </section>
   );
