@@ -93,13 +93,12 @@ export default function ClientLogos() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Client Spotlight ]</div>
+          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Why trust a new name ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight transition-colors duration-300">
-            Loved by fast-scaling<br />
-            SaaS & Agency partners.
+            New name. Not a new team.
           </h2>
           <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-chillax text-[16px] md:text-[18px] transition-colors duration-300">
-            We turn social presence into a compound growth engine. Here are some of the market-leading brands socialX keeps in the limelight.
+            socialX is new. The team behind it is not. We have produced HL-native content for 800+ SaaS businesses through GHL Video, the number one video team built only for HighLevel. socialX brings that same ecosystem fluency to your social feed.
           </p>
         </div>
 
