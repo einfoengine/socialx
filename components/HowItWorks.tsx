@@ -5,18 +5,18 @@ import React, { useRef, useState } from "react";
 const steps = [
   {
     num: "01",
-    title: "Sign up and intake.",
-    body: "15-minute brand form — logo, colors, ICP, platforms. One time, then done.",
+    title: "Tell us about your brand",
+    body: "A 15-minute intake form: logo, colors, voice, ICP, platforms. You do this once.",
   },
   {
     num: "02",
-    title: "We build your batch.",
-    body: "We pull from the HL-feature library and customize everything to your ICP. Growth and Scale get custom posts and motion videos too.",
+    title: "We build your batch",
+    body: "We pull feature-targeted posts from the library and customize every one to your brand and the services your SaaS sells. Growth and Scale add custom posts and motion videos.",
   },
   {
     num: "03",
-    title: "Approve. We schedule.",
-    body: "Review and approve the batch. We load everything straight into your HL Social Planner. Posts publish on autopilot.",
+    title: "You approve, we schedule",
+    body: "Review the batch and approve. We load it straight into your HL Social Planner and it publishes on autopilot. Your only job ends here.",
   },
 ];
 
