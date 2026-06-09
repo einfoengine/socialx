@@ -6,7 +6,7 @@ const problems = [
   {
     icon: "⏱",
     title: "No time, no system.",
-    body: "You're closing deals, onboarding clients, running support. Content falls off every time — and prospects notice the ghost account.",
+    body: "You're closing deals, onboarding clients, running support. Content falls off every time, and prospects notice the ghost account.",
   },
   {
     icon: "🎨",
@@ -61,7 +61,7 @@ function MatrixCanvas() {
 
     let rafId: number;
     let lastTime = 0;
-    const interval = 1000 / 10; // 10 fps — slow, eerie
+    const interval = 1000 / 10; // 10 fps, slow, eerie
 
     const draw = (timestamp: number) => {
       rafId = requestAnimationFrame(draw);
@@ -157,7 +157,7 @@ export default function Problem() {
         </h2>
         <p className="section-sub mb-20 text-white/70" style={{ color: "rgba(255,255,255,0.7)" }}>
           Every HL reseller hits the same wall. Social matters for trust at the
-          sales stage — and every alternative fails differently.
+          sales stage, and every alternative fails differently.
         </p>
 
         <div className="grid sm:grid-cols-2 gap-0">

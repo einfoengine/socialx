@@ -6,7 +6,7 @@ const reasons = [
   {
     num: "01",
     title: "100% Feature-Targeted Content",
-    body: "Reputation managers, missed call text-backs, consolidated pipelines, custom app builders. Every single post is custom-engineered to sell a specific HighLevel feature—turning your social presence into a sales enablement machine.",
+    body: "Reputation managers, missed call text-backs, consolidated pipelines, custom app builders. Every single post is custom-engineered to sell a specific HighLevel feature, turning your social presence into a sales enablement machine.",
   },
   {
     num: "02",
@@ -16,7 +16,7 @@ const reasons = [
   {
     num: "03",
     title: "Auto-Refreshes When HighLevel Ships",
-    body: "HighLevel moves at breakneck speed. When they launch a new UI or update features, we rewrite and refresh the affected templates instantly. Other libraries go stale in a month—ours remains current week by week.",
+    body: "HighLevel moves at breakneck speed. When they launch a new UI or update features, we rewrite and refresh the affected templates instantly. Other libraries go stale in a month, ours remains current week by week.",
   },
   {
     num: "04",

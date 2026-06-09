@@ -17,7 +17,7 @@ const items = [
   {
     icon: "◑",
     title: "Multi-platform formatting",
-    body: "Each post properly adapted per platform — not just resized.",
+    body: "Each post properly adapted per platform, not just resized.",
   },
   {
     icon: "●",

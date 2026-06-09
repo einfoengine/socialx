@@ -71,6 +71,27 @@ const TIERS = [
     ],
   },
 ];
+
+const CHECKOUT_LINKS: Record<string, Record<Period, string>> = {
+  Starter: {
+    monthly: "https://order.socialx.studio/starter-monthly-subscription",
+    quarterly: "https://order.socialx.studio/starter-quarterly-subscription",
+    halfyearly: "https://order.socialx.studio/starter-half-yearly-subscription",
+    yearly: "https://order.socialx.studio/starter-yearly-subscription",
+  },
+  Growth: {
+    monthly: "https://order.socialx.studio/growth-monthly-subscription",
+    quarterly: "https://order.socialx.studio/growth-quarterly-subscription",
+    halfyearly: "https://order.socialx.studio/growth-half-yearly-subscription",
+    yearly: "https://order.socialx.studio/growth-yearly-subscription",
+  },
+  Scale: {
+    monthly: "https://order.socialx.studio/scale-monthly-subscription",
+    quarterly: "https://order.socialx.studio/scale-quarterly-subscription",
+    halfyearly: "https://order.socialx.studio/scale-half-yearly-subscription",
+    yearly: "https://order.socialx.studio/scale-yearly-subscription",
+  },
+};
  
 function fmt(n: number) {
   return n.toLocaleString("en-US");
@@ -329,15 +350,18 @@ export default function Pricing() {
                 </div>
  
                 {/* CTA Button */}
-                <button
-                  className={`w-full py-4 rounded-none font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer ${
+                <a
+                  href={CHECKOUT_LINKS[tier.name]?.[period]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-full py-4 text-center rounded-none font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer block ${
                     tier.featured
                       ? "bg-white text-[#111118] hover:bg-gray-100"
                       : "bg-[#111118] text-white hover:bg-black dark:bg-white dark:text-[#111118] dark:hover:bg-gray-100"
                   }`}
                 >
                   {tier.cta}
-                </button>
+                </a>
  
                 {/* Features List */}
                 <div
