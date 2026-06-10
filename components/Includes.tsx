@@ -48,7 +48,7 @@ export default function Includes() {
               >
                 {item.icon}
               </div>
-              <h3 className="font-grotesk text-[17px] font-semibold mb-2 text-gray-900 dark:text-white transition-colors duration-300">{item.title}</h3>
+              <h3 className="font-grotesk text-[17px] font-semibold leading-snug mb-2 text-gray-900 dark:text-white transition-colors duration-300">{item.title}</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed transition-colors duration-300">{item.body}</p>
             </div>
           ))}

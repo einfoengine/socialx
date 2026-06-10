@@ -9,7 +9,7 @@ export default function WhiteLabel() {
             <div className="font-grotesk text-[12px] font-semibold text-blue-neon dark:text-blue-sky uppercase tracking-[1.5px] mb-3 transition-colors">
               Coming soon
             </div>
-            <h2 className="font-grotesk text-[32px] font-semibold tracking-[-1px] leading-snug mb-3 text-gray-900 dark:text-white transition-colors duration-300">
+            <h2 className="font-grotesk text-[32px] font-semibold tracking-[-1px] leading-tight mb-3 text-gray-900 dark:text-white transition-colors duration-300">
               White-label SMM for your end clients.
             </h2>
             <p className="text-[17px] text-gray-500 dark:text-gray-400 leading-relaxed transition-colors duration-300">
