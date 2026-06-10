@@ -34,7 +34,7 @@ const items = [
 export default function Includes() {
   return (
     <section id="gw-includes" className="py-32 md:py-40 bg-white dark:bg-[#050508] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow">[ Standard across all plans ]</div>
         <h2 className="section-title">
           Every plan includes<br />the core socialX system.

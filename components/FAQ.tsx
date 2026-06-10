@@ -91,7 +91,7 @@ export default function FAQ() {
         className="absolute inset-0 pointer-events-none z-0 subtle-grid"
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow">[ Frequently Asked ]</div>
         <h2 className="section-title">
           The questions resellers<br />actually ask us.

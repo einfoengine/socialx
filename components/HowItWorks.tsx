@@ -117,7 +117,7 @@ export default function HowItWorks() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow">[ The socialX system ]</div>
         <h2 className="section-title">
           A social media engine that<br />

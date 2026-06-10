@@ -48,7 +48,7 @@ export default function Guarantees() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Consistent Section Header */}
         <div className="text-center mb-16 md:mb-20">
           <div className="section-eyebrow text-[#2B50DC] dark:text-blue-sky/80 transition-colors duration-300">[ No-Risk Commitment ]</div>

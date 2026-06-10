@@ -90,7 +90,7 @@ export default function ClientLogos() {
         className="absolute inset-0 pointer-events-none z-0 subtle-grid"
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Why trust a new name ]</div>

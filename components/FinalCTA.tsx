@@ -17,7 +17,7 @@ export default function FinalCTA() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <h2
           className="font-grotesk font-semibold tracking-[-2.2px] mb-5 leading-[1.05] text-gray-900 dark:text-white transition-colors duration-300"
           style={{ fontSize: "clamp(36px, 5.5vw, 64px)" }}

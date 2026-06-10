@@ -94,7 +94,7 @@ export default function WhySocialX() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow text-blue-neon/80">[ Why socialX ]</div>
         <h2 className="section-title text-gray-900 dark:text-white transition-colors duration-300">
           Not another social media agency.<br />

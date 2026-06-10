@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -25,6 +26,9 @@ export default function RootLayout({
           id="theme-initializer"
           dangerouslySetInnerHTML={{
             __html: `
+              // Mark JS as available so scroll-reveal can safely hide content
+              // before it animates in (no-JS users always see everything).
+              document.documentElement.classList.add('js');
               try {
                 // Light is the default theme; only use dark when explicitly chosen.
                 const theme = localStorage.getItem('theme');
@@ -38,7 +42,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <ScrollReveal />
+      </body>
     </html>
   );
 }

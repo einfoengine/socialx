@@ -138,7 +138,7 @@ export default function Pricing() {
  
   return (
     <section id="gw-pricing" className="py-32 md:py-40 bg-white dark:bg-[#050508] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Pricing ]</div>

@@ -57,7 +57,7 @@ export default function Booking() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
           {/* Left: persuasion */}
           <div className="text-center lg:text-left">
