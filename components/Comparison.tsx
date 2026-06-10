@@ -90,8 +90,8 @@ const comparisonData: ComparisonRow[] = [
 function CellValue({ cell, isSx }: { cell: CellInfo; isSx?: boolean }) {
   if (cell.type === "cost") {
     return (
-      <span className={isSx 
-        ? "text-[#2B50DC] dark:text-[#5B8DEF] font-bold text-[15.5px] font-grotesk transition-colors" 
+      <span className={isSx
+        ? "text-white font-bold text-[15.5px] font-grotesk transition-colors"
         : "text-gray-700 dark:text-gray-300 font-chillax text-[14.5px] transition-colors"
       }>
         {cell.label}
@@ -180,7 +180,7 @@ export default function Comparison() {
                 <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-400 dark:text-gray-500 w-[260px]">
                   &nbsp;
                 </th>
-                <th className="p-6 font-grotesk text-center w-[200px] bg-blue-50/30 dark:bg-[#2B50DC]/5 border-x border-black/5 dark:border-white/5">
+                <th className="p-6 font-grotesk text-center w-[200px] bg-[#111118] dark:bg-black border-x border-b border-x-[#2B50DC]/40 dark:border-x-[#2B50DC]/50 border-b-white/20">
                   <span className="inline-block px-3 py-1 font-grotesk text-xs font-bold uppercase tracking-[1px] bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white rounded-none">
                     socialX
                   </span>
@@ -207,7 +207,7 @@ export default function Comparison() {
               {comparisonData.map((row, index) => (
                 <tr 
                   key={index} 
-                  className={`border-b border-black/5 dark:border-white/5 hover:bg-gray-50/30 dark:hover:bg-white/1 transition-colors ${
+                  className={`border-b border-black/15 dark:border-white/15 hover:bg-gray-50/30 dark:hover:bg-white/1 transition-colors ${
                     row.isCost ? "bg-black/[0.01] dark:bg-white/[0.01] font-semibold" : ""
                   }`}
                 >
@@ -217,7 +217,7 @@ export default function Comparison() {
                   </td>
                   
                   {/* socialX Column (Highlighted Column) */}
-                  <td className="p-6 text-center bg-blue-50/40 dark:bg-[#2B50DC]/5 border-x border-[#2B50DC]/20 dark:border-[#2B50DC]/30">
+                  <td className="p-6 text-center bg-[#111118] dark:bg-black border-x border-b border-x-[#2B50DC]/30 dark:border-x-[#2B50DC]/40 border-b-white/15">
                     <CellValue cell={row.socialX} isSx={true} />
                   </td>
  
