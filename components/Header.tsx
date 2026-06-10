@@ -62,25 +62,9 @@ export default function Header() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
+    // Light is the default; reflect whatever the init script set (dark only if saved).
     const isDark = document.documentElement.classList.contains("dark");
     setTheme(isDark ? "dark" : "light");
-
-    // Listen for changes to prefers-color-scheme in system settings
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        if (e.matches) {
-          document.documentElement.classList.add("dark");
-          setTheme("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-          setTheme("light");
-        }
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const toggleTheme = () => {
@@ -122,7 +106,7 @@ export default function Header() {
             ))}
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <a
-              href="#gw-pricing"
+              href="#gw-book"
               className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3 rounded-[3px] transition-colors duration-300"
             >
               Get started
@@ -173,7 +157,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#gw-pricing"
+              href="#gw-book"
               onClick={() => setOpen(false)}
               className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 rounded-[3px] mt-4 transition-colors duration-300"
             >

@@ -151,13 +151,12 @@ export default function Problem() {
     <section id="gw-problem" className="relative py-32 md:py-40 overflow-hidden" style={{ background: "#2B50DC" }}>
       <MatrixCanvas />
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="section-eyebrow text-white/80" style={{ color: "rgba(255,255,255,0.8)" }}>[ The reseller&apos;s social problem ]</div>
+        <div className="section-eyebrow text-white/80" style={{ color: "rgba(255,255,255,0.8)" }}>[ The trust gap ]</div>
         <h2 className="section-title text-white" style={{ color: "white" }}>
-          Your prospects research you<br />before booking. What do they find?
+          Right now, your social feed is costing you deals.
         </h2>
         <p className="section-sub mb-20 text-white/70" style={{ color: "rgba(255,255,255,0.7)" }}>
-          Every HL reseller hits the same wall. Social matters for trust at the
-          sales stage, and every alternative fails differently.
+          Prospects research your brand before they ever book a call. A dead feed, or Canva posts from two years ago, tells them you are not a serious SaaS.
         </p>
 
         <div className="grid sm:grid-cols-2 gap-0">
