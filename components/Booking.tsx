@@ -57,10 +57,10 @@ export default function Booking() {
         }}
       />
 
-      <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
           {/* Left: persuasion */}
-          <div className="text-center lg:text-left">
+          <div data-reveal className="text-center lg:text-left">
             <div className="font-grotesk text-[12px] font-semibold text-[#2B50DC] dark:text-[#5B8DEF] uppercase tracking-[1.5px] mb-4 transition-colors">
               [ Book a Call ]
             </div>
@@ -125,7 +125,7 @@ export default function Booking() {
 
       <Script
         src="https://link.msgsndr.com/js/form_embed.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
     </section>
   );
