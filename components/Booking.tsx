@@ -65,12 +65,14 @@ export default function Booking() {
               [ Book a Call ]
             </div>
             <h2 className="font-grotesk font-semibold tracking-[-1.2px] leading-[1.08] text-[34px] md:text-[44px] text-gray-900 dark:text-white mb-5 transition-colors duration-300">
-              Let&apos;s get your socials{" "}
-              <span className="gradient-text">running</span>.
+              See <span className="gradient-text">real posts</span> for your
+              brand. Then decide.
             </h2>
             <p className="text-[17px] md:text-[18px] text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8 transition-colors duration-300">
-              Pick a time that works for you. It&apos;s a quick, no-pressure call to
-              see exactly how your content gets built, branded, and published.
+              Book a quick, no-pressure call. We will audit your current
+              HighLevel presence and show you real, feature-targeted posts built
+              for your niche, so you know exactly what you are getting before you
+              commit.
             </p>
 
             <ul className="space-y-3.5 text-left max-w-md mx-auto lg:mx-0 mb-10">
