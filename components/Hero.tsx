@@ -53,17 +53,22 @@ export default function Hero() {
         {/* H1 */}
         <h1
           className="font-grotesk font-bold leading-[1.05] tracking-[-1.5px] sm:tracking-[-2.5px] mb-8 text-gray-900 dark:text-white drop-shadow-sm transition-colors duration-300"
-          style={{ fontSize: "clamp(32px, 4.8vw, 64px)" }}
+          style={{ fontSize: "clamp(30px, 4.2vw, 58px)" }}
         >
           {/* <span className="block md:inline-block md:whitespace-nowrap">Social Media Management<br></br><span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>for HighLevel resellers.</span></span><br /> */}
           {/* <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span> &nbsp;
           Not by you. */}
-          Make your <span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>HighLevel SaaS look like the market leader.</span> Without writing a single post.
+          Make your{" "}
+          <span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>
+            HighLevel SaaS <br className="hidden sm:block" />look like the market leader.
+          </span>{" "}
+          <br className="hidden sm:block" />Without writing a single post.
         </h1>
 
         {/* Sub */}
-        <p className="text-[20px] md:text-[22px] text-gray-600 dark:text-gray-400 leading-relaxed mb-12 max-w-3xl mx-auto transition-colors duration-300">
-          We design and write feature-targeted posts, customize them to your brand and voice, and schedule them straight into your HL Social Planner. You review, you approve, we handle the rest.
+        <p className="text-[17px] md:text-[18px] text-gray-600 dark:text-gray-400 leading-relaxed mb-12 max-w-5xl mx-auto transition-colors duration-300">
+          We design and write feature-targeted posts, customize them to your brand and voice,{" "}
+          <br className="hidden lg:block" />and schedule them straight into your HL Social Planner. You review, you approve, we handle the rest.
         </p>
 
         {/* CTAs */}
