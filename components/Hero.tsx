@@ -5,6 +5,12 @@ import React, { useState, useEffect } from 'react';
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  // YouTube product demo — played inline on click (privacy-friendly nocookie embed).
+  const YT_ID = "DjGmzzNAXpM";
+  const YT_EMBED_URL = `https://www.youtube-nocookie.com/embed/${YT_ID}?autoplay=1&rel=0`;
+  const YT_THUMB = `https://img.youtube.com/vi/${YT_ID}/maxresdefault.jpg`;
 
   useEffect(() => {
     setIsMounted(true);
@@ -104,6 +110,42 @@ export default function Hero() {
             ))}
           </div>
           <span>Trusted by 800+ HL Resellers</span>
+        </div>
+
+        {/* Product demo video */}
+        <div className="w-full max-w-4xl mx-auto mt-16 lg:mt-20">
+          <div className="relative aspect-video rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
+            {videoPlaying ? (
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src={YT_EMBED_URL}
+                title="socialX product demo"
+                allow="autoplay; encrypted-media; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setVideoPlaying(true)}
+                aria-label="Play the product demo"
+                className="group absolute inset-0 flex flex-col items-center justify-center gap-5 cursor-pointer"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(10,10,20,0.45), rgba(10,10,20,0.55)), url(${YT_THUMB})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <span className="flex items-center justify-center w-[72px] h-[72px] rounded-full bg-white shadow-2xl transition-transform duration-300 group-hover:scale-110">
+                  <svg className="w-7 h-7 text-[#2B50DC] ml-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+                <span className="font-grotesk text-sm font-medium tracking-wide text-white/90">
+                  Watch the product demo
+                </span>
+              </button>
+            )}
+          </div>
         </div>
 
       </div>

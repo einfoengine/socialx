@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00A2FF" />
+      <stop offset="100%" stop-color="#0025C9" />
+    </linearGradient>
+  </defs>
+  <path d="M22 20 L38 20 C44 38, 56 38, 62 20 L78 20 C70 45, 70 55, 78 80 L62 80 C56 62, 44 62, 38 80 L22 80 C30 55, 30 45, 22 20 Z" fill="url(#gradient)" />
+</svg>
