@@ -31,9 +31,11 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
 
       {/* Client Graphic Image Mockup */}
       <div className="w-full h-[280px] overflow-hidden mb-4 border border-white/5 bg-navy-lift">
-        <img 
-          src={item.image} 
-          alt={`${item.brand} Feature Visual`} 
+        <img
+          src={item.image}
+          alt={`${item.brand} Feature Visual`}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover filter brightness-90 hover:brightness-100 transition-all duration-300"
           draggable="false"
         />

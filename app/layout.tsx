@@ -30,6 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={spaceGrotesk.variable} suppressHydrationWarning>
       <head>
+        {/* Chillax font: parallel <link> instead of a render-blocking CSS @import */}
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=chillax@400,500,600,700&display=swap"
+        />
         <script
           id="theme-initializer"
           dangerouslySetInnerHTML={{
