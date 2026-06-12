@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoWrapRef = useRef<HTMLDivElement>(null);
+  const [videoMaxW, setVideoMaxW] = useState<number | null>(null);
 
   // YouTube product demo — played inline on click (privacy-friendly nocookie embed).
   const YT_ID = "DjGmzzNAXpM";
@@ -19,6 +21,38 @@ export default function Hero() {
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Scroll-reactive width: the video widens as it sits lower in the viewport
+  // (scroll up → wider) and narrows as it rises toward the top (scroll down).
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = videoWrapRef.current;
+    if (!el) return;
+    let ticking = false;
+    const update = () => {
+      const vh = window.innerHeight;
+      const rect = el.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, rect.top / vh)); // 1 = low in viewport
+      const maxCap = Math.min(window.innerWidth * 0.94, 1216);
+      const minW = Math.min(896, maxCap);
+      setVideoMaxW(Math.round(minW + (maxCap - minW) * p));
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return (
@@ -113,7 +147,11 @@ export default function Hero() {
         </div>
 
         {/* Product demo video */}
-        <div className="w-full max-w-4xl mx-auto mt-16 lg:mt-20">
+        <div
+          ref={videoWrapRef}
+          className="w-full max-w-4xl mx-auto mt-16 lg:mt-20 transition-[max-width] duration-150 ease-out"
+          style={videoMaxW ? { maxWidth: `${videoMaxW}px` } : undefined}
+        >
           <div className="relative aspect-video rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
             {videoPlaying ? (
               <iframe
