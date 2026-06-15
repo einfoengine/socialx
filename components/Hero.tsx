@@ -118,7 +118,7 @@ export default function Hero() {
           <div className="rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
             <div
               dangerouslySetInnerHTML={{
-                __html: `<wistia-player media-id="xe9k8lhdfb" aspect="1.7777777777777777"></wistia-player>`,
+                __html: `<wistia-player media-id="xe9k8lhdfb" wistia-popover="true" aspect="1.7777777777777777"></wistia-player>`,
               }}
             />
           </div>

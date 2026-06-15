@@ -79,6 +79,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Google Tag Manager (noscript) */}
         {children}
         <ScrollReveal />
+        {/* LeadConnector chat widget */}
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6a30391307e0e2e0e1fa80aa"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
