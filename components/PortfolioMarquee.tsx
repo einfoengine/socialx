@@ -24,7 +24,7 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
         </div>
         
         {/* Post Text */}
-        <p className="text-[13px] text-gray-300 leading-relaxed font-chillax whitespace-normal mb-4 line-clamp-3">
+        <p className="text-[13px] text-gray-300 leading-relaxed font-body whitespace-normal mb-4 line-clamp-3">
           {item.content}
         </p>
       </div>
@@ -69,7 +69,7 @@ export default function PortfolioMarquee() {
           <h4 className="font-grotesk text-2xl lg:text-3xl font-bold leading-tight text-white tracking-[-0.8px] mb-4">
             This is how <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">prospects should find you</span>.
           </h4>
-          <p className="text-gray-400 text-[13.5px] leading-relaxed font-chillax">
+          <p className="text-gray-400 text-[13.5px] leading-relaxed font-body">
             Real posts, engineered around real HighLevel features, in your branding, published automatically. Not stock filler with a logo on top.
           </p>
         </div>

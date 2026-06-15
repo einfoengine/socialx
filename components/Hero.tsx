@@ -1,58 +1,25 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import Script from 'next/script';
 
 export default function Hero() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const videoWrapRef = useRef<HTMLDivElement>(null);
-  const [videoMaxW, setVideoMaxW] = useState<number | null>(null);
-
-  // YouTube product demo — played inline on click (privacy-friendly nocookie embed).
-  const YT_ID = "DjGmzzNAXpM";
-  const YT_EMBED_URL = `https://www.youtube-nocookie.com/embed/${YT_ID}?autoplay=1&rel=0`;
-  const YT_THUMB = `https://img.youtube.com/vi/${YT_ID}/maxresdefault.jpg`;
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
+    // Drive the cursor spotlight through the DOM (a ref) instead of React state,
+    // so moving the mouse doesn't re-render the hero — that re-render storm made
+    // the embedded video flicker on hover.
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      const el = spotlightRef.current;
+      if (el) {
+        el.style.transform = `translate(${e.clientX - 400}px, ${e.clientY - 400}px)`;
+      }
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Scroll-reactive width: the video widens as it sits lower in the viewport
-  // (scroll up → wider) and narrows as it rises toward the top (scroll down).
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const el = videoWrapRef.current;
-    if (!el) return;
-    let ticking = false;
-    const update = () => {
-      const vh = window.innerHeight;
-      const rect = el.getBoundingClientRect();
-      const p = Math.max(0, Math.min(1, rect.top / vh)); // 1 = low in viewport
-      const maxCap = Math.min(window.innerWidth * 0.94, 1216);
-      const minW = Math.min(896, maxCap);
-      setVideoMaxW(Math.round(minW + (maxCap - minW) * p));
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        update();
-        ticking = false;
-      });
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
-    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -63,10 +30,10 @@ export default function Hero() {
       {/* Interactive Cursor Spotlight */}
       {isMounted && (
         <div
+          ref={spotlightRef}
           className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40 blur-[100px] transition-transform duration-75 ease-linear z-0"
           style={{
             background: "radial-gradient(circle, rgba(43,80,220,0.3) 0%, rgba(91,141,239,0.1) 50%, transparent 70%)",
-            transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)`
           }}
         />
       )}
@@ -147,46 +114,26 @@ export default function Hero() {
         </div>
 
         {/* Product demo video */}
-        <div
-          ref={videoWrapRef}
-          className="w-full max-w-4xl mx-auto mt-16 lg:mt-20 transition-[max-width] duration-150 ease-out"
-          style={videoMaxW ? { maxWidth: `${videoMaxW}px` } : undefined}
-        >
-          <div className="relative aspect-video rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
-            {videoPlaying ? (
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={YT_EMBED_URL}
-                title="socialX product demo"
-                allow="autoplay; encrypted-media; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ) : (
-              <button
-                type="button"
-                onClick={() => setVideoPlaying(true)}
-                aria-label="Play the product demo"
-                className="group absolute inset-0 flex flex-col items-center justify-center gap-5 cursor-pointer"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(10,10,20,0.45), rgba(10,10,20,0.55)), url(${YT_THUMB})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <span className="flex items-center justify-center w-[72px] h-[72px] rounded-full bg-white shadow-2xl transition-transform duration-300 group-hover:scale-110">
-                  <svg className="w-7 h-7 text-[#2B50DC] ml-1" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-                <span className="font-grotesk text-sm font-medium tracking-wide text-white/90">
-                  Watch the product demo
-                </span>
-              </button>
-            )}
+        <div className="w-full max-w-4xl mx-auto mt-16 lg:mt-20">
+          <div className="rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `<wistia-player media-id="xe9k8lhdfb" aspect="1.7777777777777777"></wistia-player>`,
+              }}
+            />
           </div>
         </div>
 
       </div>
+
+      {/* Wistia product demo player */}
+      <Script src="https://fast.wistia.com/player.js" strategy="afterInteractive" />
+      <Script
+        id="wistia-xe9k8lhdfb"
+        src="https://fast.wistia.com/embed/xe9k8lhdfb.js"
+        strategy="afterInteractive"
+        type="module"
+      />
     </section>
   );
 }

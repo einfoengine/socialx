@@ -70,7 +70,7 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
         <h3 className="font-grotesk text-2xl font-bold leading-tight tracking-[-0.6px] mb-4 text-gray-900 dark:text-white transition-colors duration-300">
           {r.title}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-[15px] leading-relaxed font-chillax transition-colors duration-300">
+        <p className="text-gray-500 dark:text-gray-400 text-[15px] leading-relaxed font-body transition-colors duration-300">
           {r.body}
         </p>
       </div>

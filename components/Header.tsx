@@ -82,6 +82,7 @@ export default function Header() {
   const navLinks = [
     { label: "Features", href: "#gw-problem" },
     { label: "How It Works", href: "#gw-how" },
+    { label: "Pricing", href: "#gw-pricing" },
     { label: "Comparison", href: "#gw-comparison" },
     { label: "Why socialX", href: "#gw-why-socialx" },
     { label: "FAQ", href: "#gw-faq" },
@@ -124,7 +125,7 @@ export default function Header() {
               </svg>
             </a>
             <a
-              href="#gw-book"
+              href="#gw-pricing"
               className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3 rounded-[3px] transition-colors duration-300"
             >
               Get started
@@ -175,7 +176,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#gw-book"
+              href="#gw-pricing"
               onClick={() => setOpen(false)}
               className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 rounded-[3px] mt-4 transition-colors duration-300"
             >

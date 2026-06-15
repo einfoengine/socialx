@@ -27,7 +27,7 @@
 
 @theme inline {
   --font-grotesk: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
-  --font-chillax: 'Chillax', -apple-system, sans-serif;
+  --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
 }
 
 :root {
@@ -37,7 +37,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font-chillax);
+  font-family: var(--font-body);
   @apply bg-[#F4F2EF] dark:bg-[#050508] text-[#111118] dark:text-[#F4F2EF] transition-colors duration-300;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -147,6 +147,14 @@ html.dark .subtle-grid-why {
 @keyframes pulseDot {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(43, 80, 220, 0.7); }
   70%       { opacity: 0.7; box-shadow: 0 0 0 8px rgba(43, 80, 220, 0); }
+}
+
+/* Wistia placeholder: blurred swatch + reserved 16:9 height before the player loads */
+wistia-player[media-id='xe9k8lhdfb']:not(:defined) {
+  background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/xe9k8lhdfb/swatch');
+  display: block;
+  filter: blur(5px);
+  padding-top: 56.25%;
 }
 
 .animate-float     { animation: float 5s ease-in-out infinite; }

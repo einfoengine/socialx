@@ -73,7 +73,7 @@ function FAQItem({
           marginTop: isOpen ? "16px" : "0"
         }}
       >
-        <p className="font-chillax text-sm text-gray-500 dark:text-gray-400 leading-relaxed pr-10 transition-colors duration-300">
+        <p className="font-body text-sm text-gray-500 dark:text-gray-400 leading-relaxed pr-10 transition-colors duration-300">
           {faq.a}
         </p>
       </div>

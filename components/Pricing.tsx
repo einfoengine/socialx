@@ -145,7 +145,7 @@ export default function Pricing() {
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
             Pick your tier. Cancel anytime.
           </h2>
-          <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-chillax text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
+          <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-body text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
             Every plan is customized to your brand and scheduled into your HL Social Planner for you. The higher the tier, the deeper we tailor: from <strong>brand-matched posts</strong>, to content <strong>rewritten in your voice</strong>, to a <strong>fully bespoke feed</strong> built around your business.
           </p>
         </div>
@@ -258,7 +258,7 @@ export default function Pricing() {
                   {tier.name}
                 </div>
                 <div
-                  className={`text-[14.5px] leading-relaxed mb-6 font-chillax ${
+                  className={`text-[14.5px] leading-relaxed mb-6 font-body ${
                     tier.featured ? "text-white/70" : "text-gray-600 dark:text-gray-400"
                   }`}
                   style={{
@@ -342,7 +342,7 @@ export default function Pricing() {
                     }`} />
                     {tier.customization.level}
                   </div>
-                  <p className={`text-[12.5px] leading-relaxed mt-2 font-chillax ${
+                  <p className={`text-[12.5px] leading-relaxed mt-2 font-body ${
                     tier.featured ? "text-white/85" : "text-gray-500 dark:text-gray-400"
                   }`}>
                     {tier.customization.desc}
@@ -371,7 +371,7 @@ export default function Pricing() {
                 />
                 <ul className="flex flex-col gap-3.5 flex-1">
                   {tier.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3.5 text-[14.5px] leading-relaxed font-chillax">
+                    <li key={j} className="flex items-start gap-3.5 text-[14.5px] leading-relaxed font-body">
                       <span className="shrink-0 mt-0.5">
                         <svg 
                           viewBox="0 0 24 24" 
@@ -407,7 +407,7 @@ export default function Pricing() {
         </div>
  
         {/* Footer info banner */}
-        <p className="text-center mt-16 text-sm text-gray-500 dark:text-gray-400 font-chillax transition-colors">
+        <p className="text-center mt-16 text-sm text-gray-500 dark:text-gray-400 font-body transition-colors">
           <span className="font-semibold text-gray-900 dark:text-white">No setup fee. No contracts. Cancel anytime.</span>
           &nbsp;&nbsp;&nbsp;&nbsp;Longer billing cycles save you up to {showLaunchDiscount ? "50%" : "20%"}.
         </p>

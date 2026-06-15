@@ -78,7 +78,7 @@ export default function Guarantees() {
               <div className="font-grotesk text-base font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-[0.5px] transition-colors duration-300">
                 {s.label}
               </div>
-              <p className="font-chillax text-xs text-gray-600 dark:text-gray-500 leading-relaxed max-w-[240px] transition-colors duration-300">
+              <p className="font-body text-xs text-gray-600 dark:text-gray-500 leading-relaxed max-w-[240px] transition-colors duration-300">
                 {s.sub}
               </p>
             </div>

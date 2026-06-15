@@ -92,7 +92,7 @@ function CellValue({ cell, isSx }: { cell: CellInfo; isSx?: boolean }) {
     return (
       <span className={isSx
         ? "text-white font-bold text-[15.5px] font-grotesk transition-colors"
-        : "text-gray-700 dark:text-gray-300 font-chillax text-[14.5px] transition-colors"
+        : "text-gray-700 dark:text-gray-300 font-body text-[14.5px] transition-colors"
       }>
         {cell.label}
       </span>
@@ -141,7 +141,7 @@ function CellValue({ cell, isSx }: { cell: CellInfo; isSx?: boolean }) {
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       )}
-      <span className={`text-[13.5px] font-chillax transition-colors ${
+      <span className={`text-[13.5px] font-body transition-colors ${
         isSx 
           ? "text-[#01E7FF] font-semibold" 
           : cell.type === "yes" 
@@ -167,7 +167,7 @@ export default function Comparison() {
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
             Stop bleeding time. Start selling software.
           </h2>
-          <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-chillax text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
+          <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-body text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
             Every reseller tries one of these. Here is the honest trade-off on each, and where socialX is different.
           </p>
         </div>
@@ -251,7 +251,7 @@ export default function Comparison() {
           <h3 className="font-grotesk text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
             Stop acting like a content manager. Start acting like a software CEO.
           </h3>
-          <p className="font-chillax text-[14.5px] leading-relaxed text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="font-body text-[14.5px] leading-relaxed text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             Delegating your social to socialX costs less than a single client subscription, and frees you to do the one thing only you can: grow the business.
           </p>
           <a 

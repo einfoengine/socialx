@@ -33,7 +33,9 @@ export default function ScrollReveal() {
           obs.unobserve(el);
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      // Trigger as the element approaches the viewport (slightly before it
+      // enters) so the fade plays right as it appears — no perceived delay.
+      { threshold: 0, rootMargin: "0px 0px 8% 0px" }
     );
 
     els.forEach((el) => observer.observe(el));

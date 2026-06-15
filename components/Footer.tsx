@@ -69,7 +69,7 @@ export default function Footer() {
                 className="h-8 w-auto object-contain"
               />
             </a>
-            <p className="mt-4 text-sm text-gray-500 leading-relaxed max-w-sm font-chillax">
+            <p className="mt-4 text-sm text-gray-500 leading-relaxed max-w-sm font-body">
               Productized social media built exclusively for HighLevel SaaS resellers. Showcase your software features on autopilot. 800+ HL agencies served since 2019.
             </p>
             <div className="mt-6 font-grotesk text-xs text-gray-500">
@@ -87,7 +87,7 @@ export default function Footer() {
               <h4 className="font-grotesk text-[12px] font-bold text-white uppercase tracking-[1.5px] mb-5">
                 {col.title}
               </h4>
-              <ul className="space-y-3 font-chillax">
+              <ul className="space-y-3 font-body">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <a
@@ -110,7 +110,7 @@ export default function Footer() {
             <h4 className="font-grotesk text-[14px] font-bold text-white mb-2 uppercase tracking-[0.5px]">
               Get Free CRM SaaS Templates
             </h4>
-            <p className="text-xs text-gray-500 font-chillax mb-4">
+            <p className="text-xs text-gray-500 font-body mb-4">
               High-converting social graphics and copies dropped straight to your inbox weekly.
             </p>
              {subscribed ? (
@@ -125,7 +125,7 @@ export default function Footer() {
                   placeholder="Enter your agency email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-chillax text-white focus:outline-hidden focus:border-[#2B50DC]/50 flex-1 rounded-[3px] placeholder-gray-600"
+                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-body text-white focus:outline-hidden focus:border-[#2B50DC]/50 flex-1 rounded-[3px] placeholder-gray-600"
                 />
                 <button
                   type="submit"

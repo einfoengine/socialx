@@ -97,7 +97,7 @@ export default function ClientLogos() {
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight transition-colors duration-300">
             New name. Not a new team.
           </h2>
-          <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-chillax text-[16px] md:text-[18px] transition-colors duration-300">
+          <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-body text-[16px] md:text-[18px] transition-colors duration-300">
             socialX is new. The team behind it is not. We have produced HL-native content for 800+ SaaS businesses through GHL Video, the number one video team built only for HighLevel. socialX brings that same ecosystem fluency to your social feed.
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function ClientLogos() {
                 <h4 className="font-grotesk text-sm font-semibold text-gray-900 dark:text-white leading-tight mb-1 transition-colors duration-300">
                   {logo.name}
                 </h4>
-                <p className="text-[11px] text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-400 transition-colors font-chillax">
+                <p className="text-[11px] text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-400 transition-colors font-body">
                   {logo.description}
                 </p>
               </div>
@@ -150,7 +150,7 @@ export default function ClientLogos() {
               <div className="font-grotesk text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-[1.2px] mb-1 transition-colors">
                 {metric.label}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 font-chillax transition-colors">
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-body transition-colors">
                 {metric.desc}
               </p>
             </div>
