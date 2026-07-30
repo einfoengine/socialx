@@ -31,7 +31,7 @@ export default function Hero() {
       {isMounted && (
         <div
           ref={spotlightRef}
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none opacity-40 blur-[100px] transition-transform duration-75 ease-linear z-0"
+          className="absolute top-0 left-0 w-[800px] h-[800px] is-circle pointer-events-none opacity-40 blur-[100px] transition-transform duration-75 ease-linear z-0"
           style={{
             background: "radial-gradient(circle, rgba(43,80,220,0.3) 0%, rgba(91,141,239,0.1) 50%, transparent 70%)",
           }}
@@ -51,9 +51,9 @@ export default function Hero() {
 
         {/* Eyebrow */}
         <div
-          className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 rounded-full font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm transition-transform hover:scale-105 cursor-default bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF]"
+          className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm cursor-default bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF]"
         >
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
+          <span className="w-2 h-2 bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
           [ Social Media Management For HighLevel SaaS ]
         </div>
 
@@ -82,27 +82,26 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-5 items-center justify-center">
           <a
             href="#gw-pricing"
-            className="group relative gradient-bg text-white px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(43,80,220,0.3)] overflow-hidden"
+            className="btn btn-primary group gradient-bg text-white px-10 py-5 font-grotesk font-semibold text-lg inline-flex items-center gap-3 shadow-[0_10px_28px_rgba(43,80,220,0.25)]"
           >
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            <span className="relative">See pricing</span>
-            <span className="relative group-hover:translate-x-1 transition-transform">→</span>
+            <span>See pricing</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </a>
           <a
             href="#gw-how"
-            className="group text-gray-700 dark:text-gray-300 px-10 py-5 rounded-[3px] font-grotesk font-semibold text-lg inline-flex items-center gap-2 transition-all duration-300 hover:scale-105 bg-white dark:bg-[#111118] hover:bg-gray-50 dark:hover:bg-gray-800 border border-black/10 dark:border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-md"
+            className="btn btn-ghost text-gray-700 dark:text-gray-300 hover:text-[#2B50DC] dark:hover:text-white px-10 py-5 font-grotesk font-semibold text-lg inline-flex items-center gap-2 bg-white dark:bg-[#111118] border border-black/10 dark:border-white/10 hover:border-[#2B50DC]/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-md"
           >
             How it works
           </a>
         </div>
 
         {/* Mini Trust Indicator */}
-        <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/50 dark:bg-white/5 px-6 py-3 rounded-full border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm transition-transform hover:scale-105">
+        <div className="mt-16 flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/50 dark:bg-white/5 px-6 py-3 border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
           <div className="flex -space-x-2">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
+                className="w-8 h-8 border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
                 style={{
                   backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
                   backgroundSize: 'cover'
@@ -115,7 +114,7 @@ export default function Hero() {
 
         {/* Product demo video */}
         <div className="w-full max-w-4xl mx-auto mt-16 lg:mt-20">
-          <div className="rounded-xl overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
+          <div className="overflow-hidden border border-black/10 dark:border-white/10 shadow-[0_30px_80px_-24px_rgba(43,80,220,0.4)] bg-[#0a0a14]">
             <div
               dangerouslySetInnerHTML={{
                 __html: `<wistia-player media-id="xe9k8lhdfb" wistia-popover="true" aspect="1.7777777777777777"></wistia-player>`,

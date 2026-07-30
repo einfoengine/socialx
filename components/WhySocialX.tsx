@@ -88,7 +88,7 @@ export default function WhySocialX() {
 
       {/* Ambient Blue Core Glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none rounded-full filter blur-[150px] opacity-[0.03]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none is-circle filter blur-[150px] opacity-[0.03]"
         style={{
           background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
         }}

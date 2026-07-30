@@ -43,7 +43,7 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
 
   return (
     <div
-      className="relative overflow-hidden card-sky rounded-none p-10 animate-fade-up transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_20px_40px_rgba(43,80,220,0.15)] hover:border-blue-neon/30"
+      className="relative overflow-hidden card-sky p-10 animate-fade-up transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_20px_40px_rgba(43,80,220,0.15)] hover:border-blue-neon/30"
       style={{ animationDelay: `${i * 0.12}s` }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

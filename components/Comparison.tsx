@@ -173,7 +173,7 @@ export default function Comparison() {
         </div>
  
         {/* Comparison Table Card */}
-        <div className="overflow-x-auto rounded-none border border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-[#111118] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300 mb-20">
+        <div className="overflow-x-auto border border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-[#111118] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300 mb-20">
           <table className="w-full border-collapse text-[14.5px] text-left" style={{ minWidth: "980px" }}>
             <thead>
               <tr className="border-b border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
@@ -181,7 +181,7 @@ export default function Comparison() {
                   &nbsp;
                 </th>
                 <th className="p-6 font-grotesk text-center w-[200px] bg-[#111118] dark:bg-black border-x border-b border-x-[#2B50DC]/40 dark:border-x-[#2B50DC]/50 border-b-white/20">
-                  <span className="inline-block px-3 py-1 font-grotesk text-xs font-bold uppercase tracking-[1px] bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white rounded-none">
+                  <span className="inline-block px-3 py-1 font-grotesk text-xs font-bold uppercase tracking-[1px] bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white">
                     socialX
                   </span>
                 </th>
@@ -256,7 +256,7 @@ export default function Comparison() {
           </p>
           <a 
             href="#gw-pricing" 
-            className="inline-block bg-[#111118] text-white hover:bg-black dark:bg-white dark:text-[#111118] dark:hover:bg-gray-100 font-grotesk font-semibold text-sm px-8 py-4 tracking-[0.5px] transition-all duration-200"
+            className="btn btn-ink inline-block bg-[#111118] text-white dark:bg-white dark:text-[#111118] font-grotesk font-semibold text-sm px-8 py-4 tracking-[0.5px]"
           >
             See our reseller plans
           </a>

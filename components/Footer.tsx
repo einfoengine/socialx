@@ -22,6 +22,62 @@ const legalLinks = [
   { label: "Cookie Settings", href: "#" },
 ];
 
+/* The X mark, vector-identical to public/icon.svg. The viewBox is cropped to the
+   path's bounds (the source file pads it inside a 100x100 square) so the mark
+   optically matches the wordmark height. */
+const MARK_PATH =
+  "M22 20 L38 20 C44 38, 56 38, 62 20 L78 20 C70 45, 70 55, 78 80 L62 80 C56 62, 44 62, 38 80 L22 80 C30 55, 30 45, 22 20 Z";
+
+const MARK_GRAY = "#7E7E8A";
+
+/* Footer lockup, drawn as SVG rather than the raster logo so it stays crisp at
+   any pixel density. It rests desaturated and lights up in full brand colour on
+   hover.
+
+   The mark cross-fades two copies of the path instead of using a CSS
+   grayscale() filter: desaturating the brand gradient drives its dark stop
+   (#0025C9) to roughly #292929, which all but disappears against the near-black
+   footer. A flat neutral keeps the resting mark readable. */
+function FooterLogo() {
+  return (
+    <a
+      href="#"
+      aria-label="socialX"
+      className="group inline-flex w-fit items-center gap-0.5 no-underline"
+    >
+      <span
+        className="font-grotesk text-[28px] font-bold leading-none tracking-[-1.2px] transition-colors duration-300 group-hover:text-white"
+        style={{ color: MARK_GRAY }}
+      >
+        social
+      </span>
+      <svg
+        viewBox="22 20 56 60"
+        aria-hidden="true"
+        focusable="false"
+        className="h-[27px] w-auto shrink-0"
+      >
+        <defs>
+          <linearGradient id="sx-footer-mark" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#00A2FF" />
+            <stop offset="100%" stopColor="#0025C9" />
+          </linearGradient>
+        </defs>
+        <path
+          d={MARK_PATH}
+          fill={MARK_GRAY}
+          className="transition-opacity duration-300 group-hover:opacity-0"
+        />
+        <path
+          d={MARK_PATH}
+          fill="url(#sx-footer-mark)"
+          className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      </svg>
+    </a>
+  );
+}
+
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -47,7 +103,7 @@ export default function Footer() {
 
       {/* Ambient Radial Neon Glow */}
       <div
-        className="absolute bottom-0 right-0 w-[500px] h-[500px] pointer-events-none rounded-full filter blur-[150px] opacity-[0.06]"
+        className="absolute bottom-0 right-0 w-[500px] h-[500px] pointer-events-none is-circle filter blur-[150px] opacity-[0.06]"
         style={{
           background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
         }}
@@ -62,13 +118,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <a href="#" className="flex items-center no-underline">
-              <img
-                src="/socialX-logo-white.png"
-                alt="socialX logo"
-                className="h-8 w-auto object-contain"
-              />
-            </a>
+            <FooterLogo />
             <p className="mt-4 text-sm text-gray-500 leading-relaxed max-w-sm font-body">
               Productized social media built exclusively for HighLevel SaaS resellers. Showcase your software features on autopilot. 800+ HL agencies served since 2019.
             </p>
@@ -114,7 +164,7 @@ export default function Footer() {
               High-converting social graphics and copies dropped straight to your inbox weekly.
             </p>
              {subscribed ? (
-              <div className="p-3 border border-blue-neon/20 bg-blue-neon/[0.02] text-xs text-blue-sky font-grotesk font-semibold rounded-[3px]">
+              <div className="p-3 border border-blue-neon/20 bg-blue-neon/[0.02] text-xs text-blue-sky font-grotesk font-semibold">
                 ✓ Successful! We've sent your first template batch.
               </div>
             ) : (
@@ -125,11 +175,11 @@ export default function Footer() {
                   placeholder="Enter your agency email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-body text-white focus:outline-hidden focus:border-[#2B50DC]/50 flex-1 rounded-[3px] placeholder-gray-600"
+                  className="bg-white/[0.02] border border-white/10 px-4 py-2 text-xs font-body text-white focus:outline-hidden focus:border-[#2B50DC]/50 hover:border-white/20 transition-colors flex-1 placeholder-gray-600"
                 />
                 <button
                   type="submit"
-                  className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white px-5 py-2 font-grotesk text-xs font-semibold tracking-wider uppercase transition-colors rounded-[3px]"
+                  className="btn btn-blue bg-[#2B50DC] text-white px-5 py-2 font-grotesk text-xs font-semibold tracking-wider uppercase shrink-0"
                 >
                   Join →
                 </button>

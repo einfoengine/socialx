@@ -18,7 +18,7 @@ function ThemeToggle({ theme, toggleTheme }: { theme: "light" | "dark"; toggleTh
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer focus:outline-hidden"
+      className="btn-icon relative flex items-center justify-center w-9 h-9 border border-white/10 hover:border-white/25 bg-white/5 hover:bg-white/10 focus:outline-hidden"
       aria-label="Toggle theme"
     >
       {/* Sun icon */}
@@ -110,7 +110,7 @@ export default function Header() {
               href="#gw-book"
               aria-label="Book a call"
               title="Book a call"
-              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300"
+              className="btn-icon flex items-center justify-center w-9 h-9 border border-white/10 hover:border-white/25 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white"
             >
               <svg
                 className="w-[18px] h-[18px]"
@@ -126,7 +126,7 @@ export default function Header() {
             </a>
             <a
               href="#gw-pricing"
-              className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3 rounded-[3px] transition-colors duration-300"
+              className="btn btn-blue bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
             >
               Get started
             </a>
@@ -178,7 +178,7 @@ export default function Header() {
             <a
               href="#gw-pricing"
               onClick={() => setOpen(false)}
-              className="bg-[#2B50DC] hover:bg-[#1f3bb3] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 rounded-[3px] mt-4 transition-colors duration-300"
+              className="btn btn-blue bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 mt-4"
             >
               Get started
             </a>

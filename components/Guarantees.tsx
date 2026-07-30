@@ -42,7 +42,7 @@ export default function Guarantees() {
 
       {/* Subtle bottom-centered spotlight */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none rounded-full filter blur-[120px] opacity-[0.04]"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none is-circle filter blur-[120px] opacity-[0.04]"
         style={{
           background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
         }}

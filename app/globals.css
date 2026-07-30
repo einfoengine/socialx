@@ -43,6 +43,27 @@ body {
   overflow-x: hidden;
 }
 
+/* ====== SHARP CORNERS ======
+   The design language is fully square. Zero every radius globally so nothing
+   rounded can creep back in via a stray utility, then opt back in only for the
+   shapes that are circular by function rather than being boxes with softened
+   corners: the ambient glow blobs and the loading spinner. */
+
+*,
+*::before,
+*::after {
+  border-radius: 0;
+}
+
+.is-circle {
+  border-radius: 9999px;
+}
+
+/* Native radios have no square equivalent — keep them round if one is ever added. */
+input[type="radio"] {
+  border-radius: 9999px;
+}
+
 /* ====== UTILITY CLASSES ====== */
 
 .gradient-text {
@@ -109,6 +130,188 @@ body {
 }
 .card-red:hover {
   @apply border-red-500/20 dark:border-red-500/40 shadow-[0_8px_32px_rgba(239,68,68,0.07)] dark:shadow-[0_8px_32px_rgba(239,68,68,0.15)] -translate-y-[2px];
+}
+
+/* ====== BUTTONS ======
+   One interaction model for every CTA on the site.
+
+   Nothing travels across the button on hover. A fill sweeping in from one edge
+   reads as busy and fights a static, square-cornered layout — the eye tracks the
+   moving mass instead of the label. Here the whole surface responds at once:
+   the tone shifts as an even fade, a 1px inset ring snaps on to sharpen the
+   edges, the button rises 2px, and a tight brand-coloured glow blooms beneath
+   it. The only movement is vertical and small, so the button feels lifted
+   rather than animated. Pressing drops it flat against a shorter shadow.
+
+   Variants supply only tint, ring and shadow via custom properties, so a new
+   button style is a few lines rather than a pile of hover: utilities. */
+
+.btn {
+  position: relative;
+  isolation: isolate;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Shade layer. Fades straight in (no wipe) to darken the button, then keeps a
+   soft gradient drifting across it for as long as the pointer stays.
+
+   The stops run dark→soft→dark→soft→dark across an image twice the button's
+   width, so one full pass shifts by exactly one repeat and the loop is
+   seamless — no visible jump at the restart. Because this layer sits above the
+   button's own background but below the label, it darkens gradient CTAs too,
+   which a plain background-color hover cannot do. */
+@keyframes btnSheen {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(
+    100deg,
+    var(--btn-shade-a, rgba(0, 0, 0, 0.28)) 0%,
+    var(--btn-shade-b, rgba(0, 0, 0, 0.10)) 25%,
+    var(--btn-shade-a, rgba(0, 0, 0, 0.28)) 50%,
+    var(--btn-shade-b, rgba(0, 0, 0, 0.10)) 75%,
+    var(--btn-shade-a, rgba(0, 0, 0, 0.28)) 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover::before,
+.btn:focus-visible::before,
+.btn:active::before {
+  opacity: 1;
+  animation: btnSheen 3s linear infinite;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--btn-shadow, 0 12px 28px rgba(17, 17, 24, 0.22)),
+              inset 0 0 0 1px var(--btn-ring, transparent);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--btn-shadow-active, 0 2px 6px rgba(17, 17, 24, 0.18)),
+              inset 0 0 0 1px var(--btn-ring, transparent);
+  transition-duration: 0.08s;
+}
+
+.btn:focus-visible {
+  outline: 2px solid #2B50DC;
+  outline-offset: 3px;
+}
+
+/* Gradient CTAs */
+.btn-primary {
+  --btn-shade-a: rgba(0, 0, 0, 0.32);
+  --btn-shade-b: rgba(0, 0, 0, 0.10);
+  --btn-ring: rgba(255, 255, 255, 0.22);
+  --btn-shadow: 0 14px 32px rgba(43, 80, 220, 0.45);
+  --btn-shadow-active: 0 4px 10px rgba(43, 80, 220, 0.38);
+}
+
+/* Solid blue CTAs */
+.btn-blue {
+  --btn-shade-a: rgba(0, 0, 0, 0.30);
+  --btn-shade-b: rgba(0, 0, 0, 0.08);
+  --btn-ring: rgba(255, 255, 255, 0.2);
+  --btn-shadow: 0 10px 24px rgba(43, 80, 220, 0.42);
+  --btn-shadow-active: 0 3px 8px rgba(43, 80, 220, 0.34);
+}
+
+/* Ink CTAs — dark in light mode, inverted to white in dark mode.
+   The light-mode surface is already near-black, where more black would be
+   invisible, so its drift carries a brand-blue stop instead: still a deepening,
+   but one you can actually see move. */
+.btn-ink {
+  --btn-shade-a: rgba(0, 0, 0, 0.42);
+  --btn-shade-b: rgba(43, 80, 220, 0.40);
+  --btn-ring: rgba(255, 255, 255, 0.16);
+  --btn-shadow: 0 12px 28px rgba(17, 17, 24, 0.3);
+  --btn-shadow-active: 0 3px 8px rgba(17, 17, 24, 0.26);
+}
+html.dark .btn-ink {
+  --btn-shade-a: rgba(0, 0, 0, 0.16);
+  --btn-shade-b: rgba(0, 0, 0, 0.04);
+  --btn-ring: rgba(0, 0, 0, 0.14);
+  --btn-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+}
+
+/* Light CTAs sitting on a coloured surface */
+.btn-light {
+  --btn-shade-a: rgba(17, 17, 24, 0.16);
+  --btn-shade-b: rgba(17, 17, 24, 0.04);
+  --btn-ring: rgba(17, 17, 24, 0.14);
+  --btn-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  --btn-shadow-active: 0 3px 8px rgba(0, 0, 0, 0.22);
+}
+
+/* Bordered / secondary CTAs. No inset ring — the element already has a real
+   border, which its own hover:border-* utility recolours. */
+.btn-ghost {
+  --btn-shade-a: rgba(43, 80, 220, 0.14);
+  --btn-shade-b: rgba(43, 80, 220, 0.03);
+  --btn-shadow: 0 10px 24px rgba(17, 17, 24, 0.12);
+  --btn-shadow-active: 0 2px 6px rgba(17, 17, 24, 0.1);
+}
+html.dark .btn-ghost {
+  --btn-shade-a: rgba(0, 0, 0, 0.34);
+  --btn-shade-b: rgba(91, 141, 239, 0.14);
+  --btn-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+/* Small square icon buttons — same feel, no sweep or shadow at that size. */
+.btn-icon {
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease,
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-icon:hover {
+  transform: translateY(-1px);
+}
+.btn-icon:active {
+  transform: translateY(0);
+  transition-duration: 0.06s;
+}
+.btn-icon:focus-visible {
+  outline: 2px solid #2B50DC;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn::before,
+  .btn-icon {
+    transition-duration: 0.01ms;
+  }
+  /* Drop the lift and hold the gradient still, but keep the darkening, ring and
+     glow so hover is still unmistakable without motion. */
+  .btn:hover,
+  .btn:focus-visible,
+  .btn:active,
+  .btn-icon:hover,
+  .btn-icon:active {
+    transform: none;
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before,
+  .btn:active::before {
+    animation: none;
+  }
 }
 
 /* ====== GRID HELPER UTILITIES ====== */

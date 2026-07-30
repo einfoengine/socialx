@@ -10,7 +10,7 @@ function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
       {/* Header & Copy */}
       <div>
         <div className="flex items-center gap-3 mb-4">
-          <div className={`w-9 h-9 rounded-full ${item.logoBg} flex items-center justify-center font-grotesk text-white font-bold text-sm`}>
+          <div className={`w-9 h-9 ${item.logoBg} flex items-center justify-center font-grotesk text-white font-bold text-sm`}>
             {item.logoLetter}
           </div>
           <div>

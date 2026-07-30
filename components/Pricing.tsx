@@ -154,29 +154,29 @@ export default function Pricing() {
         <div className="flex flex-col items-center gap-3 mb-12 text-center animate-fade-up">
           <div className="font-grotesk text-[13px] font-bold tracking-[1.5px] uppercase text-rose-500 dark:text-rose-400 flex items-center gap-2">
             <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full bg-rose-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 bg-rose-500"></span>
             </span>
             Hey, our launching mega offer is going on.
           </div>
           
-          <div className="inline-flex items-center p-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 shadow-inner">
+          <div className="inline-flex items-center p-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 shadow-inner">
             <button
               onClick={() => setShowLaunchDiscount(false)}
-              className={`font-grotesk text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap ${
+              className={`font-grotesk text-xs font-semibold px-5 py-2.5 transition-all duration-200 cursor-pointer whitespace-nowrap ${
                 !showLaunchDiscount
                   ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_6px_rgba(0,0,0,0.15)]"
-                  : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
               }`}
             >
               Regular
             </button>
             <button
               onClick={() => setShowLaunchDiscount(true)}
-              className={`font-grotesk text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              className={`font-grotesk text-xs font-semibold px-5 py-2.5 transition-all duration-200 flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 showLaunchDiscount
                   ? "bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white shadow-[0_2px_6px_rgba(43,80,220,0.3)]"
-                  : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
               }`}
             >
               🚀 Launch Offer
@@ -190,7 +190,7 @@ export default function Pricing() {
             Billing cycle
           </div>
           <div
-            className="inline-flex items-center p-1.5 rounded-none flex-wrap justify-center gap-1 bg-black/4 dark:bg-white/4 border border-black/7 dark:border-white/8 transition-colors duration-300"
+            className="inline-flex items-center p-1.5 flex-wrap justify-center gap-1 bg-black/4 dark:bg-white/4 border border-black/7 dark:border-white/8 transition-colors duration-300"
           >
             {PERIODS.map((p) => {
               const discountPercent = getDiscountPercent(p.key, showLaunchDiscount);
@@ -198,16 +198,16 @@ export default function Pricing() {
                 <button
                   key={p.key}
                   onClick={() => setPeriod(p.key)}
-                  className={`font-grotesk text-sm font-medium px-5 py-2.5 rounded-none flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                  className={`font-grotesk text-sm font-medium px-5 py-2.5 flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap cursor-pointer ${
                     period === p.key
                       ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
-                      : "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                      : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
                   }`}
                 >
                   {p.label}
                   {discountPercent > 0 && (
                     <span
-                      className={`text-[11px] font-semibold px-2 py-0.5 rounded-none transition-colors duration-200 ${
+                      className={`text-[11px] font-semibold px-2 py-0.5 transition-colors duration-200 ${
                         period === p.key
                           ? "bg-white/15 text-white/90 dark:bg-black/10 dark:text-black/80"
                           : "bg-[#2B50DC]/10 text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
@@ -232,7 +232,7 @@ export default function Pricing() {
             return (
               <div
                 key={tier.name}
-                className={`relative flex flex-col rounded-none p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
+                className={`relative flex flex-col p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
                   tier.featured
                     ? "gradient-bg border-none shadow-[0_24px_64px_rgba(43,80,220,0.35)] scale-[1.03]"
                     : "bg-white dark:bg-[#111118] border border-black/8 dark:border-white/8 shadow-sm dark:shadow-md scale-100"
@@ -243,7 +243,7 @@ export default function Pricing() {
               >
                 {tier.featured && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 rounded-none tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
                   >
                     Most Popular
                   </div>
@@ -280,7 +280,7 @@ export default function Pricing() {
                         ${fmt(tier.baseMonthlyPrice)}/month
                       </span>
                       <span
-                        className={`font-grotesk text-[10px] font-bold px-2 py-0.5 rounded-none uppercase tracking-[0.5px] ${
+                        className={`font-grotesk text-[10px] font-bold px-2 py-0.5 uppercase tracking-[0.5px] ${
                           tier.featured
                             ? "bg-white text-[#2B50DC]"
                             : "bg-rose-500 text-white"
@@ -329,7 +329,7 @@ export default function Pricing() {
                 </div>
  
                 {/* Customization Level Box */}
-                <div className={`mb-8 p-5 border transition-colors duration-300 rounded-none ${
+                <div className={`mb-8 p-5 border transition-colors duration-300 ${
                   tier.featured
                     ? "bg-white/10 border-white/10"
                     : "bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/5"
@@ -337,7 +337,7 @@ export default function Pricing() {
                   <div className={`flex items-center gap-1.5 font-grotesk text-[12px] font-bold uppercase tracking-[0.8px] ${
                     tier.featured ? "text-white" : "text-gray-900 dark:text-white"
                   }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${
+                    <span className={`w-1.5 h-1.5 ${
                       tier.featured ? "bg-cyan-300 animate-pulse" : "bg-[#2B50DC]"
                     }`} />
                     {tier.customization.level}
@@ -354,10 +354,10 @@ export default function Pricing() {
                   href={CHECKOUT_LINKS[tier.name]?.[period]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-full py-4 text-center rounded-none font-grotesk font-semibold text-[15px] mb-8 transition-transform hover:-translate-y-0.5 cursor-pointer block ${
+                  className={`btn w-full py-4 text-center font-grotesk font-semibold text-[15px] mb-8 block ${
                     tier.featured
-                      ? "bg-white text-[#111118] hover:bg-gray-100"
-                      : "bg-[#111118] text-white hover:bg-black dark:bg-white dark:text-[#111118] dark:hover:bg-gray-100"
+                      ? "btn-light bg-white text-[#111118]"
+                      : "btn-ink bg-[#111118] text-white dark:bg-white dark:text-[#111118]"
                   }`}
                 >
                   {tier.cta}

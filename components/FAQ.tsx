@@ -56,10 +56,10 @@ function FAQItem({
           {faq.q}
         </span>
         <button
-          className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] rounded-[3px] transition-all duration-300 ${
-            isOpen 
-              ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180" 
-              : "bg-white dark:bg-[#111118] border-black/10 dark:border-white/10 text-gray-500 hover:text-gray-900 dark:hover:text-white hover:border-black/20 dark:hover:border-white/20"
+          className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] transition-all duration-300 ${
+            isOpen
+              ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180"
+              : "bg-white dark:bg-[#111118] border-black/10 dark:border-white/10 text-gray-500 hover:text-[#2B50DC] dark:hover:text-white hover:border-[#2B50DC]/40 hover:bg-[#2B50DC]/8 dark:hover:bg-[#2B50DC]/20"
           }`}
         >
           {isOpen ? "−" : "+"}

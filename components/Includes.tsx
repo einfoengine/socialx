@@ -42,9 +42,9 @@ export default function Includes() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
           {items.map((item) => (
-            <div key={item.title} className="card-sky rounded-none p-7">
+            <div key={item.title} className="card-sky p-7">
               <div
-                className="w-11 h-11 rounded-none flex items-center justify-center text-xl mb-5 bg-[#2B50DC]/10 dark:bg-[#2B50DC]/20 text-[#2B50DC] dark:text-[#5B8DEF] transition-colors"
+                className="w-11 h-11 flex items-center justify-center text-xl mb-5 bg-[#2B50DC]/10 dark:bg-[#2B50DC]/20 text-[#2B50DC] dark:text-[#5B8DEF] transition-colors"
               >
                 {item.icon}
               </div>

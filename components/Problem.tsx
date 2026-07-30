@@ -159,7 +159,7 @@ export default function Problem() {
           Prospects research your brand before they ever book a call. A dead feed, or Canva posts from two years ago, tells them you are not a serious SaaS.
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-0">
+        <div className="grid sm:grid-cols-2 gap-5 md:gap-6">
           {problems.map((p) => (
             <ProblemCard key={p.title} p={p} />
           ))}

@@ -80,7 +80,7 @@ export default function ClientLogos() {
     <section id="gw-client-logos" className="py-28 md:py-36 relative overflow-hidden bg-[#F4F2EF] dark:bg-[#0c0c10] transition-colors duration-300">
       {/* Background Subtle Gradient & Glow */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none filter blur-[120px] opacity-15"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] is-circle pointer-events-none filter blur-[120px] opacity-15"
         style={{
           background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
         }}
@@ -107,7 +107,7 @@ export default function ClientLogos() {
           {LOGOS.map((logo, i) => (
             <div
               key={logo.name}
-              className="group relative flex flex-col p-6 rounded-none transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-white/2 border border-black/5 dark:border-white/5 shadow-xs dark:shadow-[0_4px_20px_rgba(0, 0, 0, 0.2)]"
+              className="group relative flex flex-col p-6 transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-white/2 border border-black/5 dark:border-white/5 shadow-xs dark:shadow-[0_4px_20px_rgba(0, 0, 0, 0.2)]"
             >
               {/* Active glow hover border overlay */}
               <div className="absolute inset-0 border border-transparent group-hover:border-blue-sky/30 transition-colors duration-300 pointer-events-none" />
@@ -133,7 +133,7 @@ export default function ClientLogos() {
 
         {/* Metrics Banner */}
         <div 
-          className="p-8 md:p-12 relative rounded-none flex flex-col md:flex-row items-center justify-between gap-10 md:gap-6 bg-white/40 dark:bg-white/1 border border-black/5 dark:border-white/4 transition-colors duration-300"
+          className="p-8 md:p-12 relative flex flex-col md:flex-row items-center justify-between gap-10 md:gap-6 bg-white/40 dark:bg-white/1 border border-black/5 dark:border-white/4 transition-colors duration-300"
         >
           {METRICS.map((metric, i) => (
             <div key={metric.label} className="flex-1 text-center md:text-left relative">

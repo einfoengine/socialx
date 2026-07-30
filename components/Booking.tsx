@@ -9,7 +9,7 @@ const CHECKLIST = [
 
 function CheckIcon() {
   return (
-    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2B50DC]/10 dark:bg-[#5B8DEF]/15">
+    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-[#2B50DC]/10 dark:bg-[#5B8DEF]/15">
       <svg
         className="h-3 w-3 text-[#2B50DC] dark:text-[#5B8DEF]"
         viewBox="0 0 12 12"
@@ -88,12 +88,12 @@ export default function Booking() {
             </ul>
 
             {/* Trust pill */}
-            <div className="inline-flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 px-5 py-2.5 rounded-full border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
+            <div className="inline-flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 px-5 py-2.5 border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 rounded-full border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
+                    className="w-8 h-8 border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
                     style={{
                       backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
                       backgroundSize: "cover",
@@ -106,7 +106,7 @@ export default function Booking() {
           </div>
 
           {/* Right: calendar */}
-          <div className="rounded-[4px] overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#111118] shadow-[0_16px_48px_rgba(43,80,220,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
+          <div className="overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#111118] shadow-[0_16px_48px_rgba(43,80,220,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
             <iframe
               src="https://api.leadconnectorhq.com/widget/booking/RbjuKxBNLN8bLfUEviTE"
               title="Book a call with socialX"

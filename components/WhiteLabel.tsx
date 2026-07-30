@@ -3,7 +3,7 @@ export default function WhiteLabel() {
     <section id="gw-white-label" className="py-32 md:py-40 bg-white dark:bg-[#050508] transition-colors duration-300">
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8">
         <div
-          className="rounded-none p-14 flex flex-col md:flex-row items-center justify-between gap-10 bg-linear-to-br from-blue-600/[0.08] to-blue-sky/[0.04] dark:from-blue-600/[0.12] dark:to-blue-sky/[0.08] border border-blue-neon/15 dark:border-blue-neon/30 transition-colors duration-300"
+          className="p-14 flex flex-col md:flex-row items-center justify-between gap-10 bg-linear-to-br from-blue-600/[0.08] to-blue-sky/[0.04] dark:from-blue-600/[0.12] dark:to-blue-sky/[0.08] border border-blue-neon/15 dark:border-blue-neon/30 transition-colors duration-300"
         >
           <div className="flex-1">
             <div className="font-grotesk text-[12px] font-semibold text-blue-neon dark:text-blue-sky uppercase tracking-[1.5px] mb-3 transition-colors">
@@ -20,9 +20,10 @@ export default function WhiteLabel() {
           </div>
           <a
             href="#"
-            className="gradient-bg text-white px-7 py-4 rounded-[3px] font-grotesk font-semibold inline-flex items-center gap-2 whitespace-nowrap transition-transform hover:-translate-y-0.5 shrink-0"
+            className="btn btn-primary group gradient-bg text-white px-7 py-4 font-grotesk font-semibold inline-flex items-center gap-2 whitespace-nowrap shrink-0"
           >
-            Get on the list →
+            <span>Get on the list</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </a>
         </div>
       </div>

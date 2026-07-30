@@ -31,7 +31,7 @@ export default function OnboardingForm() {
       {isMounted && (
         <div
           ref={spotlightRef}
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full pointer-events-none opacity-30 blur-[120px] transition-transform duration-75 ease-linear z-0"
+          className="absolute top-0 left-0 w-[800px] h-[800px] is-circle pointer-events-none opacity-30 blur-[120px] transition-transform duration-75 ease-linear z-0"
           style={{
             background: "radial-gradient(circle, rgba(43,80,220,0.25) 0%, rgba(91,141,239,0.08) 50%, transparent 70%)",
           }}
@@ -69,8 +69,8 @@ export default function OnboardingForm() {
       {/* Main content */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-start py-12 px-6 lg:px-8 max-w-5xl mx-auto w-full">
         {/* Eyebrow / Progress */}
-        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full font-grotesk text-[11px] font-medium tracking-[0.5px] uppercase bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF] animate-fade-up">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shrink-0 shadow-[0_0_6px_rgba(43,80,220,0.8)]" />
+        <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 font-grotesk text-[11px] font-medium tracking-[0.5px] uppercase bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF] animate-fade-up">
+          <span className="w-1.5 h-1.5 bg-blue-500 animate-pulse shrink-0 shadow-[0_0_6px_rgba(43,80,220,0.8)]" />
           Onboarding Process
         </div>
 
@@ -89,24 +89,24 @@ export default function OnboardingForm() {
 
         {/* Form Card Container */}
         <div 
-          className="w-full bg-white dark:bg-[#0b0b12]/80 border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_30px_80px_-24px_rgba(43,80,220,0.25)] p-4 sm:p-6 lg:p-8 relative min-h-[700px] flex flex-col justify-center overflow-hidden animate-fade-up"
+          className="w-full bg-white dark:bg-[#0b0b12]/80 border border-black/10 dark:border-white/[0.08] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_30px_80px_-24px_rgba(43,80,220,0.25)] p-4 sm:p-6 lg:p-8 relative min-h-[700px] flex flex-col justify-center overflow-hidden animate-fade-up"
           style={{ animationDelay: "300ms" }}
         >
           {/* Glowing subtle border highlight */}
-          <div className="absolute inset-0 rounded-2xl border border-white/5 pointer-events-none" />
+          <div className="absolute inset-0 border border-white/5 pointer-events-none" />
 
           {/* Loader Skeleton */}
           {isLoading && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#0b0b12] p-8 z-20 space-y-6">
-              <div className="w-12 h-12 border-4 border-[#2B50DC]/20 border-t-[#2B50DC] rounded-full animate-spin" />
+              <div className="w-12 h-12 border-4 border-[#2B50DC]/20 border-t-[#2B50DC] is-circle animate-spin" />
               <div className="text-center space-y-2">
                 <h3 className="font-grotesk text-lg font-medium text-gray-800 dark:text-gray-200">Loading Form...</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Connecting to secure onboarding system</p>
               </div>
               <div className="w-full max-w-md space-y-4 pt-6">
-                <div className="h-10 bg-gray-100 dark:bg-white/5 rounded-md animate-pulse" />
-                <div className="h-28 bg-gray-100 dark:bg-white/5 rounded-md animate-pulse" />
-                <div className="h-10 bg-gray-100 dark:bg-white/5 rounded-md animate-pulse" />
+                <div className="h-10 bg-gray-100 dark:bg-white/5 animate-pulse" />
+                <div className="h-28 bg-gray-100 dark:bg-white/5 animate-pulse" />
+                <div className="h-10 bg-gray-100 dark:bg-white/5 animate-pulse" />
               </div>
             </div>
           )}
