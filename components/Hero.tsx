@@ -54,7 +54,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 mb-8 px-5 py-2.5 font-grotesk text-[13px] font-medium tracking-[0.5px] uppercase shadow-sm cursor-default bg-white/80 dark:bg-[#111118]/80 backdrop-blur-sm border border-[#2B50DC]/18 text-[#2B50DC] dark:text-[#5B8DEF]"
         >
           <span className="w-2 h-2 bg-blue-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(43,80,220,0.8)]" />
-          [ Social Media Management For HighLevel SaaS ]
+          100% done for you, monthly.
         </div>
 
         {/* H1 */}
@@ -69,8 +69,7 @@ export default function Hero() {
           <br className="hidden sm:block" />
           <span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>
             built for HighLevel SaaS resellers.
-          </span>{" "}
-          <br className="hidden sm:block" />100% done for you, monthly.
+          </span>
         </h1>
 
         {/* Sub */}
