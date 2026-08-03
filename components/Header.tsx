@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 
 function Logo() {
   return (
-    <a href="#" className="flex items-center no-underline">
+    <a href="#" className="flex shrink-0 items-center no-underline">
       <img
         src="/socialX-logo-white.png"
         alt="socialX logo"
-        className="h-8 w-auto object-contain"
+        className="h-8 w-auto shrink-0 object-contain"
       />
     </a>
   );
@@ -91,26 +91,37 @@ export default function Header() {
   return (
     <header id="gw-header" className="sticky top-0 z-50 w-full bg-[#050508]/85 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[76px]">
-          <Logo />
+        {/* Three equal regions: branding, navigation, actions. Each takes flex-1
+            from a zero basis, so the left and right regions always resolve to the
+            same width and the nav sits optically centred in the bar regardless of
+            how wide the logo or the buttons happen to be. */}
+        <div className="flex items-center h-[76px] gap-4">
+          {/* 1 — Branding */}
+          <div className="flex flex-1 items-center justify-start">
+            <Logo />
+          </div>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* 2 — Navigation */}
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-8">
             {navLinks.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
-                className="font-grotesk text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300"
+                className="font-grotesk text-sm font-medium whitespace-nowrap text-gray-400 hover:text-white transition-colors duration-300"
               >
                 {l.label}
               </a>
             ))}
+          </nav>
+
+          {/* 3 — Actions */}
+          <div className="flex flex-1 items-center justify-end gap-4">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <a
               href="#gw-book"
               aria-label="Book a call"
               title="Book a call"
-              className="btn-icon flex items-center justify-center w-9 h-9 border border-white/10 hover:border-white/25 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white"
+              className="btn-icon hidden lg:flex items-center justify-center w-9 h-9 shrink-0 border border-white/10 hover:border-white/25 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white"
             >
               <svg
                 className="w-[18px] h-[18px]"
@@ -126,19 +137,17 @@ export default function Header() {
             </a>
             <a
               href="#gw-pricing"
-              className="btn btn-blue bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
+              className="btn btn-blue hidden lg:inline-block shrink-0 whitespace-nowrap bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
             >
               Get started
             </a>
-          </nav>
 
-          {/* Mobile menu trigger */}
-          <div className="md:hidden flex items-center gap-4">
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            {/* Mobile menu trigger */}
             <button
-              className="flex flex-col justify-center gap-[5px] p-2 -mr-2 cursor-pointer"
+              className="lg:hidden flex flex-col justify-center gap-[5px] p-2 -mr-2 cursor-pointer"
               onClick={() => setOpen((o) => !o)}
               aria-label="Toggle navigation"
+              aria-expanded={open}
             >
               <span
                 className="block w-6 h-[2px] bg-white transition-all duration-300 origin-center"
@@ -158,7 +167,7 @@ export default function Header() {
 
         {/* Mobile menu */}
         <div
-          className="md:hidden overflow-hidden transition-all duration-300 bg-[#050508]"
+          className="lg:hidden overflow-hidden transition-all duration-300 bg-[#050508]"
           style={{ maxHeight: open ? "360px" : "0" }}
         >
           <nav

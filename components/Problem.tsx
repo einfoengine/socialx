@@ -2,24 +2,59 @@
 
 import { useRef, useEffect } from "react";
 
+/* Icons are inline SVG rather than emoji. These cards previously used ⏱ 🎨 🤷 🔥,
+   and U+23F1 ⏱ has no colour-emoji default, so it fell back to the body font —
+   which carries no glyph for it — and the "No time, no system." card rendered
+   with no icon at all. Vector paths render identically everywhere and inherit
+   currentColor, so they also respond to the card's hover state.
+
+   Each entry supplies only its paths; the shared <svg> wrapper lives in
+   ProblemCard so stroke weight and sizing stay consistent. */
 const problems = [
   {
-    icon: "⏱",
+    // Clock — no time
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 7 12 12 15.5 14" />
+      </>
+    ),
     title: "No time, no system.",
     body: "You're closing deals, onboarding clients, running support. Content falls off every time, and prospects notice the ghost account.",
   },
   {
-    icon: "🎨",
+    // Pen — DIY design work
+    icon: (
+      <>
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+      </>
+    ),
     title: "DIY content kills positioning.",
     body: "Canva posts on Sunday nights look amateur next to real SaaS brands. Costs deals at the trust stage.",
   },
   {
-    icon: "🤷",
+    // Question mark — doesn't understand the platform
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M9.2 9.3a3 3 0 0 1 5.8 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17.2" x2="12.01" y2="17.2" />
+      </>
+    ),
     title: "Generic SMM doesn't speak HighLevel.",
     body: "Freelancers who've never touched the platform produce fluffy, platform-agnostic content. Useless for HL-aware prospects.",
   },
   {
-    icon: "🔥",
+    // People — managing freelancers instead of building
+    icon: (
+      <>
+        <path d="M16 20v-1.6a3.4 3.4 0 0 0-3.4-3.4H6.4A3.4 3.4 0 0 0 3 18.4V20" />
+        <circle cx="9.5" cy="8" r="3.4" />
+        <path d="M21 20v-1.6a3.4 3.4 0 0 0-2.6-3.3" />
+        <path d="M15.5 4.8a3.4 3.4 0 0 1 0 6.5" />
+      </>
+    ),
     title: "Freelancer chaos costs deals.",
     body: "Three writers, two designers, missed deadlines. You end up managing people instead of growing your SaaS.",
   },
@@ -136,7 +171,18 @@ function ProblemCard({ p }: { p: (typeof problems)[0] }) {
       />
       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
       <div className="relative z-10">
-        <div className="text-3xl mb-5">{p.icon}</div>
+        <svg
+          className="w-8 h-8 mb-5 text-[#5B8DEF] transition-colors duration-300 group-hover:text-white"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          {p.icon}
+        </svg>
         <h3 className="font-grotesk text-[22px] font-semibold mb-3 leading-snug tracking-[-0.4px] text-white">
           {p.title}
         </h3>

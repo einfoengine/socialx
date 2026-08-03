@@ -136,6 +136,52 @@ export default function HowItWorks() {
         <p className="text-center mt-14 font-grotesk text-[17px] font-medium text-blue-neon dark:text-blue-sky transition-colors duration-300">
           First batch in 7 days. After that, it just runs.
         </p>
+
+        {/* Closing CTA. Deliberately an ink panel rather than the tinted-blue
+            treatment used by the white-label block, so the two don't read as the
+            same component, and so this lands as a hard stop at the end of the
+            section. Points at #gw-book, the scheduler. */}
+        <div className="relative overflow-hidden mt-16 md:mt-24 bg-[#111118] dark:bg-black border border-black/10 dark:border-white/10 px-6 py-14 md:px-16 md:py-16 text-center">
+          <div
+            className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[520px] h-[320px] is-circle pointer-events-none blur-[110px] opacity-40"
+            style={{
+              background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)",
+            }}
+          />
+
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <div className="font-grotesk text-[12px] font-semibold uppercase tracking-[1.5px] text-blue-sky mb-4">
+              [ Your move ]
+            </div>
+
+            <h3
+              className="font-grotesk font-semibold leading-[1.1] tracking-[-1.2px] text-white mb-5"
+              style={{ fontSize: "clamp(28px, 3.6vw, 44px)" }}
+            >
+              This is how prospects should find you.
+            </h3>
+
+            <p className="text-[16px] md:text-[17px] leading-relaxed text-gray-400 mb-9 max-w-2xl mx-auto">
+              Current, on-brand, and actually selling your software. If that is not
+              what your feed says today, that is the gap costing you deals. Talk to
+              us and see your first batch before you commit to anything.
+            </p>
+
+            <a
+              href="#gw-book"
+              className="btn btn-primary group gradient-bg text-white px-9 py-4.5 font-grotesk font-semibold text-base inline-flex items-center gap-2 shadow-[0_10px_28px_rgba(43,80,220,0.3)]"
+            >
+              <span>Book a call</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+
+            <div className="mt-6 font-grotesk text-[11px] uppercase tracking-[1.2px] text-gray-500">
+              15 minutes · No pitch · No contracts
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
