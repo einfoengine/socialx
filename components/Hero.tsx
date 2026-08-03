@@ -65,20 +65,12 @@ export default function Hero() {
           {/* <span className="block md:inline-block md:whitespace-nowrap">Social Media Management<br></br><span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>for HighLevel resellers.</span></span><br /> */}
           {/* <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">Done for you.</span> &nbsp;
           Not by you. */}
-          Make your{" "}
+          White-label social media management{" "}
+          <br className="hidden sm:block" />
           <span className='gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky'>
-            HighLevel SaaS <br className="hidden sm:block" />look like the{" "}
-            {/* The wrapping span clips its gradient to the glyphs via
-                `color: transparent`, so an underline would inherit a transparent
-                decoration colour and paint nothing. Hence the explicit
-                decoration-blue-sky. Offset and weight step up at sm: at the
-                mobile size the h1's 1.05 leading leaves too little room, and a
-                desktop-sized underline would run into the line beneath. */}
-            <span className="underline decoration-blue-sky decoration-2 sm:decoration-4 underline-offset-4 sm:underline-offset-8">
-              market leader
-            </span>.
+            built for HighLevel SaaS resellers.
           </span>{" "}
-          <br className="hidden sm:block" />Without writing a single post.
+          <br className="hidden sm:block" />100% done for you, monthly.
         </h1>
 
         {/* Sub */}
