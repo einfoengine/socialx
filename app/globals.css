@@ -77,6 +77,16 @@ input[type="radio"] {
   background: var(--gradient-x);
 }
 
+/* Highlight for headings that sit on the brand-blue background, where the
+   standard blue gradient-text would disappear into the surface. Runs cyan into
+   white so it reads as a highlight rather than a colour change. */
+.gradient-text-light {
+  background: linear-gradient(135deg, #7FF0FF 0%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .section-eyebrow {
   font-family: var(--font-grotesk);
   font-size: 13px;

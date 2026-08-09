@@ -199,7 +199,8 @@ export default function Problem() {
       <div data-reveal className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow text-white/80" style={{ color: "rgba(255,255,255,0.8)" }}>[ The trust gap ]</div>
         <h2 className="section-title text-white" style={{ color: "white" }}>
-          Right now, your social feed is costing you deals.
+          Right now, your social feed is{" "}
+          <span className="gradient-text-light">costing you deals</span>.
         </h2>
         <p className="section-sub mb-20 text-white/70" style={{ color: "rgba(255,255,255,0.7)" }}>
           Prospects research your brand before they ever book a call. A dead feed, or Canva posts from two years ago, tells them you are not a serious SaaS.

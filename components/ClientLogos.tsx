@@ -115,7 +115,7 @@ export default function ClientLogos() {
         <div className="text-center mb-16">
           <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Why trust a new name ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight transition-colors duration-300">
-            New name. Not a new team.
+            New name. <span className="gradient-text">Not a new team</span>.
           </h2>
           <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-body text-[16px] md:text-[18px] transition-colors duration-300">
             socialX is the social arm of growX, built by the same team behind GHL

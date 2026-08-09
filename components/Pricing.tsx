@@ -143,7 +143,7 @@ export default function Pricing() {
         <div className="text-center mb-16">
           <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Pricing ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
-            Pick your tier. Cancel anytime.
+            Pick your tier. <span className="gradient-text">Cancel anytime</span>.
           </h2>
           <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-body text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
             Every plan is customized to your brand and scheduled into your HL Social Planner for you. The higher the tier, the deeper we tailor: from <strong>brand-matched posts</strong>, to content <strong>rewritten in your voice</strong>, to a <strong>fully bespoke feed</strong> built around your business.

@@ -94,7 +94,7 @@ export default function FAQ() {
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="section-eyebrow">[ Frequently Asked ]</div>
         <h2 className="section-title">
-          The questions resellers<br />actually ask us.
+          The questions resellers<br /><span className="gradient-text">actually ask us</span>.
         </h2>
         <p className="section-sub mb-20 text-gray-600">
           Simple, transparent answers about our white-label SaaS content service.

@@ -165,7 +165,7 @@ export default function Comparison() {
         <div className="text-center mb-20">
           <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Comparison ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
-            Stop bleeding time. Start selling software.
+            Stop bleeding time. <span className="gradient-text">Start selling software</span>.
           </h2>
           <p className="section-sub text-gray-600 dark:text-white/70 max-w-3xl mx-auto font-body text-[16px] md:text-[18px] leading-relaxed transition-colors duration-300">
             Every reseller tries one of these. Here is the honest trade-off on each, and where socialX is different.

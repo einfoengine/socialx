@@ -107,7 +107,7 @@ export default function Includes() {
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow">[ Standard across all plans ]</div>
         <h2 className="section-title">
-          Every plan includes<br />the core socialX system.
+          Every plan includes<br />the <span className="gradient-text">core socialX system</span>.
         </h2>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-20">
