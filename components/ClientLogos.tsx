@@ -1,79 +1,99 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const LOGOS = [
+/* The three brands behind socialX. Rendered on dark tiles in BOTH themes on
+   purpose: the growX and socialX marks are drawn with fill="white" wordmarks,
+   so on this section's light cream background they would disappear entirely.
+
+   GHL Video points at the trimmed copy — the source file centres a 613x138
+   logo inside a 1080x1080 canvas, which would render the mark at ~13% scale. */
+const BRANDS = [
   {
-    name: "AuraCRM",
-    svg: (
-      <svg className="w-7 h-7 text-blue-sky transition-colors group-hover:text-blue-400" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5">
-        <circle cx="16" cy="16" r="12" strokeDasharray="4 2" />
-        <circle cx="16" cy="16" r="6" fill="currentColor" fillOpacity="0.2" />
-      </svg>
-    ),
-    description: "SaaS CRM Integration",
-    stats: "3.2x engagement"
+    name: "growX",
+    src: "/GrowX.svg",
+    role: "Parent company",
+    detail: "The studio socialX is built inside.",
   },
   {
-    name: "PulseFlow",
-    svg: (
-      <svg className="w-7 h-7 text-[#5B8DEF] transition-colors group-hover:text-[#8cb1f5]" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 16h6l3-9 4 18 3-12 2 3h6" />
-      </svg>
-    ),
-    description: "High-Ticket Workflows",
-    stats: "+180% demo rate"
+    name: "socialX",
+    src: "/Social%20X.svg",
+    role: "This studio",
+    detail: "Social media management, built only for HighLevel SaaS resellers.",
   },
   {
-    name: "Vertex AI",
-    svg: (
-      <svg className="w-7 h-7 text-cyan-400 transition-colors group-hover:text-cyan-300" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
-        <path d="M16 4L28 26H4L16 4Z" />
-        <path d="M16 12L22 23H10L16 12Z" fill="currentColor" fillOpacity="0.3" />
-      </svg>
-    ),
-    description: "Agentic AI Tools",
-    stats: "1.2M impressions"
-  },
-  {
-    name: "NexusSaaS",
-    svg: (
-      <svg className="w-7 h-7 text-emerald-400 transition-colors group-hover:text-emerald-300" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" />
-        <circle cx="16" cy="16" r="4" fill="currentColor" fillOpacity="0.4" />
-      </svg>
-    ),
-    description: "Multi-tenant Platform",
-    stats: "4.8★ rating"
-  },
-  {
-    name: "Zenith Growth",
-    svg: (
-      <svg className="w-7 h-7 text-purple-400 transition-colors group-hover:text-purple-300" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5">
-        <path d="M16 4L26 16L16 28L6 16L16 4Z" />
-        <path d="M16 10L21 16L16 22L11 16L16 10Z" fill="currentColor" fillOpacity="0.2" />
-      </svg>
-    ),
-    description: "B2B Scale Agency",
-    stats: "$250k pipeline"
-  },
-  {
-    name: "SwiftClick",
-    svg: (
-      <svg className="w-7 h-7 text-rose-400 transition-colors group-hover:text-rose-300" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-        <path d="M6 10l8 6-8 6M16 10l8 6-8 6" />
-      </svg>
-    ),
-    description: "Performance Acquisition",
-    stats: "2.4% CTR increase"
+    name: "GHL Video",
+    src: "/ghl-video-mark.svg",
+    role: "Sister brand, since 2019",
+    detail: "HL-native video for 800+ SaaS businesses. Same team, same fluency.",
   },
 ];
 
-const METRICS = [
-  { value: "800+", label: "HL SaaS Businesses", desc: "served by the founding team" },
-  { value: "Since 2019", label: "HighLevel Ecosystem", desc: "active and building GHL-native solutions" },
-  { value: "100%", label: "HL-Native Team", desc: "writers & designers, no GHL onboarding needed" },
-];
+/**
+ * Counts up to `to` the first time it scrolls into view, then stops.
+ *
+ * Renders the final value during SSR so the number is right without JS and the
+ * layout never shifts, then rewinds to `from` on mount. This sits well below the
+ * fold, so that rewind is never on screen. Matches ScrollReveal's approach:
+ * IntersectionObserver, fires once, and honours prefers-reduced-motion by
+ * simply leaving the final number in place.
+ */
+function CountUp({
+  to,
+  from = 0,
+  duration = 1800,
+}: {
+  to: number;
+  from?: number;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [value, setValue] = useState(to);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    setValue(from);
+
+    let rafId = 0;
+    let startedAt = 0;
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        if (!entries[0].isIntersecting) return;
+        obs.unobserve(el);
+
+        const step = (now: number) => {
+          if (!startedAt) startedAt = now;
+          const p = Math.min((now - startedAt) / duration, 1);
+          // easeOutExpo: sprints through the low numbers, then settles slowly on
+          // the final digits, so the year is legible as it lands.
+          const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+          setValue(Math.round(from + (to - from) * eased));
+          if (p < 1) rafId = requestAnimationFrame(step);
+        };
+        rafId = requestAnimationFrame(step);
+      },
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafId);
+    };
+  }, [from, to, duration]);
+
+  // tabular-nums keeps every digit the same width, so the number doesn't
+  // jitter sideways while it counts.
+  return (
+    <span ref={ref} className="tabular-nums">
+      {value}
+    </span>
+  );
+}
 
 export default function ClientLogos() {
   return (
@@ -102,59 +122,46 @@ export default function ClientLogos() {
           </p>
         </div>
 
-        {/* Logo Cards Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
-          {LOGOS.map((logo, i) => (
+        {/* Brand tiles */}
+        <div className="grid sm:grid-cols-3 gap-5 mb-20 max-w-5xl mx-auto">
+          {BRANDS.map((b) => (
             <div
-              key={logo.name}
-              className="group relative flex flex-col p-6 transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-white/2 border border-black/5 dark:border-white/5 shadow-xs dark:shadow-[0_4px_20px_rgba(0, 0, 0, 0.2)]"
+              key={b.name}
+              className="group relative flex flex-col items-center text-center px-6 py-10 bg-[#111118] border border-white/8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-neon/40 hover:shadow-[0_16px_40px_rgba(43,80,220,0.18)]"
             >
-              {/* Active glow hover border overlay */}
-              <div className="absolute inset-0 border border-transparent group-hover:border-blue-sky/30 transition-colors duration-300 pointer-events-none" />
-              
-              <div className="flex items-center justify-between mb-4">
-                {logo.svg}
-                <span className="text-[10px] font-grotesk font-semibold text-gray-500 group-hover:text-blue-sky transition-colors">
-                  {logo.stats}
-                </span>
+              {/* Fixed logo box so three different aspect ratios still line up:
+                  each mark is contained within the same 170x36 area. */}
+              <div className="flex h-9 w-full items-center justify-center mb-7">
+                <img
+                  src={b.src}
+                  alt={`${b.name} logo`}
+                  className="max-h-9 max-w-[170px] w-auto object-contain"
+                />
               </div>
-              
-              <div>
-                <h4 className="font-grotesk text-sm font-semibold text-gray-900 dark:text-white leading-tight mb-1 transition-colors duration-300">
-                  {logo.name}
-                </h4>
-                <p className="text-[11px] text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-400 transition-colors font-body">
-                  {logo.description}
-                </p>
+
+              <div className="font-grotesk text-[11px] font-semibold uppercase tracking-[1.2px] text-blue-sky mb-2">
+                {b.role}
               </div>
+              <p className="text-[13px] leading-relaxed text-gray-400 font-body">
+                {b.detail}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* Metrics Banner */}
-        <div 
-          className="p-8 md:p-12 relative flex flex-col md:flex-row items-center justify-between gap-10 md:gap-6 bg-white/40 dark:bg-white/1 border border-black/5 dark:border-white/4 transition-colors duration-300"
-        >
-          {METRICS.map((metric, i) => (
-            <div key={metric.label} className="flex-1 text-center md:text-left relative">
-              {/* Divider for desktop */}
-              {i > 0 && (
-                <div className="hidden md:block absolute left-[-20%] top-1/2 -translate-y-1/2 h-12 w-px bg-black/10 dark:bg-white/10" />
-              )}
-              
-              <div className="font-grotesk text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-                <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-sky to-blue-neon">
-                  {metric.value}
-                </span>
-              </div>
-              <div className="font-grotesk text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-[1.2px] mb-1 transition-colors">
-                {metric.label}
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 font-body transition-colors">
-                {metric.desc}
-              </p>
-            </div>
-          ))}
+        {/* Single proof point, replacing the old three-metric banner */}
+        <div className="relative px-6 py-14 md:py-20 text-center bg-white/40 dark:bg-white/1 border border-black/5 dark:border-white/4 transition-colors duration-300">
+          <div className="font-grotesk text-[12px] md:text-[13px] font-semibold uppercase tracking-[1.5px] text-gray-500 dark:text-gray-400 mb-3 transition-colors">
+            We have been serving since
+          </div>
+          <div
+            className="font-grotesk font-bold leading-none tracking-[-3px]"
+            style={{ fontSize: "clamp(64px, 10vw, 132px)" }}
+          >
+            <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-sky to-blue-neon">
+              <CountUp to={2019} />
+            </span>
+          </div>
         </div>
 
       </div>
