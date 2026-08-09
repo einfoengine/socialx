@@ -107,8 +107,15 @@ export default function Booking() {
 
           {/* Right: calendar */}
           <div className="overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#111118] shadow-[0_16px_48px_rgba(43,80,220,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
+            {/* Calendar: "growX Partnership Call" (30 min, Mon-Fri).
+                The id must match the live calendar in HighLevel — the previous
+                one (RbjuKxBNLN8bLfUEviTE) had been deleted and the widget
+                endpoint answered 404, so the embed rendered an error payload.
+                form_embed.js below resizes this iframe by postMessage, keyed on
+                the element id, so the id must stay in the <calendarId>_<ts>
+                shape it expects. */}
             <iframe
-              src="https://api.leadconnectorhq.com/widget/booking/RbjuKxBNLN8bLfUEviTE"
+              src="https://api.leadconnectorhq.com/widget/booking/Yaa9d7AN9spx0NeUIOxQ"
               title="Book a call with socialX"
               style={{
                 width: "100%",
@@ -117,7 +124,7 @@ export default function Booking() {
                 minHeight: "720px",
               }}
               scrolling="no"
-              id="RbjuKxBNLN8bLfUEviTE_1781096728327"
+              id="Yaa9d7AN9spx0NeUIOxQ_1781096728327"
             />
           </div>
         </div>

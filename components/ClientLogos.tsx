@@ -18,14 +18,14 @@ const BRANDS = [
   {
     name: "socialX",
     src: "/Social%20X.svg",
-    role: "This studio",
+    role: "You are here",
     detail: "Social media management, built only for HighLevel SaaS resellers.",
   },
   {
     name: "GHL Video",
     src: "/ghl-video-mark.svg",
-    role: "Sister brand, since 2019",
-    detail: "HL-native video for 800+ SaaS businesses. Same team, same fluency.",
+    role: "Sister brand",
+    detail: "HL-native video for 800+ HighLevel SaaS businesses.",
   },
 ];
 
@@ -118,7 +118,8 @@ export default function ClientLogos() {
             New name. Not a new team.
           </h2>
           <p className="section-sub text-gray-600 dark:text-white/70 mt-4 max-w-2xl mx-auto font-body text-[16px] md:text-[18px] transition-colors duration-300">
-            socialX is new. The team behind it is not. We have produced HL-native content for 800+ SaaS businesses through GHL Video, the number one video team built only for HighLevel. socialX brings that same ecosystem fluency to your social feed.
+            socialX is the social arm of growX, built by the same team behind GHL
+            Video. Everything we already know about HighLevel, pointed at your feed.
           </p>
         </div>
 
