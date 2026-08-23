@@ -59,6 +59,18 @@ body {
   border-radius: 9999px;
 }
 
+/* ---- Platform mockups (the /demos gallery) ----
+   These imitate Facebook, Instagram and LinkedIn post chrome, where circular
+   avatars and softly rounded cards ARE the identity being reproduced — a square
+   avatar instantly reads as "not Facebook". This restores the radius utilities
+   inside `.native-ui` only; the site's own UI stays square everywhere else.
+   These selectors outrank the `*` reset above on specificity. */
+.native-ui .rounded-full { border-radius: 9999px; }
+.native-ui .rounded-xl   { border-radius: 0.75rem; }
+.native-ui .rounded-lg   { border-radius: 0.5rem; }
+.native-ui .rounded-md   { border-radius: 0.375rem; }
+.native-ui .rounded-sm   { border-radius: 0.125rem; }
+
 /* Native radios have no square equivalent — keep them round if one is ever added. */
 input[type="radio"] {
   border-radius: 9999px;

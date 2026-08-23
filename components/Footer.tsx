@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 
 const productLinks = [
-  { label: "How It Works", href: "#gw-how" },
-  { label: "Pricing Tiers", href: "#gw-pricing" },
-  { label: "Comparison", href: "#gw-comparison" },
-  { label: "Guarantees", href: "#gw-guarantees" },
+  { label: "Demo Posts", href: "/demos" },
+  { label: "How It Works", href: "/#gw-how" },
+  { label: "Pricing Tiers", href: "/#gw-pricing" },
+  { label: "Comparison", href: "/#gw-comparison" },
+  { label: "Guarantees", href: "/#gw-guarantees" },
 ];
 
 const companyLinks = [
@@ -41,7 +42,7 @@ const MARK_GRAY = "#7E7E8A";
 function FooterLogo() {
   return (
     <a
-      href="#"
+      href="/"
       aria-label="socialX"
       className="group inline-flex w-fit items-center gap-0.5 no-underline"
     >

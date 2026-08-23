@@ -88,10 +88,10 @@ export default function Hero() {
             <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </a>
           <a
-            href="#gw-how"
+            href="#gw-book"
             className="btn btn-ghost text-gray-700 dark:text-gray-300 hover:text-[#2B50DC] dark:hover:text-white px-10 py-5 font-grotesk font-semibold text-lg inline-flex items-center gap-2 bg-white dark:bg-[#111118] border border-black/10 dark:border-white/10 hover:border-[#2B50DC]/30 shadow-[0_4px_12px_rgba(0,0,0,0.05)] dark:shadow-md"
           >
-            How it works
+            Book a discovery call
           </a>
         </div>
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 function Logo() {
   return (
-    <a href="#" className="flex shrink-0 items-center no-underline">
+    <a href="/" className="flex shrink-0 items-center no-underline">
       <img
         src="/socialX-logo-white.png"
         alt="socialX logo"
@@ -80,12 +80,13 @@ export default function Header() {
   };
 
   const navLinks = [
-    { label: "Features", href: "#gw-problem" },
-    { label: "How It Works", href: "#gw-how" },
-    { label: "Pricing", href: "#gw-pricing" },
-    { label: "Comparison", href: "#gw-comparison" },
-    { label: "Why socialX", href: "#gw-why-socialx" },
-    { label: "FAQ", href: "#gw-faq" },
+    { label: "Demos", href: "/demos" },
+    { label: "Features", href: "/#gw-problem" },
+    { label: "How It Works", href: "/#gw-how" },
+    { label: "Pricing", href: "/#gw-pricing" },
+    { label: "Comparison", href: "/#gw-comparison" },
+    { label: "Why socialX", href: "/#gw-why-socialx" },
+    { label: "FAQ", href: "/#gw-faq" },
   ];
 
   return (
@@ -102,7 +103,7 @@ export default function Header() {
           </div>
 
           {/* 2 — Navigation */}
-          <nav className="hidden lg:flex flex-1 items-center justify-center gap-8">
+          <nav className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-4 xl:gap-8">
             {navLinks.map((l) => (
               <a
                 key={l.label}
@@ -118,9 +119,9 @@ export default function Header() {
           <div className="flex flex-1 items-center justify-end gap-4">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <a
-              href="#gw-book"
-              aria-label="Book a call"
-              title="Book a call"
+              href="/#gw-book"
+              aria-label="Book a meeting"
+              title="Book a meeting"
               className="btn-icon hidden lg:flex items-center justify-center w-9 h-9 shrink-0 border border-white/10 hover:border-white/25 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white"
             >
               <svg
@@ -132,11 +133,13 @@ export default function Header() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                <rect x="3" y="5" width="18" height="16" />
+                <path d="M8 2.5v5M16 2.5v5M3 10.5h18" />
+                <path d="m9 15.5 2 2 4-4" />
               </svg>
             </a>
             <a
-              href="#gw-pricing"
+              href="/#gw-pricing"
               className="btn btn-blue hidden lg:inline-block shrink-0 whitespace-nowrap bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
             >
               Get started
@@ -185,7 +188,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="#gw-pricing"
+              href="/#gw-pricing"
               onClick={() => setOpen(false)}
               className="btn btn-blue bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 mt-4"
             >
