@@ -1,3 +1,9 @@
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+
+# pnpm 11 replaced ignoredBuiltDependencies approval with allowBuilds;
+# both are kept so older and newer pnpm versions agree.
+allowBuilds:
+  sharp: false
+  unrs-resolver: false

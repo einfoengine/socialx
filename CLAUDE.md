@@ -1,1 +1,2 @@
 @AGENTS.md
+@docs/PLATFORM-CONTEXT.md

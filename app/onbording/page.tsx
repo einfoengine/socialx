@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import OnboardingForm from "./OnboardingForm";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Complete Your Onboarding | socialX",
-  description:
-    "Provide your brand details and connect your HighLevel account to get started with socialX's automated, feature-targeted social media management.",
-};
-
-export default function OnbordingPage() {
-  return <OnboardingForm />;
+/**
+ * The old onboarding route, which embedded a HighLevel survey in an iframe.
+ *
+ * Kept as a redirect rather than deleted: the URL is in sent emails and possibly in
+ * HighLevel automations, and a 404 for a paying client mid-onboarding is a support
+ * ticket. The native flow lives inside the portal, so it lands behind sign-in.
+ */
+export default function LegacyOnboarding() {
+  redirect("/portal/onboarding");
 }

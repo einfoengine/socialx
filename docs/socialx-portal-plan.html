@@ -1,0 +1,900 @@
+<title>socialX Portal Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ground:#F4F2EF;
+  --panel:#FFFFFF;
+  --ink:#111118;
+  --ink-2:#55555E;
+  --ink-3:#83838F;
+  --hair:rgba(17,17,24,.13);
+  --hair-soft:rgba(17,17,24,.06);
+  --accent:#2B50DC;
+  --accent-2:#5B8DEF;
+  --accent-ink:#2B50DC;
+  --accent-wash:rgba(43,80,220,.07);
+  --band:#111118;
+  --band-ink:#FFFFFF;
+  --band-ink-2:rgba(255,255,255,.62);
+  --band-hair:rgba(255,255,255,.13);
+  --band-panel:rgba(255,255,255,.04);
+  --flag:#C2410C;
+  --flag-wash:rgba(194,65,12,.07);
+  --ok:#15803D;
+  --ok-wash:rgba(21,128,61,.07);
+  --grad:linear-gradient(135deg,#2B50DC 0%,#5B8DEF 100%);
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --display:"Space Grotesk",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#050508; --panel:#111118; --ink:#F4F2EF; --ink-2:#A0A0AC; --ink-3:#70707C;
+    --hair:rgba(255,255,255,.14); --hair-soft:rgba(255,255,255,.06);
+    --accent:#5B8DEF; --accent-2:#2B50DC; --accent-ink:#7FA5F3; --accent-wash:rgba(91,141,239,.11);
+    --band:#0C0C12; --band-ink:#FFFFFF; --band-ink-2:rgba(255,255,255,.60);
+    --band-hair:rgba(255,255,255,.11); --band-panel:rgba(255,255,255,.03);
+    --flag:#F0956A; --flag-wash:rgba(240,149,106,.10);
+    --ok:#5DBF84; --ok-wash:rgba(93,191,132,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#050508; --panel:#111118; --ink:#F4F2EF; --ink-2:#A0A0AC; --ink-3:#70707C;
+  --hair:rgba(255,255,255,.14); --hair-soft:rgba(255,255,255,.06);
+  --accent:#5B8DEF; --accent-2:#2B50DC; --accent-ink:#7FA5F3; --accent-wash:rgba(91,141,239,.11);
+  --band:#0C0C12; --band-ink:#FFFFFF; --band-ink-2:rgba(255,255,255,.60);
+  --band-hair:rgba(255,255,255,.11); --band-panel:rgba(255,255,255,.03);
+  --flag:#F0956A; --flag-wash:rgba(240,149,106,.10);
+  --ok:#5DBF84; --ok-wash:rgba(93,191,132,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box;border-radius:0}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent-ink)}
+strong{font-weight:600;color:var(--ink)}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-wash);padding:1px 5px;color:var(--accent-ink)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,52px)}
+section{padding:clamp(52px,7vw,92px) 0;border-bottom:1px solid var(--hair)}
+section.plain{background:var(--ground)}
+section.panel{background:var(--panel)}
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:13px}
+h2.sh{font-size:clamp(25px,3.2vw,36px);font-weight:600;letter-spacing:-1px;line-height:1.14;margin-bottom:13px}
+h3.sub-h{font-size:19px;font-weight:600;letter-spacing:-.3px;margin:44px 0 6px}
+h4.mini{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin:32px 0 12px;font-weight:400}
+.sub{color:var(--ink-2);font-size:16.5px;line-height:1.62;max-width:68ch}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* masthead */
+.masthead{position:sticky;top:0;z-index:60;background:var(--band);border-bottom:1px solid var(--band-hair)}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:54px}
+.mark{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.5px;color:var(--band-ink)}
+.mark span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.masthead .tag{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--band-ink-2)}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--grad);width:0}
+
+/* hero */
+.hero{background:var(--band);color:var(--band-ink);padding:clamp(52px,8vw,92px) 0 0}
+.hero .eyebrow{color:var(--accent-2)}
+.hero h1{font-size:clamp(30px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-2px;max-width:20ch}
+.hero .lede{color:var(--band-ink-2);font-size:clamp(15.5px,1.7vw,18.5px);max-width:64ch;margin-top:20px;line-height:1.6}
+.decisions{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--band-hair);margin-top:clamp(36px,5vw,64px)}
+.decisions div{padding:22px 20px 26px;border-right:1px solid var(--band-hair)}
+.decisions div:last-child{border-right:none}
+.decisions .l{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--band-ink-2);margin-bottom:9px}
+.decisions .v{font-family:var(--display);font-weight:600;font-size:16px;color:var(--band-ink);line-height:1.3}
+.decisions .n{font-size:12.5px;color:var(--band-ink-2);margin-top:7px;line-height:1.5}
+@media(max-width:860px){.decisions{grid-template-columns:repeat(2,1fr)}
+  .decisions div:nth-child(2){border-right:none}
+  .decisions div:nth-child(-n+2){border-bottom:1px solid var(--band-hair)}}
+@media(max-width:520px){.decisions{grid-template-columns:1fr}
+  .decisions div{border-right:none;border-bottom:1px solid var(--band-hair)}
+  .decisions div:last-child{border-bottom:none}}
+
+/* figures */
+figure{margin:34px 0 0;border:1px solid var(--hair);background:var(--panel);padding:26px 24px 20px}
+section.panel figure{background:var(--ground)}
+.figscroll{overflow-x:auto}
+.dg{display:block;width:100%;min-width:620px;height:auto;color:var(--ink)}
+.dg .bx{fill:var(--panel);stroke:currentColor;stroke-opacity:.34;stroke-width:1}
+section.panel .dg .bx{fill:var(--ground)}
+.dg .bx-a{fill:var(--accent-wash);stroke:var(--accent);stroke-width:1.4}
+.dg .bx-f{fill:var(--flag-wash);stroke:var(--flag);stroke-width:1.2}
+.dg .bx-q{fill:none;stroke:currentColor;stroke-opacity:.28;stroke-width:1;stroke-dasharray:4 4}
+.dg text{fill:currentColor;font-family:var(--body);font-size:12.5px}
+.dg .th{font-family:var(--display);font-size:13.5px;font-weight:600}
+.dg .tm{font-family:var(--mono);font-size:10.5px;fill:var(--ink-3)}
+.dg .ts{font-size:11.5px;fill:var(--ink-2)}
+.dg .ta{fill:var(--accent-ink);font-family:var(--mono);font-size:10.5px}
+.dg .ln{stroke:currentColor;stroke-opacity:.5;fill:none;stroke-width:1.2}
+.dg .ln-a{stroke:var(--accent);fill:none;stroke-width:1.8}
+.dg .life{stroke:currentColor;stroke-opacity:.22;stroke-dasharray:3 5;stroke-width:1}
+.dg .head{fill:currentColor}
+.dg .head-a{fill:var(--accent)}
+figcaption{margin-top:16px;padding-top:14px;border-top:1px solid var(--hair-soft);font-size:13.5px;color:var(--ink-2);line-height:1.6;max-width:82ch}
+figcaption b{color:var(--ink);font-weight:600}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin-top:26px;border:1px solid var(--hair)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px;background:var(--panel)}
+section.panel table{background:var(--ground)}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:400;text-align:left;padding:12px 16px;border-bottom:1px solid var(--hair);white-space:nowrap}
+td{padding:13px 16px;border-bottom:1px solid var(--hair-soft);color:var(--ink-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.k{font-family:var(--display);font-weight:600;color:var(--ink)}
+td.m{font-family:var(--mono);font-size:12px;color:var(--accent-ink);white-space:nowrap}
+td.r{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+/* lists */
+ul.list{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:12px}
+ul.list li{position:relative;padding-left:23px;color:var(--ink-2);font-size:15px;line-height:1.6;max-width:76ch}
+ul.list li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;background:var(--accent)}
+ul.list li strong{color:var(--ink)}
+
+/* notes */
+.note{border:1px solid var(--accent);background:var(--accent-wash);padding:19px 21px;margin-top:28px;max-width:82ch}
+.note .l{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);font-weight:600;margin-bottom:7px}
+.note p{font-size:14.5px;color:var(--ink-2);line-height:1.62}
+.note.flag{border-color:var(--flag);background:var(--flag-wash)}
+.note.flag .l{color:var(--flag)}
+
+/* schema clusters */
+.clusters{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);margin-top:28px}
+.cl{background:var(--panel);padding:22px 20px 24px}
+section.panel .cl{background:var(--ground)}
+.cl h4{font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:4px}
+.cl .d{font-size:12.5px;color:var(--ink-3);margin-bottom:14px;line-height:1.5}
+.cl ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.cl li{font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.cl li b{color:var(--accent-ink);font-weight:400}
+@media(max-width:880px){.clusters{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.clusters{grid-template-columns:1fr}}
+
+/* module rows */
+.mods{border:1px solid var(--hair);margin-top:28px}
+.mod{display:grid;grid-template-columns:190px 1fr 74px;gap:20px;padding:17px 20px;border-bottom:1px solid var(--hair-soft);align-items:start}
+.mod:last-child{border-bottom:none}
+.mod .n{font-family:var(--display);font-weight:600;font-size:15px}
+.mod .d{font-size:14px;color:var(--ink-2);line-height:1.55}
+.mod .r{font-family:var(--mono);font-size:10.5px;color:var(--accent-ink);text-align:right;padding-top:2px;white-space:nowrap}
+.mod.core{background:var(--accent-wash)}
+@media(max-width:720px){.mod{grid-template-columns:1fr;gap:5px}.mod .r{text-align:left}}
+
+/* releases */
+.rel{border:1px solid var(--hair);margin-top:28px}
+.relrow{display:grid;grid-template-columns:96px 1fr 128px;gap:22px;padding:22px 20px;border-bottom:1px solid var(--hair)}
+.relrow:last-child{border-bottom:none}
+.relrow .id{font-family:var(--mono);font-size:12px;color:var(--accent-ink);letter-spacing:.08em}
+.relrow .est{font-family:var(--mono);font-size:11px;color:var(--ink-3);text-align:right}
+.relrow h4{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:6px}
+.relrow p{font-size:14px;color:var(--ink-2);line-height:1.58;max-width:66ch}
+.cut{margin-top:11px;padding-left:13px;border-left:2px solid var(--accent);font-size:13.5px;color:var(--ink)}
+.cut b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);display:block;margin-bottom:3px;font-weight:600}
+@media(max-width:720px){.relrow{grid-template-columns:1fr;gap:8px}.relrow .est{text-align:left}}
+
+footer{background:var(--band);color:var(--band-ink-2);padding:44px 0 52px}
+footer .row{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start}
+footer p{font-size:13px;line-height:1.7;max-width:54ch}
+footer .meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;line-height:2}
+.disclaim{margin-top:32px;padding-top:20px;border-top:1px solid var(--band-hair);font-size:12px}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mark">social<span>X</span></div>
+    <div class="tag">Portal plan / proposal / Aug 2026</div>
+  </div>
+  <div class="progress" id="prog"></div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">[ Phase 3, the moat ]</div>
+    <h1>Own the checkout. Own the delivery.</h1>
+    <p class="lede">
+      socialX runs on manual assembly in ClickUp and a checkout that lives inside HighLevel, which
+      caps the business at roughly 25 clients. This plan replaces both with a Stripe checkout on
+      socialX's own domain, an Admin Portal that runs delivery end to end, and a Client Portal that
+      makes the promises already printed on the live site true.
+    </p>
+    <div class="decisions">
+      <div>
+        <div class="l">Payments</div>
+        <div class="v">Stripe direct</div>
+        <div class="n">Own checkout. HighLevel order forms retired after migration.</div>
+      </div>
+      <div>
+        <div class="l">HL Social Planner</div>
+        <div class="v">Manual first</div>
+        <div class="n">Portal owns calendar and status from day one. API automation in R4.</div>
+      </div>
+      <div>
+        <div class="l">ClickUp</div>
+        <div class="v">Replaced</div>
+        <div class="n">For client work. It keeps internal and non-client tasks only.</div>
+      </div>
+      <div>
+        <div class="l">Scope</div>
+        <div class="v">Five releases</div>
+        <div class="n">Full target architecture, sequenced so each release ships something usable.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="plain rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Why now ]</div>
+    <h2 class="sh">Two things are already broken.</h2>
+    <p class="sub">
+      This is not a greenfield ambition. Both problems are live on the site today, and both get
+      worse with every client added.
+    </p>
+    <ul class="list">
+      <li><strong>The site already promises a portal that does not exist.</strong> The FAQ tells clients they approve batches in a socialX dashboard and manage their subscription from a customer portal. Today there is neither. The copy is describing this plan.</li>
+      <li><strong>socialX has no first-party record of its own orders.</strong> Checkout sits in HighLevel, so provisioning, entitlements, and delivery state all begin in a system socialX does not own. Every downstream rule, including the locked tier specs, depends on data living somewhere else.</li>
+    </ul>
+    <div class="note">
+      <div class="l">What the plan does not touch</div>
+      <p>
+        The offer, the pricing, and the ICP are unchanged. Tier specs stay locked at $197, $397, and
+        $597. This changes how the business delivers what it already sells, not what it sells. The
+        white label end client tier stays on the horizon and is never pitched as available now.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="panel rv">
+  <div class="wrap">
+    <div class="eyebrow">[ System shape ]</div>
+    <h2 class="sh">One app, three route groups, <span class="grad">three layers of authorization</span>.</h2>
+    <p class="sub">
+      The marketing site, Client Portal, and Admin Portal live in one Next.js app, sharing the design
+      system, the session, and one deploy. What separates them is not three codebases, it is where
+      the authorization checks sit.
+    </p>
+
+    <figure>
+      <div class="figscroll">
+        <svg class="dg" viewBox="0 0 860 470" role="img" aria-label="Two entry paths into the system. A page request passes through proxy.ts, which reads only the session cookie. A server action skips proxy entirely. Both converge on the Data Access Layer, and every query is finally constrained by Postgres row level security.">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head" points="0,1 10,5 0,9"></polygon>
+            </marker>
+            <marker id="a1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head-a" points="0,1 10,5 0,9"></polygon>
+            </marker>
+          </defs>
+
+          <rect class="bx" x="70" y="26" width="250" height="44"></rect>
+          <text class="th" x="195" y="47" text-anchor="middle">Page request</text>
+          <text class="tm" x="195" y="62" text-anchor="middle">/portal or /admin</text>
+
+          <rect class="bx" x="470" y="26" width="290" height="44"></rect>
+          <text class="th" x="615" y="47" text-anchor="middle">Server action or route handler</text>
+          <text class="tm" x="615" y="62" text-anchor="middle">form submit, webhook, mutation</text>
+
+          <line class="ln" x1="195" y1="70" x2="195" y2="104" marker-end="url(#a1)"></line>
+          <text class="tm" x="204" y="92">session cookie</text>
+
+          <rect class="bx" x="70" y="110" width="250" height="78"></rect>
+          <text class="th" x="86" y="136">proxy.ts</text>
+          <text class="ts" x="86" y="156">redirects when no session cookie</text>
+          <text class="tm" x="86" y="175">no database calls</text>
+
+          <line class="ln" x1="195" y1="188" x2="195" y2="222" marker-end="url(#a1)"></line>
+          <text class="tm" x="204" y="210">passes</text>
+
+          <line class="ln" x1="615" y1="70" x2="615" y2="222" marker-end="url(#a1)"></line>
+          <text class="ta" x="624" y="150">never sees proxy</text>
+
+          <rect class="bx bx-a" x="70" y="228" width="690" height="78"></rect>
+          <text class="th" x="86" y="254">Data Access Layer</text>
+          <text class="ts" x="86" y="274">verifySession() runs inside every server component, action, and route handler</text>
+          <text class="tm" x="86" y="293">memoized with React cache(), server only, never bundled to the client</text>
+
+          <line class="ln-a" x1="415" y1="306" x2="415" y2="340" marker-end="url(#a1a)"></line>
+          <text class="ta" x="424" y="328">org-scoped query</text>
+
+          <rect class="bx bx-a" x="70" y="346" width="690" height="78"></rect>
+          <text class="th" x="86" y="372">Postgres row level security</text>
+          <text class="ts" x="86" y="392">is_member(auth.uid(), org_id) on every tenant table</text>
+          <text class="tm" x="86" y="411">holds even when the application code above it is wrong</text>
+
+          <text class="tm" x="70" y="450">Library tables carry no client policy at all, so a client session cannot read a template even through a malformed query.</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>Why authorization is not in one place.</b> The bundled Next.js 16 docs are explicit that
+        Proxy, which replaced middleware in this version, runs on every route including prefetches
+        and must not make database calls. So it can only do the cheap redirect. A server action
+        invoked directly never passes through it at all, which is exactly why the real check sits in
+        the Data Access Layer and the final constraint sits in the database.
+      </figcaption>
+    </figure>
+
+    <h3 class="sub-h">Stack</h3>
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td class="k">App</td><td>Next.js 16.2.6 App Router, React 19, already in the repo. Portal reuses the site's tokens, including the square corner language</td></tr>
+          <tr><td class="k">Database</td><td>Supabase Postgres, row level security on every tenant table</td></tr>
+          <tr><td class="k">Auth</td><td>Supabase Auth. Staff and clients share one user pool, separated by role</td></tr>
+          <tr><td class="k">Files</td><td>Supabase Storage, private buckets, short lived signed URLs</td></tr>
+          <tr><td class="k">Payments</td><td>Stripe subscriptions. Catalog seeded from code, never hand created in the dashboard</td></tr>
+          <tr><td class="k">Jobs</td><td>Supabase Cron plus a jobs table for batch generation, dunning, and publish retries</td></tr>
+          <tr><td class="k">Email</td><td>Transactional only. Marketing stays in HighLevel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="plain rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Checkout ]</div>
+    <h2 class="sh">The webhook provisions the account, not the redirect.</h2>
+    <p class="sub">
+      Checkout moves to socialx.studio on Stripe. Two mechanics in this flow are worth being
+      deliberate about, because getting either wrong is expensive later.
+    </p>
+
+    <figure>
+      <div class="figscroll">
+        <svg class="dg" viewBox="0 0 900 470" role="img" aria-label="Checkout sequence across four lanes: browser, Next.js server, Stripe, and Supabase. The server resolves the price from the plan_prices table. After payment, Stripe sends a webhook that triggers provisioning in Supabase, while the browser redirect to the welcome page happens separately.">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head" points="0,1 10,5 0,9"></polygon>
+            </marker>
+            <marker id="a2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head-a" points="0,1 10,5 0,9"></polygon>
+            </marker>
+          </defs>
+
+          <rect class="bx" x="40" y="18" width="180" height="38"></rect>
+          <text class="th" x="130" y="42" text-anchor="middle">Browser</text>
+          <rect class="bx" x="255" y="18" width="190" height="38"></rect>
+          <text class="th" x="350" y="42" text-anchor="middle">Next server</text>
+          <rect class="bx" x="480" y="18" width="150" height="38"></rect>
+          <text class="th" x="555" y="42" text-anchor="middle">Stripe</text>
+          <rect class="bx" x="665" y="18" width="190" height="38"></rect>
+          <text class="th" x="760" y="42" text-anchor="middle">Supabase</text>
+
+          <line class="life" x1="130" y1="56" x2="130" y2="430"></line>
+          <line class="life" x1="350" y1="56" x2="350" y2="430"></line>
+          <line class="life" x1="555" y1="56" x2="555" y2="430"></line>
+          <line class="life" x1="760" y1="56" x2="760" y2="430"></line>
+
+          <line class="ln" x1="130" y1="92" x2="346" y2="92" marker-end="url(#a2)"></line>
+          <text class="ts" x="134" y="86">picks tier and billing cycle</text>
+
+          <line class="ln-a" x1="350" y1="136" x2="551" y2="136" marker-end="url(#a2a)"></line>
+          <text class="ta" x="354" y="130">session built from plan_prices row</text>
+          <text class="tm" x="354" y="152">the browser never sends a price</text>
+
+          <line class="ln" x1="555" y1="192" x2="134" y2="192" marker-end="url(#a2)"></line>
+          <text class="ts" x="140" y="186">hosted checkout page</text>
+
+          <line class="ln" x1="130" y1="228" x2="551" y2="228" marker-end="url(#a2)"></line>
+          <text class="ts" x="134" y="222">payment</text>
+
+          <line class="ln-a" x1="555" y1="272" x2="354" y2="272" marker-end="url(#a2a)"></line>
+          <text class="ta" x="360" y="266">webhook: checkout.session.completed</text>
+
+          <line class="ln-a" x1="350" y1="312" x2="756" y2="312" marker-end="url(#a2a)"></line>
+          <text class="ta" x="354" y="306">provision org, subscription, invite, first batch shell</text>
+          <text class="tm" x="354" y="328">idempotent, keyed on the Stripe event id</text>
+
+          <line class="ln" x1="555" y1="368" x2="134" y2="368" marker-end="url(#a2)"></line>
+          <text class="ts" x="140" y="362">redirect to /welcome</text>
+          <rect class="bx-q" x="40" y="378" width="300" height="34"></rect>
+          <text class="tm" x="52" y="399">cosmetic. a lost redirect never loses an order</text>
+
+          <line class="ln" x1="130" y1="424" x2="756" y2="424" marker-end="url(#a2)"></line>
+          <text class="ts" x="360" y="418">magic link, then the onboarding wizard writes the brand profile</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>Two deliberate choices.</b> First, the price is resolved server side from the
+        <code>plan_prices</code> table, so there is no code path that can charge an amount nobody
+        seeded. That is what turns the locked pricing guardrail from a rule people remember into a
+        property of the system. Second, provisioning hangs off the webhook rather than the success
+        redirect, so a closed tab or a flaky network cannot leave a paid customer with no account.
+      </figcaption>
+    </figure>
+
+    <h3 class="sub-h">Webhooks handled</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Event</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td class="m">checkout.session.completed</td><td>Provision org, subscription, user invite, first batch shell</td></tr>
+          <tr><td class="m">customer.subscription.updated</td><td>Sync status, period dates, plan or cycle change</td></tr>
+          <tr><td class="m">customer.subscription.deleted</td><td>Mark canceled, churn the org at period end</td></tr>
+          <tr><td class="m">invoice.paid</td><td>Store invoice, clear any delivery hold</td></tr>
+          <tr><td class="m">invoice.payment_failed</td><td>Set past due, start dunning, flag in admin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">Plan changes and dunning</h3>
+    <ul class="list">
+      <li><strong>Upgrade</strong> is immediate with proration, but new entitlements apply from the next batch, never the batch already in production.</li>
+      <li><strong>Downgrade and cancel</strong> take effect at period end, so paid work is always delivered.</li>
+      <li><strong>Past due</strong> escalates: client banner on day 0, admin flag on day 3, delivery hold on day 7. Nothing gets scheduled for an account on hold, which stops socialX publishing work it has not been paid for.</li>
+      <li><strong>Cards and invoices</strong> go through the Stripe Billing Portal, so socialX never handles card data.</li>
+    </ul>
+
+    <div class="note flag">
+      <div class="l">Decide before the first Stripe subscriber</div>
+      <p>
+        The launch rate card is temporary, but a Stripe subscription keeps whatever price it was
+        created on. Are launch buyers grandfathered at 30, 40, and 50 percent off forever, or do they
+        roll to the regular card at renewal? It changes the rate card model, and it is far cheaper to
+        answer now than to unwind after real subscribers exist.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="panel rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Data model ]</div>
+    <h2 class="sh">Five clusters.</h2>
+    <p class="sub">
+      Roughly 25 tables. Every tenant scoped table carries <code>org_id</code> and is covered by row
+      level security. Full DDL sketches live in <code>docs/PORTAL-PLAN.md</code>.
+    </p>
+
+    <div class="clusters">
+      <div class="cl">
+        <h4>Identity</h4>
+        <div class="d">Who is who, and which side they sit on.</div>
+        <ul>
+          <li><b>organizations</b></li>
+          <li><b>profiles</b></li>
+          <li><b>memberships</b></li>
+          <li><b>staff_roles</b></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h4>Catalog and billing</h4>
+        <div class="d">The tier contract, expressed as data.</div>
+        <ul>
+          <li><b>plans</b></li>
+          <li><b>plan_entitlements</b></li>
+          <li><b>plan_prices</b></li>
+          <li><b>subscriptions</b></li>
+          <li><b>invoices</b></li>
+          <li><b>stripe_events</b></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h4>Brand</h4>
+        <div class="d">What onboarding captures, in usable form.</div>
+        <ul>
+          <li><b>brand_profiles</b></li>
+          <li><b>brand_platforms</b></li>
+          <li><b>hl_connections</b></li>
+          <li><b>assets</b></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h4>Library</h4>
+        <div class="d">The IP. Versioned, tagged, mass updatable.</div>
+        <ul>
+          <li><b>pillars</b></li>
+          <li><b>hl_features</b></li>
+          <li><b>templates</b></li>
+          <li><b>template_versions</b></li>
+          <li><b>template_features</b></li>
+          <li><b>template_variants</b></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h4>Delivery</h4>
+        <div class="d">The monthly cycle, from assembly to published.</div>
+        <ul>
+          <li><b>batches</b></li>
+          <li><b>posts</b></li>
+          <li><b>post_platform_copy</b></li>
+          <li><b>revisions</b></li>
+          <li><b>comments</b></li>
+          <li><b>publish_jobs</b></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h4>Ops</h4>
+        <div class="d">Evidence and attention.</div>
+        <ul>
+          <li><b>activity_log</b></li>
+          <li><b>notifications</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-h">Three modelling decisions worth defending</h3>
+    <ul class="list">
+      <li><strong>Entitlements are a table, not constants in code.</strong> Post counts, platform caps, revision rounds, and turnaround days are the actual contract. One row per plan means the batch builder computes quota, the client portal shows what is used, and Starter's single revision round is enforced instead of remembered.</li>
+      <li><strong>The copy law is structural.</strong> Hook, middle beat, outcome, and CTA are separate columns rather than one body field. The customer first structure is the product's quality rule, so making it four fields makes it reviewable and makes a draft that leads with the product visible at a glance.</li>
+      <li><strong>Template versions are immutable, and posts point at a version.</strong> This is the only way to answer "which live client posts are running stale copy" after HighLevel ships a feature change. Feature tags cross all pillars as an independent axis, so one query finds every affected template and a second finds every affected client post.</li>
+    </ul>
+
+    <div class="note">
+      <div class="l">Quota is snapshotted, not read live</div>
+      <p>
+        A batch copies its quota from entitlements at creation time. A mid cycle plan change
+        therefore cannot silently rewrite the terms of a batch already in production, which is a
+        dispute waiting to happen in any system that reads the current plan at render time.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="plain rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Delivery ]</div>
+    <h2 class="sh">Where a revision round gets spent.</h2>
+    <p class="sub">
+      The monthly cycle is one loop, and the whole commercial difference between the tiers lives on
+      a single edge of it.
+    </p>
+
+    <figure>
+      <div class="figscroll">
+        <svg class="dg" viewBox="0 0 900 330" role="img" aria-label="Batch state machine. A batch moves from draft through in production, in review, approved, scheduled, and live. From in review the client can request changes, which returns the batch to in production and increments the revision round counter.">
+          <defs>
+            <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head" points="0,1 10,5 0,9"></polygon>
+            </marker>
+            <marker id="a3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head-a" points="0,1 10,5 0,9"></polygon>
+            </marker>
+          </defs>
+
+          <rect class="bx" x="26" y="70" width="118" height="46"></rect>
+          <text class="ts" x="85" y="98" text-anchor="middle">draft</text>
+
+          <rect class="bx" x="170" y="70" width="130" height="46"></rect>
+          <text class="ts" x="235" y="98" text-anchor="middle">in_production</text>
+
+          <rect class="bx bx-a" x="326" y="70" width="118" height="46"></rect>
+          <text class="ts" x="385" y="98" text-anchor="middle">in_review</text>
+
+          <rect class="bx" x="470" y="70" width="118" height="46"></rect>
+          <text class="ts" x="529" y="98" text-anchor="middle">approved</text>
+
+          <rect class="bx" x="614" y="70" width="118" height="46"></rect>
+          <text class="ts" x="673" y="98" text-anchor="middle">scheduled</text>
+
+          <rect class="bx" x="758" y="70" width="112" height="46"></rect>
+          <text class="ts" x="814" y="98" text-anchor="middle">live</text>
+
+          <line class="ln" x1="144" y1="93" x2="166" y2="93" marker-end="url(#a3)"></line>
+          <line class="ln" x1="300" y1="93" x2="322" y2="93" marker-end="url(#a3)"></line>
+          <line class="ln" x1="444" y1="93" x2="466" y2="93" marker-end="url(#a3)"></line>
+          <line class="ln" x1="588" y1="93" x2="610" y2="93" marker-end="url(#a3)"></line>
+          <line class="ln" x1="732" y1="93" x2="754" y2="93" marker-end="url(#a3)"></line>
+
+          <text class="tm" x="470" y="60">client approves</text>
+          <text class="tm" x="614" y="60">pushed to HL</text>
+
+          <path class="ln-a" d="M 385 116 L 385 176 L 300 176" marker-end="url(#a3a)"></path>
+          <rect class="bx bx-a" x="170" y="200" width="215" height="58"></rect>
+          <text class="ts" x="186" y="224">changes_requested</text>
+          <text class="ta" x="186" y="244">revision_rounds_used += 1</text>
+          <path class="ln-a" d="M 277 200 L 277 176" ></path>
+          <path class="ln-a" d="M 235 200 L 235 120" marker-end="url(#a3a)"></path>
+
+          <text class="ta" x="396" y="146">client requests changes</text>
+
+          <rect class="bx-q" x="470" y="196" width="400" height="66"></rect>
+          <text class="tm" x="486" y="220">Trigger rejects the insert when the round is already spent.</text>
+          <text class="tm" x="486" y="238">Starter 1 round. Growth 2 rounds. Scale unlimited,</text>
+          <text class="tm" x="486" y="252">enforced as NULL rather than a large number.</text>
+
+          <text class="tm" x="26" y="300">The client portal shows the remaining rounds before one is spent, so Starter is never experienced as bespoke.</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>One edge carries the tier difference.</b> Everything else in the loop is identical across
+        Starter, Growth, and Scale. The revision counter increments on the client to production edge
+        and is checked by a database trigger, not by UI state, so the entitlement holds regardless of
+        which screen or script performs the write.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="panel rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Admin Portal ]</div>
+    <h2 class="sh">Running the business from order to published post.</h2>
+    <p class="sub">
+      Route group <code>app/(admin)/admin/*</code>, gated by staff role. The batch builder is the
+      screen that actually replaces ClickUp.
+    </p>
+
+    <div class="mods">
+      <div class="mod"><div class="n">Today</div><div class="d">Batches due, awaiting approval, overdue, failed publishes, new orders, past due accounts. The screen ops opens first</div><div class="r">R2</div></div>
+      <div class="mod"><div class="n">Orders</div><div class="d">New order queue from checkout, onboarding completion state, assignment to a producer</div><div class="r">R1</div></div>
+      <div class="mod"><div class="n">Subscriptions</div><div class="d">Plan, cycle, rate card, status, renewal date, invoices, dunning state</div><div class="r">R1</div></div>
+      <div class="mod"><div class="n">Clients</div><div class="d">Brand profile, platforms, HL connection, batch history, internal notes, activity log</div><div class="r">R1</div></div>
+      <div class="mod"><div class="n">Library</div><div class="d">Template CRUD with versioning, pillar and feature tagging, platform variants, assets, and the view that answers which client posts a feature change affects</div><div class="r">R2</div></div>
+      <div class="mod core"><div class="n">Batch builder</div><div class="d">Pick client and month, see live quota, pull templates, customize to the tier's ladder, assign dates and platforms, arrange on a calendar</div><div class="r">R2</div></div>
+      <div class="mod"><div class="n">Review queue</div><div class="d">Change requests across all clients, with round counters and turnaround timers</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Publishing</div><div class="d">Approved posts ready to go out. Manual receipt in R2, automated jobs with retries in R4</div><div class="r">R2, R4</div></div>
+      <div class="mod"><div class="n">Settings</div><div class="d">Plans, prices, rate cards, HighLevel feature list, pillar mix targets, staff roles</div><div class="r">R1</div></div>
+    </div>
+
+    <h4 class="mini">Behaviours that matter in the builder</h4>
+    <ul class="list">
+      <li><strong>Quota is live and blocking.</strong> A Growth batch cannot exceed 16 posts or 2 motion videos. The cap is not a warning.</li>
+      <li><strong>Pillar mix is shown against target</strong> (30, 25, 18, 15, 12) as guidance rather than a hard block. Drift is a quality signal ops should see while assembling, not discover afterwards.</li>
+      <li><strong>Templates already used by that client are flagged,</strong> so the same base post never lands twice on one feed.</li>
+      <li><strong>Customization depth follows the plan.</strong> Starter exposes brand swap fields only. Growth opens full rewriting. Scale allows writing from scratch with no template link at all.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="plain rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Client Portal ]</div>
+    <h2 class="sh">The screen most clients touch once a month.</h2>
+    <p class="sub">
+      Route group <code>app/(client)/portal/*</code>, gated by membership. Clients see their own
+      batch, never the library.
+    </p>
+
+    <div class="mods">
+      <div class="mod"><div class="n">Overview</div><div class="d">What needs their attention, next batch status, days to next publish</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Calendar</div><div class="d">Month view of scheduled posts, filtered by platform, clicking into any post</div><div class="r">R3</div></div>
+      <div class="mod core"><div class="n">Approvals</div><div class="d">Review a batch post by post, approve all or request changes, with remaining revision rounds shown before one is spent</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Post detail</div><div class="d">Per platform copy and creative, comment thread, revision history</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Billing</div><div class="d">Plan, cycle, next invoice, invoice history, payment method, change plan, cancel</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Brand profile</div><div class="d">Edit brand kit, voice, banned words, platforms. Changes flag the next batch for the producer</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Assets</div><div class="d">Upload wins, screenshots, and testimonials that feed custom posts on Growth and Scale</div><div class="r">R3</div></div>
+      <div class="mod"><div class="n">Team</div><div class="d">Invite colleagues, set roles</div><div class="r">R3</div></div>
+    </div>
+
+    <div class="note">
+      <div class="l">The approval screen is where the tier promise holds or breaks</div>
+      <p>
+        Show the round counter before it is spent, not after. "Round 1 of 2" on Growth, "1 round
+        included" on Starter, "unlimited" on Scale. The Company Profile is explicit that Starter must
+        never be oversold as bespoke, and this screen is where that either stays honest or quietly
+        stops being true. Every state change is logged and visible to both sides, which is what ends
+        disputes about what was approved.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="panel rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Sequence ]</div>
+    <h2 class="sh">Five releases, each shipping something usable.</h2>
+    <p class="sub">
+      Estimates assume one experienced full stack developer, and they are ranges rather than
+      commitments. The ordering is not arbitrary.
+    </p>
+
+    <figure>
+      <div class="figscroll">
+        <svg class="dg" viewBox="0 0 900 300" role="img" aria-label="Release timeline across roughly twelve weeks. R0 foundations, R1 checkout, R2 library and batch builder, R3 client portal, R4 HighLevel automation. An arrow shows that R1 must land before R2 because entitlements come from subscriptions.">
+          <defs>
+            <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head" points="0,1 10,5 0,9"></polygon>
+            </marker>
+            <marker id="a4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="head-a" points="0,1 10,5 0,9"></polygon>
+            </marker>
+          </defs>
+
+          <path class="ln-a" d="M 226 66 C 226 40, 418 40, 418 66" marker-end="url(#a4a)"></path>
+          <text class="ta" x="322" y="34" text-anchor="middle">entitlements come from subscriptions</text>
+
+          <rect class="bx" x="50" y="72" width="96" height="58"></rect>
+          <text class="th" x="98" y="97" text-anchor="middle">R0</text>
+          <text class="tm" x="98" y="115" text-anchor="middle">foundations</text>
+
+          <rect class="bx bx-a" x="146" y="72" width="160" height="58"></rect>
+          <text class="th" x="226" y="97" text-anchor="middle">R1</text>
+          <text class="tm" x="226" y="115" text-anchor="middle">checkout</text>
+
+          <rect class="bx bx-a" x="306" y="72" width="224" height="58"></rect>
+          <text class="th" x="418" y="97" text-anchor="middle">R2</text>
+          <text class="tm" x="418" y="115" text-anchor="middle">library and batch builder</text>
+
+          <rect class="bx bx-a" x="530" y="72" width="160" height="58"></rect>
+          <text class="th" x="610" y="97" text-anchor="middle">R3</text>
+          <text class="tm" x="610" y="115" text-anchor="middle">client portal</text>
+
+          <rect class="bx" x="690" y="72" width="160" height="58"></rect>
+          <text class="th" x="770" y="97" text-anchor="middle">R4</text>
+          <text class="tm" x="770" y="115" text-anchor="middle">HL automation</text>
+
+          <line class="ln" x1="50" y1="150" x2="850" y2="150"></line>
+          <line class="ln" x1="50" y1="146" x2="50" y2="154"></line>
+          <line class="ln" x1="306" y1="146" x2="306" y2="154"></line>
+          <line class="ln" x1="530" y1="146" x2="530" y2="154"></line>
+          <line class="ln" x1="850" y1="146" x2="850" y2="154"></line>
+          <text class="tm" x="50" y="168">week 0</text>
+          <text class="tm" x="306" y="168" text-anchor="middle">week 4</text>
+          <text class="tm" x="530" y="168" text-anchor="middle">week 7.5</text>
+          <text class="tm" x="850" y="168" text-anchor="end">week 12.5</text>
+
+          <line class="ln" x1="226" y1="130" x2="226" y2="196" marker-end="url(#a4)"></line>
+          <rect class="bx-q" x="146" y="200" width="160" height="46"></rect>
+          <text class="tm" x="158" y="220">HighLevel checkout</text>
+          <text class="tm" x="158" y="236">retired</text>
+
+          <line class="ln" x1="418" y1="130" x2="418" y2="196" marker-end="url(#a4)"></line>
+          <rect class="bx-q" x="326" y="200" width="184" height="46"></rect>
+          <text class="tm" x="338" y="220">ClickUp replaced for</text>
+          <text class="tm" x="338" y="236">client work</text>
+
+          <line class="ln" x1="610" y1="130" x2="610" y2="196" marker-end="url(#a4)"></line>
+          <rect class="bx-q" x="530" y="200" width="160" height="46"></rect>
+          <text class="tm" x="542" y="220">the FAQ copy becomes</text>
+          <text class="tm" x="542" y="236">true</text>
+
+          <line class="ln" x1="770" y1="130" x2="770" y2="196" marker-end="url(#a4)"></line>
+          <rect class="bx-q" x="690" y="200" width="160" height="46"></rect>
+          <text class="tm" x="702" y="220">manual scheduling</text>
+          <text class="tm" x="702" y="236">ends</text>
+
+          <text class="tm" x="50" y="284">R4 sizing stays provisional until the HighLevel Social Planner API spike is done.</text>
+        </svg>
+      </div>
+      <figcaption>
+        <b>Why checkout comes before the builder.</b> Entitlements are derived from subscriptions, so
+        until socialX owns its own subscription data the batch builder would have nothing real to
+        enforce quota against. Building R2 first means building it twice.
+      </figcaption>
+    </figure>
+
+    <div class="rel">
+      <div class="relrow">
+        <div class="id">R0</div>
+        <div>
+          <h4>Foundations</h4>
+          <p>Supabase project, core schema, RLS helpers and policies, Supabase Auth wired into Next 16, proxy.ts optimistic checks, the Data Access Layer, route groups, and admin and portal shells reusing the existing design tokens.</p>
+          <div class="cut"><b>Done when</b>A staff user reaches an empty admin shell, a client user cannot, and a cross org read test fails as designed.</div>
+        </div>
+        <div class="est">1 to 2 weeks</div>
+      </div>
+      <div class="relrow">
+        <div class="id">R1</div>
+        <div>
+          <h4>Checkout and provisioning</h4>
+          <p>Stripe catalog seed script, checkout server action, idempotent webhook handler, provisioning, the native onboarding wizard replacing the embedded HighLevel survey, and the admin Orders, Subscriptions, Clients, and Settings screens.</p>
+          <div class="cut"><b>Done when</b>A real card buys Growth quarterly on socialx.studio, the org and subscription exist in Supabase, onboarding completes, and the order appears in the admin queue.</div>
+        </div>
+        <div class="est">2 to 3 weeks</div>
+      </div>
+      <div class="relrow">
+        <div class="id">R2</div>
+        <div>
+          <h4>Library and batch builder</h4>
+          <p>Library CRUD with versioning and feature tagging, asset uploads, batch generation from subscription periods, the builder with quota enforcement, calendar assignment, manual publishing receipt, the Today dashboard, and the audit log.</p>
+          <div class="cut"><b>Done when</b>A full month of client work runs end to end in the portal with no ClickUp involvement.</div>
+        </div>
+        <div class="est">3 to 4 weeks</div>
+      </div>
+      <div class="relrow">
+        <div class="id">R3</div>
+        <div>
+          <h4>Client portal</h4>
+          <p>Overview, calendar, approvals with revision round enforcement, post detail with comments, billing self serve through the Stripe Billing Portal, brand profile editing, asset uploads, and team invites.</p>
+          <div class="cut"><b>Done when</b>A client approves a batch and requests a revision without sending a single email.</div>
+        </div>
+        <div class="est">2 to 3 weeks</div>
+      </div>
+      <div class="relrow">
+        <div class="id">R4</div>
+        <div>
+          <h4>HighLevel automation</h4>
+          <p>OAuth per location with encrypted tokens, publish jobs with retries and backoff, status reconciliation so a post edited inside HighLevel does not leave the portal claiming it is live, feature change mass update tooling, and a per client fallback to manual.</p>
+          <div class="cut"><b>Done when</b>Approved posts appear in the client's HL Social Planner with no human step.</div>
+        </div>
+        <div class="est">2 to 3 weeks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plain rv">
+  <div class="wrap">
+    <div class="eyebrow">[ Risks ]</div>
+    <h2 class="sh">What could go wrong, and who decides.</h2>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Item</th><th>Why it matters</th><th>Needs</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Launch pricing at renewal</td><td>A Stripe subscription keeps its price. Grandfathered forever, or reverts to the regular card at renewal</td><td class="r">Shariful, before R1</td></tr>
+          <tr><td class="k">HL Social Planner API</td><td>R4's entire premise. Endpoints, media limits, and rate limits are unverified</td><td class="r">A spike before R4</td></tr>
+          <tr><td class="k">Unlimited revisions on Scale</td><td>Real cost exposure with no system limit. Track rounds and alert ops past a threshold while keeping it unlimited contractually</td><td class="r">Soft guard in R3</td></tr>
+          <tr><td class="k">Library seeding</td><td>R2's value depends on templates existing. Phase 1 is 285 posts plus 30 motion scripts across 27 features</td><td class="r">Salman, in parallel</td></tr>
+          <tr><td class="k">Legacy client migration</td><td>The first client is on HighLevel billing and asked for HighLevel Community as a fourth platform</td><td class="r">Confirm platform enum</td></tr>
+          <tr><td class="k">Resourcing</td><td>Roughly 10 to 15 weeks of focused work</td><td class="r">Decision</td></tr>
+          <tr><td class="k">FAQ copy is ahead of reality</td><td>The site promises a dashboard and portal today</td><td class="r">Soften copy, or ship R3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-h">What to do next</h3>
+    <ul class="list">
+      <li>Decide the launch pricing question. It is the only item that gets more expensive by waiting.</li>
+      <li>Approve or cut the release sequence.</li>
+      <li>Run the HighLevel Social Planner API spike so R4 can be sized honestly rather than optimistically.</li>
+      <li>Start R0 while the Phase 1 library build continues in parallel.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div>
+        <div class="mark" style="margin-bottom:10px">social<span>X</span></div>
+        <p>
+          Portal plan, covering own checkout, the Admin Portal, and the Client Portal on Supabase.
+          Proposal status. Not yet approved for build.
+        </p>
+      </div>
+      <div class="meta">
+        Branch portal-work<br>
+        Full spec in docs/PORTAL-PLAN.md<br>
+        Context in docs/PLATFORM-CONTEXT.md<br>
+        Internal / Confidential
+      </div>
+    </div>
+    <div class="disclaim">
+      Not affiliated with, endorsed by, or sponsored by HighLevel, Inc. Estimates are ranges for
+      planning, not commitments. Tier specs and pricing referenced here are the locked values and are
+      not changed by this plan.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var rv=document.querySelectorAll(".rv");
+  if(reduce||!("IntersectionObserver" in window)){
+    for(var i=0;i<rv.length;i++) rv[i].classList.add("in");
+  }else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+    },{rootMargin:"0px 0px -8% 0px"});
+    for(var n=0;n<rv.length;n++) io.observe(rv[n]);
+  }
+  var prog=document.getElementById("prog"), ticking=false;
+  function onScroll(){
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(function(){
+      var h=document.documentElement.scrollHeight-window.innerHeight;
+      prog.style.width=(h>0?(window.scrollY/h)*100:0)+"%";
+      ticking=false;
+    });
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+  onScroll();
+})();
+</script>

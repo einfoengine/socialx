@@ -72,27 +72,6 @@ const TIERS = [
   },
 ];
 
-const CHECKOUT_LINKS: Record<string, Record<Period, string>> = {
-  Starter: {
-    monthly: "https://order.socialx.studio/starter-monthly-subscription",
-    quarterly: "https://order.socialx.studio/starter-quarterly-subscription",
-    halfyearly: "https://order.socialx.studio/starter-half-yearly-subscription",
-    yearly: "https://order.socialx.studio/starter-yearly-subscription",
-  },
-  Growth: {
-    monthly: "https://order.socialx.studio/growth-monthly-subscription",
-    quarterly: "https://order.socialx.studio/growth-quarterly-subscription",
-    halfyearly: "https://order.socialx.studio/growth-half-yearly-subscription",
-    yearly: "https://order.socialx.studio/growth-yearly-subscription",
-  },
-  Scale: {
-    monthly: "https://order.socialx.studio/scale-monthly-subscription",
-    quarterly: "https://order.socialx.studio/scale-quarterly-subscription",
-    halfyearly: "https://order.socialx.studio/scale-half-yearly-subscription",
-    yearly: "https://order.socialx.studio/scale-yearly-subscription",
-  },
-};
- 
 function fmt(n: number) {
   return n.toLocaleString("en-US");
 }
@@ -117,11 +96,35 @@ function getDiscountPercent(period: Period, isLaunch: boolean): number {
   }
 }
  
-function getEffectivePrice(basePrice: number, period: Period, isLaunch: boolean): number {
-  const discount = getDiscountPercent(period, isLaunch);
-  return Math.round(basePrice * (1 - discount));
+/**
+ * What a tier actually costs on a given cycle.
+ *
+ * The catalog holds LIST prices, and the discount is a Stripe coupon applied at
+ * checkout, so the arithmetic here has to match: the percentage comes off the
+ * cycle total, not off a rounded monthly figure. Rounding the monthly rate first
+ * and multiplying would disagree with Stripe on every discounted combination,
+ * which is a number on the page the card is not charged.
+ */
+function getPricing(baseMonthly: number, period: Period, isLaunch: boolean) {
+  const months = PERIODS.find((p) => p.key === period)?.months ?? 1;
+  const pct = getDiscountPercent(period, isLaunch);
+  const listTotal = baseMonthly * months;
+  const total = Math.round(listTotal * (1 - pct) * 100) / 100;
+  return {
+    months,
+    pct,
+    listTotal,
+    total,
+    perMonth: total / months,
+    saving: listTotal - total,
+  };
 }
- 
+
+/** Whole dollars stay whole; a discount that lands on cents shows them. */
+function price(n: number) {
+  return Number.isInteger(n) ? fmt(n) : n.toFixed(2);
+}
+
 function getCycleNote(period: Period) {
   const notes: Record<Period, string> = {
     monthly: "billed monthly",
@@ -225,8 +228,8 @@ export default function Pricing() {
         {/* Cards Grid */}
         <div className="grid lg:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto lg:max-w-none">
           {TIERS.map((tier, i) => {
-            const effectivePrice = getEffectivePrice(tier.baseMonthlyPrice, period, showLaunchDiscount);
-            const discountPercent = getDiscountPercent(period, showLaunchDiscount);
+            const p = getPricing(tier.baseMonthlyPrice, period, showLaunchDiscount);
+            const discountPercent = p.pct;
             const hasDiscount = discountPercent > 0;
  
             return (
@@ -281,9 +284,7 @@ export default function Pricing() {
                       </span>
                       <span
                         className={`font-grotesk text-[10px] font-bold px-2 py-0.5 uppercase tracking-[0.5px] ${
-                          tier.featured
-                            ? "bg-white text-[#2B50DC]"
-                            : "bg-rose-500 text-white"
+                          tier.featured ? "bg-white text-[#2B50DC]" : "bg-rose-500 text-white"
                         }`}
                       >
                         {Math.round(discountPercent * 100)}% OFF
@@ -304,12 +305,9 @@ export default function Pricing() {
                       className={`font-grotesk font-semibold leading-none ${
                         tier.featured ? "text-white" : "text-gray-900 dark:text-white"
                       }`}
-                      style={{
-                        fontSize: "60px",
-                        letterSpacing: "-2px",
-                      }}
+                      style={{ fontSize: "60px", letterSpacing: "-2px" }}
                     >
-                      {fmt(effectivePrice)}
+                      {price(p.perMonth)}
                     </span>
                     <span
                       className={`font-grotesk text-base ${
@@ -324,10 +322,27 @@ export default function Pricing() {
                       tier.featured ? "text-white/50" : "text-gray-400 dark:text-gray-500"
                     }`}
                   >
-                    {getCycleNote(period)}
+                    {p.months === 1 ? (
+                      getCycleNote(period)
+                    ) : (
+                      <>
+                        ${price(p.total)} {getCycleNote(period)}
+                      </>
+                    )}
                   </div>
+                  {/* The saving, stated in money. A percentage is an argument;
+                      a dollar figure is the thing they keep. */}
+                  {hasDiscount && (
+                    <div
+                      className={`font-grotesk text-[12.5px] font-semibold mt-1.5 ${
+                        tier.featured ? "text-cyan-300" : "text-emerald-700 dark:text-emerald-400"
+                      }`}
+                    >
+                      You save ${price(p.saving)}
+                    </div>
+                  )}
                 </div>
- 
+
                 {/* Customization Level Box */}
                 <div className={`mb-8 p-5 border transition-colors duration-300 ${
                   tier.featured
@@ -350,11 +365,12 @@ export default function Pricing() {
                 </div>
  
                 {/* CTA Button */}
+                {/* Straight to socialX's own checkout. The link carries a tier
+                    and a cycle, never a price, so it cannot be edited into a
+                    different amount. */}
                 <a
-                  href={CHECKOUT_LINKS[tier.name]?.[period]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`btn w-full py-4 text-center font-grotesk font-semibold text-[15px] mb-8 block ${
+                  href={`/checkout?plan=${tier.name.toLowerCase()}&cycle=${period}`}
+                  className={`btn w-full py-4 text-center font-grotesk font-semibold text-[15px] mb-8 block no-underline ${
                     tier.featured
                       ? "btn-light bg-white text-[#111118]"
                       : "btn-ink bg-[#111118] text-white dark:bg-white dark:text-[#111118]"
@@ -362,7 +378,7 @@ export default function Pricing() {
                 >
                   {tier.cta}
                 </a>
- 
+
                 {/* Features List */}
                 <div
                   className={`h-px mb-6 ${

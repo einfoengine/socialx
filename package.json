@@ -6,20 +6,46 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "secure-env": "node scripts/secure-env.mjs",
+    "db:migrate": "node scripts/db.mjs migrate",
+    "db:seed": "node scripts/db.mjs seed",
+    "db:test": "node scripts/db.mjs test",
+    "db:all": "node scripts/db.mjs all",
+    "db:status": "node scripts/db.mjs status",
+    "stripe:sync": "node scripts/stripe-sync.mjs",
+    "stripe:dry": "node scripts/stripe-sync.mjs --dry",
+    "test:checkout": "node scripts/test-checkout.mjs",
+    "test:webhook": "node scripts/test-webhook.mjs",
+    "test:batch": "node scripts/test-batch.mjs",
+    "media:sync": "node scripts/sync-media.mjs",
+    "media:verify": "node scripts/sync-media.mjs --verify",
+    "test:approvals": "node scripts/test-approvals.mjs",
+    "test:links": "node scripts/test-links.mjs",
+    "test:embedded": "node scripts/test-embedded.mjs",
+    "seed:demo": "node scripts/seed-demo.mjs",
+    "seed:demo:remove": "node scripts/seed-demo.mjs --remove"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^6.8.2",
+    "@stripe/stripe-js": "^9.14.0",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.3",
+    "lucide-react": "^1.33.0",
     "next": "16.2.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "stripe": "^22.5.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "pg": "^8.23.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
