@@ -39,7 +39,7 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
 
   return (
     <div
-      className="relative overflow-hidden bg-white dark:bg-[#111118] border border-black/10 dark:border-white/10 p-10 animate-fade-up transition-all duration-500 hover:scale-[1.02] hover:border-[#2B50DC]/30 hover:shadow-[0_20px_40px_rgba(43,80,220,0.05)] dark:hover:shadow-md select-none"
+      className="relative overflow-hidden bg-white dark:bg-[#04044A] border border-black/10 dark:border-white/10 p-10 animate-fade-up transition-all duration-500 hover:scale-[1.02] hover:border-[#3D4AFF]/30 hover:shadow-[0_20px_40px_rgba(61,74,255,0.05)] dark:hover:shadow-md select-none"
       style={{ animationDelay: `${i * 0.1}s` }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -50,12 +50,12 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
         className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
         style={{
           opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(350px circle at ${coords.x}px ${coords.y}px, rgba(43, 80, 220, 0.05), transparent 80%)`,
+          background: `radial-gradient(350px circle at ${coords.x}px ${coords.y}px, rgba(61,74,255, 0.05), transparent 80%)`,
         }}
       />
       {/* Subtle border shine glow using mouse coordinates */}
       <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-[1] border border-[#2B50DC]/20"
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-[1] border border-[#3D4AFF]/20"
         style={{
           opacity: isHovered ? 0.3 : 0,
           maskImage: `radial-gradient(150px circle at ${coords.x}px ${coords.y}px, black, transparent)`,
@@ -64,7 +64,7 @@ function SpotlightCard({ r, i }: { r: typeof reasons[0]; i: number }) {
       />
 
       <div className="relative z-10">
-        <span className="font-grotesk text-xs font-bold uppercase tracking-[2px] text-blue-neon bg-[#2B50DC]/5 px-2.5 py-1 mb-6 inline-block">
+        <span className="font-grotesk text-xs font-bold uppercase tracking-[2px] text-blue-neon bg-[#3D4AFF]/5 px-2.5 py-1 mb-6 inline-block">
           {r.num}
         </span>
         <h3 className="font-grotesk text-2xl font-bold leading-tight tracking-[-0.6px] mb-4 text-gray-900 dark:text-white transition-colors duration-300">
@@ -90,7 +90,7 @@ export default function WhySocialX() {
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none is-circle filter blur-[150px] opacity-[0.03]"
         style={{
-          background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
+          background: "radial-gradient(circle, #3D4AFF 0%, transparent 70%)"
         }}
       />
 

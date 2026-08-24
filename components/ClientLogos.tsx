@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import SocialXLogo from "./SocialXLogo";
 
-/* The three brands behind socialX. Rendered on dark tiles in BOTH themes on
-   purpose: the growX and socialX marks are drawn with fill="white" wordmarks,
-   so on this section's light cream background they would disappear entirely.
+/* The three brands behind socialX, on dark tiles in BOTH themes: the growX mark
+   has a white wordmark that would vanish on this section's cream background.
+   socialX renders through the inline component instead of an <img>, because its
+   source wordmark is #04044A and would disappear on the dark tile — inlined, it
+   takes currentColor and can go white.
 
-   GHL Video points at the trimmed copy — the source file centres a 613x138
-   logo inside a 1080x1080 canvas, which would render the mark at ~13% scale. */
-const BRANDS = [
+   GHL Video points at the trimmed copy — the source file centres a 613x138 logo
+   inside a 1080x1080 canvas, which would render the mark at ~13% scale. */
+const BRANDS: { name: string; src: string | null; role: string; detail: string }[] = [
   {
     name: "growX",
     src: "/GrowX.svg",
@@ -17,7 +20,7 @@ const BRANDS = [
   },
   {
     name: "socialX",
-    src: "/Social%20X.svg",
+    src: null,
     role: "You are here",
     detail: "Social media management, built only for HighLevel SaaS resellers.",
   },
@@ -102,7 +105,7 @@ export default function ClientLogos() {
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] is-circle pointer-events-none filter blur-[120px] opacity-15"
         style={{
-          background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
+          background: "radial-gradient(circle, #3D4AFF 0%, transparent 70%)"
         }}
       />
       
@@ -113,7 +116,7 @@ export default function ClientLogos() {
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Why trust a new name ]</div>
+          <div className="section-eyebrow text-[#3D4AFF] dark:text-[#00A3FF] transition-colors duration-300">[ Why trust a new name ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight transition-colors duration-300">
             New name. <span className="gradient-text">Not a new team</span>.
           </h2>
@@ -128,16 +131,20 @@ export default function ClientLogos() {
           {BRANDS.map((b) => (
             <div
               key={b.name}
-              className="group relative flex flex-col items-center text-center px-6 py-10 bg-[#111118] border border-white/8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-neon/40 hover:shadow-[0_16px_40px_rgba(43,80,220,0.18)]"
+              className="group relative flex flex-col items-center text-center px-6 py-10 bg-[#04044A] border border-white/8 transition-all duration-300 hover:-translate-y-1 hover:border-blue-neon/40 hover:shadow-[0_16px_40px_rgba(61,74,255,0.18)]"
             >
               {/* Fixed logo box so three different aspect ratios still line up:
                   each mark is contained within the same 170x36 area. */}
               <div className="flex h-9 w-full items-center justify-center mb-7">
-                <img
-                  src={b.src}
-                  alt={`${b.name} logo`}
-                  className="max-h-9 max-w-[170px] w-auto object-contain"
-                />
+                {b.src ? (
+                  <img
+                    src={b.src}
+                    alt={`${b.name} logo`}
+                    className="max-h-9 max-w-[170px] w-auto object-contain"
+                  />
+                ) : (
+                  <SocialXLogo className="max-h-9 w-auto max-w-[170px] text-white" />
+                )}
               </div>
 
               <div className="font-grotesk text-[11px] font-semibold uppercase tracking-[1.2px] text-blue-sky mb-2">

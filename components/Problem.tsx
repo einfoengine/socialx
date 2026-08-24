@@ -104,7 +104,7 @@ function MatrixCanvas() {
       lastTime = timestamp;
 
       // Fade using the section bg colour so old chars dissolve naturally
-      ctx.fillStyle = "rgba(43, 80, 220, 0.15)";
+      ctx.fillStyle = "rgba(61,74,255, 0.15)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
@@ -116,7 +116,7 @@ function MatrixCanvas() {
         const char = Math.random() > 0.5 ? "1" : "0";
 
         // Bright leading character
-        ctx.fillStyle = "#00219b";
+        ctx.fillStyle = "#04044A";
         ctx.fillText(char, i * fontSize, y);
 
         if (y > canvas.height && Math.random() > 0.97) {
@@ -172,7 +172,7 @@ function ProblemCard({ p }: { p: (typeof problems)[0] }) {
       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]" />
       <div className="relative z-10">
         <svg
-          className="w-8 h-8 mb-5 text-[#5B8DEF] transition-colors duration-300 group-hover:text-white"
+          className="w-8 h-8 mb-5 text-[#00A3FF] transition-colors duration-300 group-hover:text-white"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -194,7 +194,7 @@ function ProblemCard({ p }: { p: (typeof problems)[0] }) {
 
 export default function Problem() {
   return (
-    <section id="gw-problem" className="relative py-32 md:py-40 overflow-hidden" style={{ background: "#2B50DC" }}>
+    <section id="gw-problem" className="relative py-32 md:py-40 overflow-hidden" style={{ background: "#3D4AFF" }}>
       <MatrixCanvas />
       <div data-reveal className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="section-eyebrow text-white/80" style={{ color: "rgba(255,255,255,0.8)" }}>[ The trust gap ]</div>

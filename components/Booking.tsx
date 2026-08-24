@@ -9,9 +9,9 @@ const CHECKLIST = [
 
 function CheckIcon() {
   return (
-    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-[#2B50DC]/10 dark:bg-[#5B8DEF]/15">
+    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-[#3D4AFF]/10 dark:bg-[#00A3FF]/15">
       <svg
-        className="h-3 w-3 text-[#2B50DC] dark:text-[#5B8DEF]"
+        className="h-3 w-3 text-[#3D4AFF] dark:text-[#00A3FF]"
         viewBox="0 0 12 12"
         fill="none"
         stroke="currentColor"
@@ -39,7 +39,7 @@ export default function Booking() {
             height: "680px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, #2B50DC 0%, #5B8DEF 45%, transparent 70%)",
+              "radial-gradient(circle, #3D4AFF 0%, #00A3FF 45%, transparent 70%)",
             filter: "blur(120px)",
             opacity: 0.14,
           }}
@@ -61,7 +61,7 @@ export default function Booking() {
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
           {/* Left: persuasion */}
           <div data-reveal className="text-center lg:text-left">
-            <div className="font-grotesk text-[12px] font-semibold text-[#2B50DC] dark:text-[#5B8DEF] uppercase tracking-[1.5px] mb-4 transition-colors">
+            <div className="font-grotesk text-[12px] font-semibold text-[#3D4AFF] dark:text-[#00A3FF] uppercase tracking-[1.5px] mb-4 transition-colors">
               [ Book a Call ]
             </div>
             <h2 className="font-grotesk font-semibold tracking-[-1.2px] leading-[1.08] text-[34px] md:text-[44px] text-gray-900 dark:text-white mb-5 transition-colors duration-300">
@@ -106,7 +106,7 @@ export default function Booking() {
           </div>
 
           {/* Right: calendar */}
-          <div className="overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#111118] shadow-[0_16px_48px_rgba(43,80,220,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
+          <div className="overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#04044A] shadow-[0_16px_48px_rgba(61,74,255,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
             {/* Calendar: socialX Discover Meeting.
                 This id 404'd earlier in the build; the calendar has since been
                 created and the widget now answers 200. It lives in a different

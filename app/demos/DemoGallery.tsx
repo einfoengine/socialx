@@ -441,7 +441,7 @@ export default function DemoGallery() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <header className="mb-10 flex flex-col gap-6 border-b border-black/10 pb-8 dark:border-white/10 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="mb-3 font-grotesk text-[13px] font-medium uppercase tracking-[1.5px] text-[#2B50DC] dark:text-[#5B8DEF]">
+            <div className="mb-3 font-grotesk text-[13px] font-medium uppercase tracking-[1.5px] text-[#3D4AFF] dark:text-[#00A3FF]">
               [ Demo posts ]
             </div>
             <h1 className="font-grotesk text-[32px] font-semibold leading-[1.08] tracking-[-1.4px] text-gray-900 dark:text-white md:text-[42px]">
@@ -522,13 +522,13 @@ export default function DemoGallery() {
                         onClick={() => setExample(e.key)}
                         className={`relative flex w-full items-center gap-2.5 py-2.5 pl-3 pr-3 text-left font-grotesk text-sm transition-colors ${
                           selected
-                            ? "bg-[#2B50DC]/10 font-semibold text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
+                            ? "bg-[#3D4AFF]/10 font-semibold text-[#3D4AFF] dark:bg-[#3D4AFF]/20 dark:text-[#00A3FF]"
                             : "text-gray-600 hover:bg-black/[0.03] hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
                         }`}
                       >
                         <span
                           aria-hidden="true"
-                          className={`absolute left-0 top-0 h-full w-[3px] ${selected ? "bg-[#2B50DC]" : "bg-transparent"}`}
+                          className={`absolute left-0 top-0 h-full w-[3px] ${selected ? "bg-[#3D4AFF]" : "bg-transparent"}`}
                         />
                         <span aria-hidden="true" className={`h-2 w-2 shrink-0 ${e.dot}`} />
                         <span className="truncate">{e.label}</span>

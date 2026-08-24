@@ -103,7 +103,7 @@ function CellValue({ cell, isSx }: { cell: CellInfo; isSx?: boolean }) {
     <div className="flex items-center justify-center gap-2">
       {cell.type === "yes" && (
         <svg 
-          className={`w-4.5 h-4.5 ${isSx ? "text-[#01E7FF]" : "text-cyan-500 dark:text-[#01E7FF]"} shrink-0`} 
+          className={`w-4.5 h-4.5 ${isSx ? "text-[#00A3FF]" : "text-cyan-500 dark:text-[#00A3FF]"} shrink-0`} 
           viewBox="0 0 24 24" 
           fill="none" 
           stroke="currentColor" 
@@ -143,7 +143,7 @@ function CellValue({ cell, isSx }: { cell: CellInfo; isSx?: boolean }) {
       )}
       <span className={`text-[13.5px] font-body transition-colors ${
         isSx 
-          ? "text-[#01E7FF] font-semibold" 
+          ? "text-[#00A3FF] font-semibold" 
           : cell.type === "yes" 
             ? "text-gray-800 dark:text-gray-200 font-medium"
             : "text-gray-500 dark:text-gray-500"
@@ -163,7 +163,7 @@ export default function Comparison() {
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-20">
-          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Comparison ]</div>
+          <div className="section-eyebrow text-[#3D4AFF] dark:text-[#00A3FF] transition-colors duration-300">[ Comparison ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
             Stop bleeding time. <span className="gradient-text">Start selling software</span>.
           </h2>
@@ -173,15 +173,15 @@ export default function Comparison() {
         </div>
  
         {/* Comparison Table Card */}
-        <div className="overflow-x-auto border border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-[#111118] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300 mb-20">
+        <div className="overflow-x-auto border border-black/10 dark:border-white/10 bg-gray-50/50 dark:bg-[#04044A] shadow-[0_12px_40px_rgba(0,0,0,0.04)] dark:shadow-md transition-colors duration-300 mb-20">
           <table className="w-full border-collapse text-[14.5px] text-left" style={{ minWidth: "980px" }}>
             <thead>
               <tr className="border-b border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
                 <th className="p-6 font-grotesk text-xs uppercase tracking-wider font-semibold text-gray-400 dark:text-gray-500 w-[260px]">
                   &nbsp;
                 </th>
-                <th className="p-6 font-grotesk text-center w-[200px] bg-[#111118] dark:bg-black border-x border-b border-x-[#2B50DC]/40 dark:border-x-[#2B50DC]/50 border-b-white/20">
-                  <span className="inline-block px-3 py-1 font-grotesk text-xs font-bold uppercase tracking-[1px] bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white">
+                <th className="p-6 font-grotesk text-center w-[200px] bg-[#04044A] dark:bg-black border-x border-b border-x-[#3D4AFF]/40 dark:border-x-[#3D4AFF]/50 border-b-white/20">
+                  <span className="inline-block px-3 py-1 font-grotesk text-xs font-bold uppercase tracking-[1px] bg-gradient-to-r from-[#3D4AFF] to-[#00A3FF] text-white">
                     socialX
                   </span>
                 </th>
@@ -217,7 +217,7 @@ export default function Comparison() {
                   </td>
                   
                   {/* socialX Column (Highlighted Column) */}
-                  <td className="p-6 text-center bg-[#111118] dark:bg-black border-x border-b border-x-[#2B50DC]/30 dark:border-x-[#2B50DC]/40 border-b-white/15">
+                  <td className="p-6 text-center bg-[#04044A] dark:bg-black border-x border-b border-x-[#3D4AFF]/30 dark:border-x-[#3D4AFF]/40 border-b-white/15">
                     <CellValue cell={row.socialX} isSx={true} />
                   </td>
  
@@ -247,7 +247,7 @@ export default function Comparison() {
         </div>
  
         {/* High-Converting Bottom Text Banner */}
-        <div className="max-w-4xl mx-auto border border-black/10 dark:border-white/10 bg-gray-50/30 dark:bg-[#111118]/30 p-10 text-center relative z-10 transition-colors duration-300">
+        <div className="max-w-4xl mx-auto border border-black/10 dark:border-white/10 bg-gray-50/30 dark:bg-[#04044A]/30 p-10 text-center relative z-10 transition-colors duration-300">
           <h3 className="font-grotesk text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
             Stop acting like a content manager. Start acting like a software CEO.
           </h3>
@@ -256,7 +256,7 @@ export default function Comparison() {
           </p>
           <a 
             href="#gw-pricing" 
-            className="btn btn-ink inline-block bg-[#111118] text-white dark:bg-white dark:text-[#111118] font-grotesk font-semibold text-sm px-8 py-4 tracking-[0.5px]"
+            className="btn btn-ink inline-block bg-[#04044A] text-white dark:bg-white dark:text-[#04044A] font-grotesk font-semibold text-sm px-8 py-4 tracking-[0.5px]"
           >
             See our reseller plans
           </a>

@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import SocialXLogo from "./SocialXLogo";
 
 function Logo() {
   return (
-    <a href="/" className="flex shrink-0 items-center no-underline">
-      <img
-        src="/socialX-logo-white.png"
-        alt="socialX logo"
-        className="h-8 w-auto shrink-0 object-contain"
-      />
+    <a href="/" className="flex shrink-0 items-center text-white no-underline">
+      <SocialXLogo className="h-7 w-auto shrink-0" />
     </a>
   );
 }
@@ -140,7 +137,7 @@ export default function Header() {
             </a>
             <a
               href="/#gw-pricing"
-              className="btn btn-blue hidden lg:inline-block shrink-0 whitespace-nowrap bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
+              className="btn btn-blue hidden lg:inline-block shrink-0 whitespace-nowrap bg-[#3D4AFF] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
             >
               Get started
             </a>
@@ -190,7 +187,7 @@ export default function Header() {
             <a
               href="/#gw-pricing"
               onClick={() => setOpen(false)}
-              className="btn btn-blue bg-[#2B50DC] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 mt-4"
+              className="btn btn-blue bg-[#3D4AFF] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 mt-4"
             >
               Get started
             </a>

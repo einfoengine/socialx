@@ -41,16 +41,16 @@ function FAQItem({
   return (
     <div
       onClick={onToggle}
-      className={`border transition-all duration-300 p-6 mb-4 select-none cursor-pointer bg-white dark:bg-[#111118] ${
+      className={`border transition-all duration-300 p-6 mb-4 select-none cursor-pointer bg-white dark:bg-[#04044A] ${
         isOpen 
-          ? "border-[#2B50DC]/40 dark:border-[#2B50DC]/60 shadow-[0_12px_24px_rgba(43,80,220,0.03)]" 
-          : "border-black/10 dark:border-white/10 hover:border-[#2B50DC]/25 dark:hover:border-[#2B50DC]/40"
+          ? "border-[#3D4AFF]/40 dark:border-[#3D4AFF]/60 shadow-[0_12px_24px_rgba(61,74,255,0.03)]" 
+          : "border-black/10 dark:border-white/10 hover:border-[#3D4AFF]/25 dark:hover:border-[#3D4AFF]/40"
       }`}
     >
       <div className="flex justify-between items-center gap-6">
         <span 
           className={`font-grotesk text-lg font-semibold transition-colors duration-300 ${
-            isOpen ? "text-[#2B50DC] dark:text-[#5B8DEF]" : "text-gray-900 dark:text-white"
+            isOpen ? "text-[#3D4AFF] dark:text-[#00A3FF]" : "text-gray-900 dark:text-white"
           }`}
         >
           {faq.q}
@@ -58,8 +58,8 @@ function FAQItem({
         <button
           className={`shrink-0 w-8 h-8 border flex items-center justify-center font-grotesk text-[15px] transition-all duration-300 ${
             isOpen
-              ? "bg-[#2B50DC] border-[#2B50DC] text-white rotate-180"
-              : "bg-white dark:bg-[#111118] border-black/10 dark:border-white/10 text-gray-500 hover:text-[#2B50DC] dark:hover:text-white hover:border-[#2B50DC]/40 hover:bg-[#2B50DC]/8 dark:hover:bg-[#2B50DC]/20"
+              ? "bg-[#3D4AFF] border-[#3D4AFF] text-white rotate-180"
+              : "bg-white dark:bg-[#04044A] border-black/10 dark:border-white/10 text-gray-500 hover:text-[#3D4AFF] dark:hover:text-white hover:border-[#3D4AFF]/40 hover:bg-[#3D4AFF]/8 dark:hover:bg-[#3D4AFF]/20"
           }`}
         >
           {isOpen ? "−" : "+"}
