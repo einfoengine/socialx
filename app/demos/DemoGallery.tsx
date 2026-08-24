@@ -4,8 +4,24 @@ import { useState } from "react";
 import demos from "@/public/demos.json";
 
 type Platform = "facebook" | "instagram" | "linkedin";
+type Post = (typeof demos.posts)[number];
+type Profile = (typeof demos.profiles)[keyof typeof demos.profiles];
 
-/* ---------- brand glyphs (tabs) ---------- */
+const profileFor = (p: Post): Profile =>
+  demos.profiles[p.profile as keyof typeof demos.profiles];
+
+/* Relative timestamps are presentation only, not post data. Derived from
+   position so they stay stable across renders. */
+const AGES = ["2h", "5h", "1d", "2d", "4d", "6d", "1w", "2w", "3w"];
+const ageOf = (i: number) => AGES[i % AGES.length];
+
+const ICON = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
 
 function FacebookGlyph({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -33,16 +49,6 @@ function LinkedInGlyph({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-/* ---------- shared bits ---------- */
-
-const ICON = {
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.7,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-};
-
 function Globe({ className = "w-3 h-3" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" {...ICON} className={className} aria-hidden="true">
@@ -52,29 +58,28 @@ function Globe({ className = "w-3 h-3" }: { className?: string }) {
   );
 }
 
-function Avatar({
-  letter,
-  bg,
-  size,
-  ring = false,
-}: {
-  letter: string;
-  bg: string;
-  size: number;
-  ring?: boolean;
-}) {
-  const inner = (
+/* Real profile picture when the account has one, lettermark otherwise. */
+function Avatar({ profile, size, ring = false }: { profile: Profile; size: number; ring?: boolean }) {
+  const inner = profile.avatar ? (
+    <img
+      src={profile.avatar}
+      alt=""
+      width={size}
+      height={size}
+      className={`rounded-full object-cover ${ring ? "border-2 border-white dark:border-black" : ""}`}
+      style={{ width: size, height: size }}
+    />
+  ) : (
     <div
-      className={`${bg} flex items-center justify-center rounded-full font-semibold text-white ${
+      className={`${profile.color} flex items-center justify-center rounded-full font-semibold text-white ${
         ring ? "border-2 border-white dark:border-black" : ""
       }`}
       style={{ width: size, height: size, fontSize: size * 0.42 }}
     >
-      {letter}
+      {profile.letter}
     </div>
   );
   if (!ring) return inner;
-  // Instagram's story ring
   return (
     <div className="rounded-full p-[2px] bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)]">
       {inner}
@@ -90,56 +95,71 @@ function Dots() {
   );
 }
 
-/* ---------- Facebook ---------- */
+/* Caption verbatim from the JSON, with hashtag lines tinted the way each network
+   renders links. The copy carries its own line breaks. */
+function Caption({ text, linkClass }: { text: string; linkClass: string }) {
+  const lines = text.split("\n");
+  return (
+    <>
+      {lines.map((line, i) => (
+        <span key={i} className={line.trim().startsWith("#") ? linkClass : undefined}>
+          {line}
+          {i < lines.length - 1 ? "\n" : ""}
+        </span>
+      ))}
+    </>
+  );
+}
 
-function FacebookPost({ p }: { p: (typeof demos.facebook)[0] }) {
+/* width/height come from the file's real pixels, so the browser reserves space
+   and the feed doesn't jump while lazy images load. */
+function PostImage({ p }: { p: Post }) {
+  return (
+    <img
+      src={p.image}
+      alt={p.title}
+      width={p.imageW}
+      height={p.imageH}
+      loading="lazy"
+      className="block h-auto w-full"
+    />
+  );
+}
+
+function FacebookPost({ p, i }: { p: Post; i: number }) {
+  const prof = profileFor(p);
   return (
     <article className="rounded-lg overflow-hidden bg-white dark:bg-[#242526] shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
       <header className="flex items-center gap-2.5 px-4 pt-3 pb-2">
-        <Avatar letter={p.avatarLetter} bg={p.avatarBg} size={40} />
+        <Avatar profile={prof} size={40} />
         <div className="min-w-0">
           <div className="text-[15px] font-semibold leading-tight text-[#050505] dark:text-[#E4E6EB]">
-            {p.pageName}
+            {prof.name}
           </div>
           <div className="mt-0.5 flex items-center gap-1 text-[13px] text-[#65676B] dark:text-[#B0B3B8]">
-            <span>{p.meta}</span>
-            <span aria-hidden="true">·</span>
-            <span>{p.time}</span>
-            <span aria-hidden="true">·</span>
+            <span>{ageOf(i)}</span>
+            <span aria-hidden="true">&middot;</span>
             <Globe />
           </div>
         </div>
         <Dots />
       </header>
 
-      <p className="px-4 pb-3 text-[15px] leading-[1.35] text-[#050505] dark:text-[#E4E6EB]">
-        {p.text}
+      <p className="whitespace-pre-line px-4 pb-3 text-[15px] leading-[1.35] text-[#050505] dark:text-[#E4E6EB]">
+        <Caption text={p.caption} linkClass="text-[#1877F2]" />
       </p>
 
-      <img
-        src={p.image}
-        alt={`${p.brand} — ${p.tag}`}
-        width={p.imageW}
-        height={p.imageH}
-        loading="lazy"
-        className="block h-auto w-full"
-      />
+      <PostImage p={p} />
 
       <div className="flex items-center justify-between px-4 py-2.5 text-[15px] text-[#65676B] dark:text-[#B0B3B8]">
         <span className="flex items-center gap-1.5">
           <span className="flex -space-x-1" aria-hidden="true">
-            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#1877F2] text-[10px] text-white">
-              &#128077;
-            </span>
-            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#F33E58] text-[9px] text-white">
-              &#10084;
-            </span>
+            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#1877F2] text-[10px] text-white">&#128077;</span>
+            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#F33E58] text-[9px] text-white">&#10084;</span>
           </span>
           {p.likes}
         </span>
-        <span>
-          {p.comments} comments · {p.shares} shares
-        </span>
+        <span>{p.comments} comments</span>
       </div>
 
       <div className="mx-4 border-t border-[#CED0D4] dark:border-[#3E4042]" />
@@ -166,46 +186,69 @@ function FacebookPost({ p }: { p: (typeof demos.facebook)[0] }) {
   );
 }
 
-/* ---------- Instagram ---------- */
+function InstagramFeedPost({ p, i }: { p: Post; i: number }) {
+  const prof = profileFor(p);
+  return (
+    <article className="rounded-sm border border-[#DBDBDB] bg-white dark:border-[#262626] dark:bg-black">
+      <header className="flex items-center gap-3 px-3 py-2.5">
+        <Avatar profile={prof} size={32} ring />
+        <div className="min-w-0 text-[14px] font-semibold leading-tight text-[#262626] dark:text-[#FAFAFA]">
+          {prof.username}
+        </div>
+        <Dots />
+      </header>
 
-/* Instagram is a profile GRID, not a single-column feed: 3 square thumbnails per
-   row with hairline gutters, under a profile header and the POSTS/REELS/TAGGED
-   strip. Rendering it as stacked feed cards was the wrong mental model — nobody
-   browses a brand on Instagram one post at a time. */
-function InstagramGrid({
-  posts,
-  exampleLabel,
-}: {
-  posts: typeof demos.instagram;
-  exampleLabel: string;
-}) {
-  const username = "socialx.demos";
-  const avatarLetter = "X";
-  const avatarBg = "bg-[#2B50DC]";
+      <PostImage p={p} />
 
+      <div className="flex items-center gap-4 px-3 pt-3 text-[#262626] dark:text-[#FAFAFA]">
+        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Like">
+          <path d="M12 20.5S3.5 15 3.5 9.2A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 5.8-8.5 11.3-8.5 11.3Z" />
+        </svg>
+        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Comment">
+          <path d="M21 11.5a8 8 0 0 1-8 8 8.4 8.4 0 0 1-3.6-.8L3 21l2.3-5.9A8 8 0 1 1 21 11.5Z" />
+        </svg>
+        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Share">
+          <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" />
+        </svg>
+        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="ml-auto h-6 w-6" aria-label="Save">
+          <path d="M6 3h12v18l-6-4.5L6 21V3Z" />
+        </svg>
+      </div>
+
+      <div className="px-3 pt-2 text-[14px] font-semibold text-[#262626] dark:text-[#FAFAFA]">
+        {p.likes.toLocaleString()} likes
+      </div>
+      <p className="whitespace-pre-line px-3 pt-1 text-[14px] leading-[1.4] text-[#262626] dark:text-[#FAFAFA]">
+        <span className="font-semibold">{prof.username}</span>{" "}
+        <Caption text={p.caption} linkClass="text-[#00376B] dark:text-[#E0F1FF]" />
+      </p>
+      <div className="px-3 pt-1.5 text-[14px] text-[#737373]">View all {p.comments} comments</div>
+      <div className="px-3 pb-3 pt-1.5 text-[10px] uppercase tracking-[0.2px] text-[#737373]">
+        {ageOf(i)} ago
+      </div>
+    </article>
+  );
+}
+
+function InstagramGrid({ posts, exampleLabel }: { posts: Post[]; exampleLabel: string }) {
+  const prof = posts[0] ? profileFor(posts[0]) : null;
   return (
     <div className="bg-white dark:bg-black">
-      {/* Profile header */}
       <div className="flex items-center gap-6 px-5 py-6 sm:gap-10 sm:px-8">
-        <Avatar letter={avatarLetter} bg={avatarBg} size={72} ring />
+        {prof && <Avatar profile={prof} size={72} ring />}
         <div className="min-w-0">
-          <div className="text-[17px] font-normal text-[#262626] dark:text-[#FAFAFA]">
-            {username}
-          </div>
-          <div className="mt-3 flex gap-6 text-[14px] text-[#262626] dark:text-[#FAFAFA]">
-            <span>
-              <span className="font-semibold">{posts.length}</span> posts
-            </span>
+          <div className="text-[17px] text-[#262626] dark:text-[#FAFAFA]">{prof?.username}</div>
+          <div className="mt-3 text-[14px] text-[#262626] dark:text-[#FAFAFA]">
+            <span className="font-semibold">{posts.length}</span> posts
           </div>
           <div className="mt-2 text-[14px] leading-snug text-[#262626] dark:text-[#FAFAFA]">
-            <span className="font-semibold">socialX demo work</span>
+            <span className="font-semibold">{prof?.name}</span>
             <br />
-            <span className="text-[#737373]">{exampleLabel} · HighLevel SaaS</span>
+            <span className="text-[#737373]">{exampleLabel} &middot; {prof?.bio}</span>
           </div>
         </div>
       </div>
 
-      {/* POSTS / REELS / TAGGED */}
       <div className="flex justify-center gap-10 border-t border-[#DBDBDB] text-[11px] font-semibold uppercase tracking-[1px] dark:border-[#262626]">
         <span className="-mt-px flex items-center gap-1.5 border-t border-[#262626] py-3.5 text-[#262626] dark:border-[#FAFAFA] dark:text-[#FAFAFA]">
           <svg viewBox="0 0 24 24" {...ICON} className="h-3 w-3" aria-hidden="true">
@@ -230,17 +273,12 @@ function InstagramGrid({
         </span>
       </div>
 
-      {/* The grid itself */}
+      {/* 4:5 tiles - the creative's own ratio, and what Instagram's profile grid
+          has used since the 2025 redesign. */}
       <div className="grid grid-cols-3 gap-[2px] sm:gap-[3px]">
         {posts.map((p) => (
-          <div key={p.id} className="group relative aspect-[4/5] overflow-hidden">
-            <img
-              src={p.image}
-              alt={`${p.brand} — ${p.tag}`}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-            {/* Instagram's desktop hover: dim the tile, surface the counts */}
+          <div key={p.number} className="group relative aspect-[4/5] overflow-hidden">
+            <img src={p.image} alt={p.title} loading="lazy" className="h-full w-full object-cover" />
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center gap-5 bg-black/40 text-[14px] font-semibold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100">
               <span className="flex items-center gap-1.5">
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true">
@@ -262,88 +300,26 @@ function InstagramGrid({
   );
 }
 
-/* Instagram's single-post view, for the feed toggle. The grid is how you browse
-   a profile; this is how a post actually lands in someone's timeline. */
-function InstagramFeedPost({ p }: { p: (typeof demos.instagram)[0] }) {
-  return (
-    <article className="rounded-sm border border-[#DBDBDB] bg-white dark:border-[#262626] dark:bg-black">
-      <header className="flex items-center gap-3 px-3 py-2.5">
-        <Avatar letter={p.avatarLetter} bg={p.avatarBg} size={32} ring />
-        <div className="min-w-0 leading-tight">
-          <div className="text-[14px] font-semibold text-[#262626] dark:text-[#FAFAFA]">
-            {p.username}
-          </div>
-          <div className="text-[12px] text-[#737373]">{p.location}</div>
-        </div>
-        <Dots />
-      </header>
-
-      {/* The creative is 4:5 (608x760), Instagram's portrait format. Forcing a
-          square crop here cut 20% off it. Rendering at intrinsic size lets each
-          post keep its own ratio; width/height also reserve space so the feed
-          doesn't jump as images load. */}
-      <img
-        src={p.image}
-        alt={`${p.brand} — ${p.tag}`}
-        width={p.imageW}
-        height={p.imageH}
-        loading="lazy"
-        className="block h-auto w-full"
-      />
-
-      <div className="flex items-center gap-4 px-3 pt-3 text-[#262626] dark:text-[#FAFAFA]">
-        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Like">
-          <path d="M12 20.5S3.5 15 3.5 9.2A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 5.8-8.5 11.3-8.5 11.3Z" />
-        </svg>
-        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Comment">
-          <path d="M21 11.5a8 8 0 0 1-8 8 8.4 8.4 0 0 1-3.6-.8L3 21l2.3-5.9A8 8 0 1 1 21 11.5Z" />
-        </svg>
-        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="h-6 w-6" aria-label="Share">
-          <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" />
-        </svg>
-        <svg viewBox="0 0 24 24" {...ICON} strokeWidth={1.8} className="ml-auto h-6 w-6" aria-label="Save">
-          <path d="M6 3h12v18l-6-4.5L6 21V3Z" />
-        </svg>
-      </div>
-
-      <div className="px-3 pt-2 text-[14px] font-semibold text-[#262626] dark:text-[#FAFAFA]">
-        {p.likes.toLocaleString()} likes
-      </div>
-      <p className="px-3 pt-1 text-[14px] leading-[1.4] text-[#262626] dark:text-[#FAFAFA]">
-        <span className="font-semibold">{p.username}</span> {p.caption}{" "}
-        <span className="text-[#00376B] dark:text-[#E0F1FF]">{p.hashtags}</span>
-      </p>
-      <div className="px-3 pt-1.5 text-[14px] text-[#737373]">
-        View all {p.comments} comments
-      </div>
-      <div className="px-3 pb-3 pt-1.5 text-[10px] uppercase tracking-[0.2px] text-[#737373]">
-        {p.time}
-      </div>
-    </article>
-  );
-}
-
-/* ---------- LinkedIn ---------- */
-
-function LinkedInPost({ p }: { p: (typeof demos.linkedin)[0] }) {
+function LinkedInPost({ p, i }: { p: Post; i: number }) {
   const [expanded, setExpanded] = useState(false);
-  const isLong = p.text.length > 240;
-  const shown = expanded || !isLong ? p.text : p.text.slice(0, 240).trimEnd();
+  const prof = profileFor(p);
+  const isLong = p.caption.length > 240;
+  const shown = expanded || !isLong ? p.caption : p.caption.slice(0, 240).trimEnd();
 
   return (
     <article className="rounded-lg border border-black/10 bg-white dark:border-white/10 dark:bg-[#1D2226]">
       <header className="flex items-start gap-2 px-4 pt-3">
-        <Avatar letter={p.avatarLetter} bg={p.avatarBg} size={48} />
+        <Avatar profile={prof} size={48} />
         <div className="min-w-0 leading-tight">
           <div className="text-[14px] font-semibold text-[rgba(0,0,0,0.9)] dark:text-[rgba(255,255,255,0.9)]">
-            {p.brand}
+            {prof.name}
           </div>
           <div className="text-[12px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-            {p.headline}
+            {prof.bio}
           </div>
           <div className="mt-0.5 flex items-center gap-1 text-[12px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-            <span>{p.time}</span>
-            <span aria-hidden="true">·</span>
+            <span>{ageOf(i)}</span>
+            <span aria-hidden="true">&middot;</span>
             <Globe />
           </div>
         </div>
@@ -351,7 +327,7 @@ function LinkedInPost({ p }: { p: (typeof demos.linkedin)[0] }) {
       </header>
 
       <p className="whitespace-pre-line px-4 py-3 text-[14px] leading-[1.45] text-[rgba(0,0,0,0.9)] dark:text-[rgba(255,255,255,0.9)]">
-        {shown}
+        <Caption text={shown} linkClass="text-[#0A66C2]" />
         {isLong && !expanded && (
           <>
             {"… "}
@@ -366,30 +342,17 @@ function LinkedInPost({ p }: { p: (typeof demos.linkedin)[0] }) {
         )}
       </p>
 
-      <img
-        src={p.image}
-        alt={`${p.brand} — ${p.tag}`}
-        width={p.imageW}
-        height={p.imageH}
-        loading="lazy"
-        className="block h-auto w-full"
-      />
+      <PostImage p={p} />
 
       <div className="flex items-center justify-between px-4 py-2 text-[12px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
         <span className="flex items-center gap-1.5">
           <span className="flex -space-x-1" aria-hidden="true">
-            <span className="flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#378FE9] text-[9px] text-white">
-              &#128077;
-            </span>
-            <span className="flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#F5BB5C] text-[9px] text-white">
-              &#128161;
-            </span>
+            <span className="flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#378FE9] text-[9px] text-white">&#128077;</span>
+            <span className="flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#F5BB5C] text-[9px] text-white">&#128161;</span>
           </span>
           {p.likes}
         </span>
-        <span>
-          {p.comments} comments · {p.reposts} reposts
-        </span>
+        <span>{p.comments} comments</span>
       </div>
 
       <div className="mx-4 border-t border-black/10 dark:border-white/10" />
@@ -417,56 +380,19 @@ function LinkedInPost({ p }: { p: (typeof demos.linkedin)[0] }) {
   );
 }
 
-/* ---------- gallery ---------- */
-
 const TABS: {
   key: Platform;
   label: string;
   Glyph: (props: { className?: string }) => React.ReactElement;
-  /* Selected-state accents. The row adopts the platform's own colour, so the
-     control panel itself tells you which network you are looking at — including
-     Instagram's four-stop gradient, run vertically for the accent bar. */
   text: string;
   hoverText: string;
   fill: string;
-  bar: string;
-  tint: string;
 }[] = [
-  {
-    key: "facebook",
-    label: "Facebook",
-    Glyph: FacebookGlyph,
-    text: "text-[#1877F2]",
-    hoverText: "group-hover:text-[#1877F2]",
-    fill: "bg-[#1877F2]",
-    bar: "bg-[#1877F2]",
-    tint: "bg-[#1877F2]/10 dark:bg-[#1877F2]/20",
-  },
-  {
-    key: "instagram",
-    label: "Instagram",
-    Glyph: InstagramGlyph,
-    text: "text-[#DD2A7B]",
-    hoverText: "group-hover:text-[#DD2A7B]",
-    fill: "bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)]",
-    bar: "bg-[linear-gradient(180deg,#F58529,#DD2A7B,#8134AF,#515BD4)]",
-    tint: "bg-[#DD2A7B]/10 dark:bg-[#DD2A7B]/20",
-  },
-  {
-    key: "linkedin",
-    label: "LinkedIn",
-    Glyph: LinkedInGlyph,
-    text: "text-[#0A66C2]",
-    hoverText: "group-hover:text-[#0A66C2]",
-    fill: "bg-[#0A66C2]",
-    bar: "bg-[#0A66C2]",
-    tint: "bg-[#0A66C2]/10 dark:bg-[#0A66C2]/20",
-  },
+  { key: "facebook", label: "Facebook", Glyph: FacebookGlyph, text: "text-[#1877F2]", hoverText: "group-hover:text-[#1877F2]", fill: "bg-[#1877F2]" },
+  { key: "instagram", label: "Instagram", Glyph: InstagramGlyph, text: "text-[#DD2A7B]", hoverText: "group-hover:text-[#DD2A7B]", fill: "bg-[linear-gradient(45deg,#F58529,#DD2A7B,#8134AF,#515BD4)]" },
+  { key: "linkedin", label: "LinkedIn", Glyph: LinkedInGlyph, text: "text-[#0A66C2]", hoverText: "group-hover:text-[#0A66C2]", fill: "bg-[#0A66C2]" },
 ];
 
-/* Each feed carries the platform's own surface colour, column width and spacing
-   — that framing does as much work as the cards themselves in making the tab
-   read as "this is Facebook" rather than "these are cards". */
 const FRAME: Record<Platform, string> = {
   facebook: "bg-[#F0F2F5] dark:bg-[#18191A]",
   instagram: "bg-white dark:bg-black",
@@ -479,17 +405,6 @@ const COLUMN: Record<Platform, string> = {
   linkedin: "space-y-2",
 };
 
-/* The feed frame takes the platform's own column width. Previously the frame
-   filled the whole grid track (~1000px) while the posts sat at 470-555px inside
-   it, leaving a wide empty border box around a narrow strip of content. */
-const FRAME_W: Record<Platform, string> = {
-  facebook: "max-w-[560px]",
-  instagram: "max-w-[640px]",
-  linkedin: "max-w-[580px]",
-};
-
-/* Customization tiers, mirroring the pricing ladder: a library post as-is,
-   through to something built from scratch. `default` is the landing state. */
 const EXAMPLES: { key: string; label: string; dot: string }[] = [
   { key: "default", label: "Default", dot: "bg-gray-400" },
   { key: "light", label: "Light customization", dot: "bg-blue-sky" },
@@ -500,21 +415,14 @@ const EXAMPLES: { key: string; label: string; dot: string }[] = [
 export default function DemoGallery() {
   const [active, setActive] = useState<Platform>("facebook");
   const [example, setExample] = useState<string>("default");
-  /* Instagram alone has two legitimate readings: the profile grid and the feed.
-     Kept separate from `active` so the choice survives switching networks. */
   const [igView, setIgView] = useState<"profile" | "feed">("profile");
 
-  const keep = <T extends { example: string }>(list: T[]) =>
-    list.filter((p) => p.example === example);
+  const all = demos.posts as Post[];
+  const posts = all.filter((p) => p.example === example);
+  const countExample = (key: string) => all.filter((p) => p.example === key).length;
 
-  const countExample = (key: string) => {
-    const list = demos[active] as { example: string }[];
-    return list.filter((p) => p.example === key).length;
-  };
-
-  const total =
-    demos.facebook.length + demos.instagram.length + demos.linkedin.length;
-  const visibleCount = countExample(example);
+  const total = all.length;
+  const visibleCount = posts.length;
   const activeTab = TABS.find((t) => t.key === active)!;
   const activeExample = EXAMPLES.find((e) => e.key === example)!;
 
@@ -524,12 +432,13 @@ export default function DemoGallery() {
       ? isGrid
         ? "max-w-[640px]"
         : "max-w-[500px]"
-      : FRAME_W[active];
+      : active === "facebook"
+        ? "max-w-[560px]"
+        : "max-w-[580px]";
 
   return (
     <section className="py-16 md:py-24 bg-[#F4F2EF] dark:bg-[#050508] transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* ---- Dashboard header ---- */}
         <header className="mb-10 flex flex-col gap-6 border-b border-black/10 pb-8 dark:border-white/10 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="mb-3 font-grotesk text-[13px] font-medium uppercase tracking-[1.5px] text-[#2B50DC] dark:text-[#5B8DEF]">
@@ -563,10 +472,8 @@ export default function DemoGallery() {
         </header>
 
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-          {/* ---- Control rail ---- */}
           <aside className="w-full lg:sticky lg:top-24 lg:w-[264px] lg:shrink-0 lg:self-start">
             <div className="border border-black/10 bg-white dark:border-white/10 dark:bg-white/[0.03]">
-              {/* Network — icons only */}
               <div className="p-5">
                 <div className="mb-4 font-grotesk text-[11px] font-semibold uppercase tracking-[1.2px] text-gray-500 dark:text-gray-400">
                   Network
@@ -600,7 +507,6 @@ export default function DemoGallery() {
 
               <div className="border-t border-black/10 dark:border-white/10" />
 
-              {/* Examples */}
               <div className="p-5">
                 <div className="mb-4 font-grotesk text-[11px] font-semibold uppercase tracking-[1.2px] text-gray-500 dark:text-gray-400">
                   Examples
@@ -608,7 +514,6 @@ export default function DemoGallery() {
                 <div className="flex flex-col gap-1">
                   {EXAMPLES.map((e) => {
                     const selected = example === e.key;
-                    const n = countExample(e.key);
                     return (
                       <button
                         key={e.key}
@@ -623,9 +528,7 @@ export default function DemoGallery() {
                       >
                         <span
                           aria-hidden="true"
-                          className={`absolute left-0 top-0 h-full w-[3px] ${
-                            selected ? "bg-[#2B50DC]" : "bg-transparent"
-                          }`}
+                          className={`absolute left-0 top-0 h-full w-[3px] ${selected ? "bg-[#2B50DC]" : "bg-transparent"}`}
                         />
                         <span aria-hidden="true" className={`h-2 w-2 shrink-0 ${e.dot}`} />
                         <span className="truncate">{e.label}</span>
@@ -634,7 +537,7 @@ export default function DemoGallery() {
                             selected ? "opacity-70" : "text-gray-400 dark:text-gray-500"
                           }`}
                         >
-                          {n}
+                          {countExample(e.key)}
                         </span>
                       </button>
                     );
@@ -644,7 +547,6 @@ export default function DemoGallery() {
             </div>
           </aside>
 
-          {/* ---- Preview canvas ---- */}
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-4 border border-b-0 border-black/10 bg-white px-5 py-3 dark:border-white/10 dark:bg-white/[0.03]">
               <div className="flex min-w-0 items-center gap-2.5">
@@ -661,34 +563,11 @@ export default function DemoGallery() {
               </div>
 
               <div className="flex shrink-0 items-center gap-3">
-                {/* Profile / feed switch — Instagram only */}
                 {active === "instagram" && (
-                  <div
-                    role="group"
-                    aria-label="Instagram view"
-                    className="flex border border-black/10 dark:border-white/10"
-                  >
+                  <div role="group" aria-label="Instagram view" className="flex border border-black/10 dark:border-white/10">
                     {([
-                      {
-                        key: "profile" as const,
-                        label: "Profile view",
-                        path: (
-                          <>
-                            <rect x="3" y="3" width="18" height="18" />
-                            <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
-                          </>
-                        ),
-                      },
-                      {
-                        key: "feed" as const,
-                        label: "Feed view",
-                        path: (
-                          <>
-                            <rect x="4" y="3" width="16" height="8" />
-                            <rect x="4" y="13" width="16" height="8" />
-                          </>
-                        ),
-                      },
+                      { key: "profile" as const, label: "Profile view", path: (<><rect x="3" y="3" width="18" height="18" /><path d="M9 3v18M15 3v18M3 9h18M3 15h18" /></>) },
+                      { key: "feed" as const, label: "Feed view", path: (<><rect x="4" y="3" width="16" height="8" /><rect x="4" y="13" width="16" height="8" /></>) },
                     ]).map((v) => {
                       const on = igView === v.key;
                       return (
@@ -730,23 +609,21 @@ export default function DemoGallery() {
                 >
                   {visibleCount === 0 ? (
                     <p className="px-6 py-20 text-center text-sm text-gray-500 dark:text-gray-400">
-                      No {activeTab.label} posts at this level yet.
+                      No posts at this level yet.
                     </p>
                   ) : isGrid ? (
-                    <InstagramGrid
-                      posts={keep(demos.instagram)}
-                      exampleLabel={activeExample.label}
-                    />
+                    <InstagramGrid posts={posts} exampleLabel={activeExample.label} />
                   ) : (
                     <div className={`px-3 py-6 sm:px-5 sm:py-7 ${COLUMN[active]}`}>
-                      {active === "facebook" &&
-                        keep(demos.facebook).map((p) => <FacebookPost key={p.id} p={p} />)}
-                      {active === "instagram" &&
-                        keep(demos.instagram).map((p) => (
-                          <InstagramFeedPost key={p.id} p={p} />
-                        ))}
-                      {active === "linkedin" &&
-                        keep(demos.linkedin).map((p) => <LinkedInPost key={p.id} p={p} />)}
+                      {posts.map((p, i) =>
+                        active === "facebook" ? (
+                          <FacebookPost key={p.number} p={p} i={i} />
+                        ) : active === "instagram" ? (
+                          <InstagramFeedPost key={p.number} p={p} i={i} />
+                        ) : (
+                          <LinkedInPost key={p.number} p={p} i={i} />
+                        )
+                      )}
                     </div>
                   )}
                 </div>

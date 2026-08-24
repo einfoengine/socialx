@@ -178,7 +178,7 @@ export default function HowItWorks() {
             </a>
 
             <div className="mt-6 font-grotesk text-[11px] uppercase tracking-[1.2px] text-gray-500">
-              30 minutes · No pitch · No contracts
+              No pitch · No contracts
             </div>
           </div>
         </div>
