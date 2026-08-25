@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SocialXLogo from "./SocialXLogo";
 
 function Logo() {
@@ -54,9 +54,102 @@ function ThemeToggle({ theme, toggleTheme }: { theme: "light" | "dark"; toggleTh
   );
 }
 
+/* Stroke weight and cap style match the calendar glyph in the actions area, so
+   the menu reads as part of the same icon set. */
+function MenuIcon({ children }: { children: React.ReactNode }) {
+  return (
+    <svg
+      className="w-[18px] h-[18px]"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {children}
+    </svg>
+  );
+}
+
+/* The bar used to carry all seven section anchors side by side, which left the
+   three regions fighting for width and nothing readable at a glance. The four
+   mid-funnel sections now sit behind one "Product" trigger; Demos, Pricing and
+   FAQ stay one click away because they are what visitors actually hunt for.
+
+   Each row carries a one-line summary drawn from the section it points at, so
+   the menu previews the page rather than just naming anchors. */
+type NavLink = { label: string; href: string };
+type MenuLink = NavLink & { description: string; icon: React.ReactNode };
+type NavItem = NavLink | { label: string; eyebrow: string; children: MenuLink[] };
+
+const navItems: NavItem[] = [
+  { label: "Demos", href: "/demos" },
+  {
+    label: "Product",
+    eyebrow: "[ The platform ]",
+    children: [
+      {
+        label: "Features",
+        href: "/#gw-problem",
+        description: "Why a dead feed costs you deals.",
+        icon: (
+          <MenuIcon>
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </MenuIcon>
+        ),
+      },
+      {
+        label: "How It Works",
+        href: "/#gw-how",
+        description: "Three steps. Then it runs monthly.",
+        icon: (
+          <MenuIcon>
+            <circle cx="6" cy="6" r="2.5" />
+            <circle cx="18" cy="12" r="2.5" />
+            <circle cx="6" cy="18" r="2.5" />
+            <path d="M8.2 7.2 15.8 11M8.2 16.8 15.8 13" />
+          </MenuIcon>
+        ),
+      },
+      {
+        label: "Why socialX",
+        href: "/#gw-why-socialx",
+        description: "HighLevel-only, by resellers since 2019.",
+        icon: (
+          <MenuIcon>
+            <path d="m12 3 2.3 6.2 6.2 2.3-6.2 2.3L12 20l-2.3-6.2L3.5 11.5l6.2-2.3Z" />
+          </MenuIcon>
+        ),
+      },
+      {
+        label: "Comparison",
+        href: "/#gw-comparison",
+        description: "The honest trade-off on each option.",
+        icon: (
+          <MenuIcon>
+            <path d="M3 21h18" />
+            <rect x="5" y="11" width="4.5" height="7" />
+            <rect x="14.5" y="5" width="4.5" height="13" />
+          </MenuIcon>
+        ),
+      },
+    ],
+  },
+  { label: "Pricing", href: "/#gw-pricing" },
+  { label: "FAQ", href: "/#gw-faq" },
+];
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  const [drawerHeight, setDrawerHeight] = useState(0);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     // Light is the default; reflect whatever the init script set (dark only if saved).
@@ -64,6 +157,31 @@ export default function Header() {
     setTheme(isDark ? "dark" : "light");
   }, []);
 
+  /* A dropdown opened by hover still has to close for pointer-less input, so
+     back it with an outside click and Escape rather than hover alone. */
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onPointerDown = (e: MouseEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) setMenuOpen(null);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(null);
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
+  /* The drawer animates on max-height, so it needs a real number. Measuring the
+     content beats a hard-coded ceiling that silently clips when links change. */
+  useEffect(() => {
+    setDrawerHeight(open ? (drawerRef.current?.scrollHeight ?? 0) : 0);
+  }, [open]);
 
   /* Take the background of whatever section is currently behind the bar.
      Reading the computed colour rather than a hard-coded map means this keeps
@@ -100,7 +218,11 @@ export default function Header() {
       if (!rgb) rgb = toRgb(getComputedStyle(document.body).backgroundColor);
       if (!rgb) return;
 
-      header.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+      const surface = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+      header.style.backgroundColor = surface;
+      // The dropdown paints below the bar, outside this element's own box, so it
+      // reads the colour from a token instead of inheriting it.
+      header.style.setProperty("--nav-surface", surface);
       // Perceived brightness decides which foreground tone stays legible.
       const lum = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
       header.dataset.tone = lum > 0.55 ? "light" : "dark";
@@ -132,15 +254,7 @@ export default function Header() {
     }
   };
 
-  const navLinks = [
-    { label: "Demos", href: "/demos" },
-    { label: "Features", href: "/#gw-problem" },
-    { label: "How It Works", href: "/#gw-how" },
-    { label: "Pricing", href: "/#gw-pricing" },
-    { label: "Comparison", href: "/#gw-comparison" },
-    { label: "Why socialX", href: "/#gw-why-socialx" },
-    { label: "FAQ", href: "/#gw-faq" },
-  ];
+  const closeDrawer = () => setOpen(false);
 
   return (
     <header id="gw-header" className="sticky top-0 z-50 w-full bg-[#050508]">
@@ -156,20 +270,102 @@ export default function Header() {
           </div>
 
           {/* 2 — Navigation */}
-          <nav className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-4 xl:gap-8">
-            {navLinks.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="nav-link font-grotesk text-sm font-medium whitespace-nowrap"
-              >
-                {l.label}
-              </a>
-            ))}
+          <nav className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-6 xl:gap-8">
+            {navItems.map((item) =>
+              "children" in item ? (
+                <div
+                  key={item.label}
+                  ref={menuRef}
+                  /* Full bar height, so the panel's `top-full` lands on the
+                     bar's bottom edge instead of the trigger's, and the whole
+                     column is a hover target. */
+                  className="relative flex h-[76px] items-center"
+                  onMouseEnter={() => setMenuOpen(item.label)}
+                  onMouseLeave={() => setMenuOpen(null)}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen((m) => (m === item.label ? null : item.label))}
+                    aria-expanded={menuOpen === item.label}
+                    aria-haspopup="true"
+                    className="nav-link font-grotesk text-sm font-medium whitespace-nowrap inline-flex items-center gap-1.5 cursor-pointer focus:outline-hidden"
+                  >
+                    {item.label}
+                    <svg
+                      className={`w-3 h-3 transition-transform duration-200 ${
+                        menuOpen === item.label ? "rotate-180" : ""
+                      }`}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </button>
+
+                  {/* The wrapper's top padding bridges the gap to the bar, so the
+                      pointer never crosses dead space and closes the menu. */}
+                  <div
+                    className={`absolute left-1/2 top-full -translate-x-1/2 pt-2 transition-all duration-200 ${
+                      menuOpen === item.label
+                        ? "visible opacity-100 translate-y-0"
+                        : "invisible opacity-0 -translate-y-1"
+                    }`}
+                  >
+                    <div className="nav-menu w-[400px] border shadow-[0_28px_64px_-24px_rgba(4,4,74,0.5)]">
+                      {/* Same gradient as the primary CTA, so the panel is
+                          unmistakably part of the brand and not a browser chrome. */}
+                      <div className="gradient-bg h-[3px] w-full" />
+
+                      <div className="nav-menu-eyebrow px-5 pt-4 pb-1 font-grotesk text-[11px] font-medium uppercase tracking-[1.5px]">
+                        {item.eyebrow}
+                      </div>
+
+                      <div className="py-2">
+                        {item.children.map((c) => (
+                          <a
+                            key={c.label}
+                            href={c.href}
+                            onClick={() => setMenuOpen(null)}
+                            className="nav-menu-row flex items-center gap-3.5 px-5 py-3 transition-colors duration-200"
+                          >
+                            <span className="nav-menu-tile flex h-9 w-9 shrink-0 items-center justify-center">
+                              {c.icon}
+                            </span>
+                            <span className="min-w-0">
+                              <span className="nav-menu-label block font-grotesk text-sm font-semibold leading-tight">
+                                {c.label}
+                              </span>
+                              <span className="nav-menu-desc mt-1 block text-xs leading-snug">
+                                {c.description}
+                              </span>
+                            </span>
+                            <span className="nav-menu-arrow ml-auto shrink-0 pl-2 font-grotesk text-sm">
+                              →
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="nav-link font-grotesk text-sm font-medium whitespace-nowrap"
+                >
+                  {item.label}
+                </a>
+              )
+            )}
           </nav>
 
           {/* 3 — Actions */}
-          <div className="flex flex-1 items-center justify-end gap-4">
+          <div className="flex flex-1 items-center justify-end gap-3">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <a
               href="/#gw-book"
@@ -190,6 +386,14 @@ export default function Header() {
                 <path d="M8 2.5v5M16 2.5v5M3 10.5h18" />
                 <path d="m9 15.5 2 2 4-4" />
               </svg>
+            </a>
+            {/* Existing clients, not prospects — outlined so it stays clearly
+                secondary to the one primary call to action beside it. */}
+            <a
+              href="/login"
+              className="nav-btn btn-icon hidden lg:inline-flex h-9 shrink-0 items-center border px-4 font-grotesk text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
+            >
+              Login
             </a>
             <a
               href="/#gw-pricing"
@@ -222,29 +426,55 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu. No dropdowns here — vertical space is cheap, so the
+            grouping shows as a labelled block instead of another tap target. */}
         <div
           className="nav-drawer lg:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: open ? "360px" : "0" }}
+          style={{ maxHeight: drawerHeight }}
         >
-          <nav
-            className="nav-drawer flex flex-col gap-1 pb-6 border-t"
-          >
+          <nav ref={drawerRef} className="nav-drawer flex flex-col gap-1 pb-6 border-t">
             <div className="pt-3" />
-            {navLinks.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="nav-link font-grotesk text-sm font-medium py-3 border-b border-[var(--nav-line)]"
-              >
-                {l.label}
-              </a>
-            ))}
+            {navItems.map((item) =>
+              "children" in item ? (
+                <div key={item.label} className="border-b border-[var(--nav-line)] py-3">
+                  <div className="font-grotesk text-[11px] font-semibold uppercase tracking-[0.5px] text-[var(--nav-muted)] opacity-70">
+                    {item.label}
+                  </div>
+                  <div className="mt-1 flex flex-col">
+                    {item.children.map((c) => (
+                      <a
+                        key={c.label}
+                        href={c.href}
+                        onClick={closeDrawer}
+                        className="nav-link font-grotesk text-sm font-medium py-2"
+                      >
+                        {c.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={closeDrawer}
+                  className="nav-link font-grotesk text-sm font-medium py-3 border-b border-[var(--nav-line)]"
+                >
+                  {item.label}
+                </a>
+              )
+            )}
+            <a
+              href="/login"
+              onClick={closeDrawer}
+              className="nav-btn btn-icon flex items-center justify-center border py-3 mt-4 font-grotesk text-xs font-semibold uppercase tracking-wider"
+            >
+              Login
+            </a>
             <a
               href="/#gw-pricing"
-              onClick={() => setOpen(false)}
-              className="btn btn-primary group gradient-bg text-white font-grotesk font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 py-3.5 mt-4 shadow-[0_8px_20px_rgba(61,74,255,0.25)]"
+              onClick={closeDrawer}
+              className="btn btn-primary group gradient-bg text-white font-grotesk font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 py-3.5 mt-2 shadow-[0_8px_20px_rgba(61,74,255,0.25)]"
             >
               <span>Get started</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
