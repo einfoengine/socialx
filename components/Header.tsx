@@ -137,9 +137,10 @@ export default function Header() {
             </a>
             <a
               href="/#gw-pricing"
-              className="btn btn-blue hidden lg:inline-block shrink-0 whitespace-nowrap bg-[#3D4AFF] text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3"
+              className="btn btn-primary group hidden lg:inline-flex shrink-0 items-center gap-2 whitespace-nowrap gradient-bg text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3 shadow-[0_8px_20px_rgba(61,74,255,0.25)]"
             >
-              Get started
+              <span>Get started</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
 
             {/* Mobile menu trigger */}
@@ -187,9 +188,10 @@ export default function Header() {
             <a
               href="/#gw-pricing"
               onClick={() => setOpen(false)}
-              className="btn btn-blue bg-[#3D4AFF] text-white font-grotesk font-semibold text-xs tracking-wider uppercase text-center py-3.5 mt-4"
+              className="btn btn-primary group gradient-bg text-white font-grotesk font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 py-3.5 mt-4 shadow-[0_8px_20px_rgba(61,74,255,0.25)]"
             >
-              Get started
+              <span>Get started</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>
           </nav>
         </div>
