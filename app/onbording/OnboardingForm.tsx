@@ -49,7 +49,7 @@ export default function OnboardingForm() {
       />
 
       {/* Header */}
-      <header className="relative z-10 w-full bg-[#050508]/85 backdrop-blur-md border-b border-white/10 py-5">
+      <header className="relative z-10 w-full bg-[#050508] border-b border-white/10 py-5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
           <Link href="/" className="flex items-center no-underline hover:opacity-90 transition-opacity">
             <SocialXLogo className="h-7 w-auto" />

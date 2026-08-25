@@ -5,7 +5,7 @@ import SocialXLogo from "./SocialXLogo";
 
 function Logo() {
   return (
-    <a href="/" className="flex shrink-0 items-center text-white no-underline">
+    <a href="/" className="nav-logo flex shrink-0 items-center no-underline">
       <SocialXLogo className="h-7 w-auto shrink-0" />
     </a>
   );
@@ -15,12 +15,12 @@ function ThemeToggle({ theme, toggleTheme }: { theme: "light" | "dark"; toggleTh
   return (
     <button
       onClick={toggleTheme}
-      className="btn-icon relative flex items-center justify-center w-9 h-9 border border-white/10 hover:border-white/25 bg-white/5 hover:bg-white/10 focus:outline-hidden"
+      className="nav-icon btn-icon relative flex items-center justify-center w-9 h-9 border focus:outline-hidden"
       aria-label="Toggle theme"
     >
       {/* Sun icon */}
       <svg
-        className={`w-[18px] h-[18px] text-gray-200 transition-all duration-300 absolute ${
+        className={`w-[18px] h-[18px] transition-all duration-300 absolute ${
           theme === "dark" ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
         }`}
         fill="none"
@@ -36,7 +36,7 @@ function ThemeToggle({ theme, toggleTheme }: { theme: "light" | "dark"; toggleTh
       </svg>
       {/* Moon icon */}
       <svg
-        className={`w-[18px] h-[18px] text-gray-200 transition-all duration-300 absolute ${
+        className={`w-[18px] h-[18px] transition-all duration-300 absolute ${
           theme === "light" ? "-rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
         }`}
         fill="none"
@@ -64,6 +64,62 @@ export default function Header() {
     setTheme(isDark ? "dark" : "light");
   }, []);
 
+
+  /* Take the background of whatever section is currently behind the bar.
+     Reading the computed colour rather than a hard-coded map means this keeps
+     working through the dark-mode toggle, the one section that sets its colour
+     inline, and any section added later. */
+  useEffect(() => {
+    const header = document.getElementById("gw-header");
+    if (!header) return;
+
+    const toRgb = (c: string): [number, number, number] | null => {
+      const m = c.match(/rgba?\(([^)]+)\)/);
+      if (!m) return null;
+      const parts = m[1].split(",").map((n) => parseFloat(n));
+      // A see-through section can't tint the bar; fall through to the page.
+      if (parts.length > 3 && parts[3] < 0.5) return null;
+      return [parts[0], parts[1], parts[2]];
+    };
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      // Probe just inside the bar's bottom edge.
+      const probe = header.getBoundingClientRect().bottom - 1;
+      const candidates = document.querySelectorAll<HTMLElement>("main section, #gw-footer");
+
+      let rgb: [number, number, number] | null = null;
+      for (const el of candidates) {
+        const r = el.getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) {
+          rgb = toRgb(getComputedStyle(el).backgroundColor);
+          if (rgb) break;
+        }
+      }
+      if (!rgb) rgb = toRgb(getComputedStyle(document.body).backgroundColor);
+      if (!rgb) return;
+
+      header.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+      // Perceived brightness decides which foreground tone stays legible.
+      const lum = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
+      header.dataset.tone = lum > 0.55 ? "light" : "dark";
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   const toggleTheme = () => {
     if (theme === "light") {
       document.documentElement.classList.add("dark");
@@ -87,7 +143,7 @@ export default function Header() {
   ];
 
   return (
-    <header id="gw-header" className="sticky top-0 z-50 w-full bg-[#050508]/85 backdrop-blur-md border-b border-white/10">
+    <header id="gw-header" className="sticky top-0 z-50 w-full bg-[#050508]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Three equal regions: branding, navigation, actions. Each takes flex-1
             from a zero basis, so the left and right regions always resolve to the
@@ -105,7 +161,7 @@ export default function Header() {
               <a
                 key={l.label}
                 href={l.href}
-                className="font-grotesk text-sm font-medium whitespace-nowrap text-gray-400 hover:text-white transition-colors duration-300"
+                className="nav-link font-grotesk text-sm font-medium whitespace-nowrap"
               >
                 {l.label}
               </a>
@@ -119,7 +175,7 @@ export default function Header() {
               href="/#gw-book"
               aria-label="Book a meeting"
               title="Book a meeting"
-              className="btn-icon hidden lg:flex items-center justify-center w-9 h-9 shrink-0 border border-white/10 hover:border-white/25 bg-white/5 text-gray-200 hover:bg-white/10 hover:text-white"
+              className="nav-icon btn-icon hidden lg:flex items-center justify-center w-9 h-9 shrink-0 border"
             >
               <svg
                 className="w-[18px] h-[18px]"
@@ -151,15 +207,15 @@ export default function Header() {
               aria-expanded={open}
             >
               <span
-                className="block w-6 h-[2px] bg-white transition-all duration-300 origin-center"
+                className="nav-bar block w-6 h-[2px] transition-all duration-300 origin-center"
                 style={open ? { transform: "rotate(45deg) translateY(5px)" } : {}}
               />
               <span
-                className="block w-6 h-[2px] bg-white transition-opacity duration-300"
+                className="nav-bar block w-6 h-[2px] transition-opacity duration-300"
                 style={open ? { opacity: 0 } : {}}
               />
               <span
-                className="block w-6 h-[2px] bg-white transition-all duration-300 origin-center"
+                className="nav-bar block w-6 h-[2px] transition-all duration-300 origin-center"
                 style={open ? { transform: "rotate(-45deg) translateY(-5px)" } : {}}
               />
             </button>
@@ -168,11 +224,11 @@ export default function Header() {
 
         {/* Mobile menu */}
         <div
-          className="lg:hidden overflow-hidden transition-all duration-300 bg-[#050508]"
+          className="nav-drawer lg:hidden overflow-hidden transition-all duration-300"
           style={{ maxHeight: open ? "360px" : "0" }}
         >
           <nav
-            className="flex flex-col gap-1 pb-6 border-t border-white/10"
+            className="nav-drawer flex flex-col gap-1 pb-6 border-t"
           >
             <div className="pt-3" />
             {navLinks.map((l) => (
@@ -180,7 +236,7 @@ export default function Header() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="font-grotesk text-sm font-medium text-gray-400 hover:text-white py-3 transition-colors duration-300 border-b border-white/[0.03]"
+                className="nav-link font-grotesk text-sm font-medium py-3 border-b border-[var(--nav-line)]"
               >
                 {l.label}
               </a>

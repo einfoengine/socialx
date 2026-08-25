@@ -138,6 +138,60 @@ input[type="radio"] {
   .section-sub { font-size: 16px; }
 }
 
+/* ====== ADAPTIVE HEADER ======
+   The sticky bar takes the background of whichever section is currently behind
+   it (set inline by the script in Header.tsx) and flips its own foreground
+   between two tones, because the sections run from cream and white through
+   brand blue to near-black. Colours are tokens so every child reads from one
+   place rather than hard-coding white.
+
+   Default is the dark tone, which is also the no-JS fallback. */
+#gw-header {
+  --nav-fg: #F4F2EF;
+  --nav-muted: rgba(244, 242, 239, 0.62);
+  --nav-line: rgba(255, 255, 255, 0.12);
+  --nav-hover: rgba(255, 255, 255, 0.10);
+  border-bottom: 1px solid var(--nav-line);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+#gw-header[data-tone="light"] {
+  --nav-fg: #04044A;
+  --nav-muted: rgba(4, 4, 74, 0.60);
+  --nav-line: rgba(4, 4, 74, 0.12);
+  --nav-hover: rgba(4, 4, 74, 0.06);
+}
+
+#gw-header .nav-logo,
+#gw-header .nav-bar {
+  color: var(--nav-fg);
+  transition: color 0.4s ease, background-color 0.4s ease;
+}
+#gw-header .nav-bar { background-color: var(--nav-fg); }
+
+#gw-header .nav-link {
+  color: var(--nav-muted);
+  transition: color 0.3s ease;
+}
+#gw-header .nav-link:hover {
+  color: var(--nav-fg);
+}
+
+#gw-header .nav-icon {
+  color: var(--nav-fg);
+  border-color: var(--nav-line);
+  transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+#gw-header .nav-icon:hover {
+  background-color: var(--nav-hover);
+}
+
+/* The mobile drawer sits under the bar, so it inherits the same surface. */
+#gw-header .nav-drawer {
+  background-color: inherit;
+  border-color: var(--nav-line);
+}
+
 /* ====== CARD VARIANTS ====== */
 
 .card-sky {
