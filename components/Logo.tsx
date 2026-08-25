@@ -1,47 +1,23 @@
-import Image from "next/image";
 import Link from "next/link";
+import SocialXLogo from "./SocialXLogo";
 
 /*
- * The socialX logo.
+ * The socialX logo for the portals, checkout and auth chrome.
  *
- * Two files rather than one, swapped by the theme class. The SVG in public is
- * drawn with fill="white" baked in, so it disappears on the cream canvas, and the
- * portals default to light. Swapping in CSS rather than in JavaScript means the
- * right mark is painted on the first frame, with no flash of the wrong one and
- * nothing to go wrong during hydration.
+ * This used to render two PNGs swapped by the theme class, because the SVG in
+ * public had fill="white" baked in and vanished on the cream canvas. That pair
+ * of files is gone: the mark now lives inline in SocialXLogo, where the wordmark
+ * takes currentColor and the X keeps its own gradient. One element covers both
+ * themes, so there is no swap to get wrong and no second file to ship.
  *
- * The dark-ink version carries the alt text and the white one is hidden from
- * assistive tech, so the name is announced once rather than twice.
+ * Callers set the colour with a text class on any ancestor, the same way they
+ * would for an icon.
  */
 
-const RATIO = 983 / 208;
+const RATIO = 489 / 104;
 
 export function LogoMark({ className = "h-7" }: { className?: string }) {
-  return (
-    <>
-      <Image
-        src="/socialX-logo-dark.png"
-        alt="socialX"
-        width={983}
-        height={208}
-        /* The mark renders around 130px wide. Without this hint Next builds the
-           srcset from device widths and ships a 2048px file for a logo. */
-        sizes="160px"
-        priority
-        className={`${className} w-auto object-contain dark:hidden`}
-      />
-      <Image
-        src="/socialX-logo-white.png"
-        alt=""
-        aria-hidden="true"
-        width={529}
-        height={112}
-        sizes="160px"
-        priority
-        className={`${className} w-auto object-contain hidden dark:block`}
-      />
-    </>
-  );
+  return <SocialXLogo className={`${className} w-auto`} />;
 }
 
 /** The logo as a link home. What the chrome uses. */
