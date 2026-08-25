@@ -1,4 +1,3 @@
-import Script from "next/script";
 
 const CHECKLIST = [
   "We audit your current HighLevel social presence",
@@ -9,9 +8,9 @@ const CHECKLIST = [
 
 function CheckIcon() {
   return (
-    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-[#2B50DC]/10 dark:bg-[#5B8DEF]/15">
+    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-[#3D4AFF]/10 dark:bg-[#00A3FF]/15">
       <svg
-        className="h-3 w-3 text-[#2B50DC] dark:text-[#5B8DEF]"
+        className="h-3 w-3 text-[#3D4AFF] dark:text-[#00A3FF]"
         viewBox="0 0 12 12"
         fill="none"
         stroke="currentColor"
@@ -39,7 +38,7 @@ export default function Booking() {
             height: "680px",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, #2B50DC 0%, #5B8DEF 45%, transparent 70%)",
+              "radial-gradient(circle, #3D4AFF 0%, #00A3FF 45%, transparent 70%)",
             filter: "blur(120px)",
             opacity: 0.14,
           }}
@@ -58,82 +57,121 @@ export default function Booking() {
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-center">
-          {/* Left: persuasion */}
-          <div data-reveal className="text-center lg:text-left">
-            <div className="font-grotesk text-[12px] font-semibold text-[#2B50DC] dark:text-[#5B8DEF] uppercase tracking-[1.5px] mb-4 transition-colors">
-              [ Book a Call ]
-            </div>
-            <h2 className="font-grotesk font-semibold tracking-[-1.2px] leading-[1.08] text-[34px] md:text-[44px] text-gray-900 dark:text-white mb-5 transition-colors duration-300">
-              See <span className="gradient-text">real posts</span> for your
-              brand. Then decide.
-            </h2>
-            <p className="text-[17px] md:text-[18px] text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mx-auto lg:mx-0 mb-8 transition-colors duration-300">
-              Book a quick, no-pressure call. We will audit your current
-              HighLevel presence and show you real, feature-targeted posts built
-              for your niche, so you know exactly what you are getting before you
-              commit.
-            </p>
+        {/* Stacked, not side-by-side: the pitch reads across the top and the
+            calendar takes the full width beneath it. Giving the widget the whole
+            column also lets it lay the month out beside the slot list instead of
+            stacking them, which is what made the slot list run so long. */}
+        <div data-reveal className="text-center">
+          <div className="font-grotesk text-[12px] font-semibold text-[#3D4AFF] dark:text-[#00A3FF] uppercase tracking-[1.5px] mb-4 transition-colors">
+            [ Book a Call ]
+          </div>
+          <h2 className="font-grotesk font-semibold tracking-[-1.2px] leading-[1.08] text-[32px] md:text-[42px] text-gray-900 dark:text-white mb-4 transition-colors duration-300">
+            See <span className="gradient-text">real posts</span> for your brand.
+            Then decide.
+          </h2>
+          <p className="text-[16px] md:text-[17px] text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto mb-9 transition-colors duration-300">
+            A quick, no-pressure call. We audit your HighLevel presence and show
+            you real feature-targeted posts for your niche, so you know exactly
+            what you are getting.
+          </p>
 
-            <ul className="space-y-3.5 text-left max-w-md mx-auto lg:mx-0 mb-10">
-              {CHECKLIST.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-3 text-[15px] md:text-[16px] text-gray-700 dark:text-gray-300 transition-colors duration-300"
-                >
-                  <CheckIcon />
-                  <span className="leading-snug">{item}</span>
-                </li>
+          {/* Points run across in one row now that they sit above the calendar */}
+          <ul className="grid gap-x-8 gap-y-3 mb-8 text-left sm:grid-cols-2 lg:grid-cols-4">
+            {CHECKLIST.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2.5 text-[14px] md:text-[15px] text-gray-700 dark:text-gray-300 transition-colors duration-300"
+              >
+                <CheckIcon />
+                <span className="leading-snug">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Trust pill */}
+          <div className="inline-flex items-center gap-3.5 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 px-4 py-2 border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm mb-12">
+            <div className="flex -space-x-2">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="w-7 h-7 border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
+                  style={{
+                    backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
+                    backgroundSize: "cover",
+                  }}
+                />
               ))}
-            </ul>
-
-            {/* Trust pill */}
-            <div className="inline-flex items-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 px-5 py-2.5 border border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 border-2 border-[#F4F2EF] dark:border-[#050508] bg-gray-200 dark:bg-gray-800 shadow-sm"
-                    style={{
-                      backgroundImage: `url(https://i.pravatar.cc/100?img=${i + 11})`,
-                      backgroundSize: "cover",
-                    }}
-                  />
-                ))}
-              </div>
-              <span>Trusted by 800+ HL Resellers</span>
             </div>
+            <span>Trusted by 800+ HL Resellers</span>
+          </div>
+        </div>
+
+        {/* Calendar — full width */}
+        <div className="w-full overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#04044A] shadow-[0_16px_48px_rgba(61,74,255,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
+          {/* Slim header strip so the third-party widget reads as part of the page */}
+          <div className="flex items-center justify-between gap-4 border-b border-black/[0.07] dark:border-white/[0.08] px-5 py-3.5">
+            <span className="font-grotesk text-[13px] font-semibold uppercase tracking-[1.2px] text-gray-900 dark:text-white">
+              Pick a time
+            </span>
+            <span className="flex items-center gap-2 font-grotesk text-[11px] uppercase tracking-[1.2px] text-gray-500 dark:text-gray-400">
+              <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping bg-[#3D4AFF] opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 bg-[#3D4AFF]" />
+              </span>
+              Live availability
+            </span>
           </div>
 
-          {/* Right: calendar */}
-          <div className="overflow-hidden border border-black/[0.07] dark:border-white/[0.08] bg-white dark:bg-[#111118] shadow-[0_16px_48px_rgba(43,80,220,0.10)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] transition-colors duration-300">
-            {/* Calendar: "growX Partnership Call" (30 min, Mon-Fri).
-                The id must match the live calendar in HighLevel — the previous
-                one (RbjuKxBNLN8bLfUEviTE) had been deleted and the widget
-                endpoint answered 404, so the embed rendered an error payload.
-                form_embed.js below resizes this iframe by postMessage, keyed on
-                the element id, so the id must stay in the <calendarId>_<ts>
-                shape it expects. */}
+          {/* Calendar: socialX Discover Meeting.
+
+              Fixed height, and form_embed.js is deliberately not loaded here:
+              that script grows the iframe to fit its content, which defeats the
+              widget's own slot-list scrolling and forces a second scrollbar.
+              With a fixed viewport only the time-slot column scrolls.
+
+              CROP: the widget's own stylesheet puts 64px of padding on
+              #appointment_widgets--revamp (.appointment_widgets-xl--revamp in
+              _main.*.css), which renders as a blank band directly under our
+              header strip. It's cross-origin, so it can't be overridden — the
+              iframe is pulled up by exactly that 64px and clipped by the parent,
+              with the same amount added to its height so the visible viewport
+              stays 700px. */}
+          <div className="relative isolate overflow-hidden">
             <iframe
-              src="https://api.leadconnectorhq.com/widget/booking/Yaa9d7AN9spx0NeUIOxQ"
+              src="https://api.leadconnectorhq.com/widget/booking/RbjuKxBNLN8bLfUEviTE"
               title="Book a call with socialX"
               style={{
+                display: "block",
                 width: "100%",
+                height: "764px",
+                marginTop: "-64px",
                 border: "none",
-                overflow: "hidden",
-                minHeight: "720px",
               }}
               scrolling="no"
-              id="Yaa9d7AN9spx0NeUIOxQ_1781096728327"
+              id="RbjuKxBNLN8bLfUEviTE_1781096728327"
+            />
+            {/* Vertical rule sitting in the GUTTER between the month grid and the
+                slot column — centred in the gap rather than hugging either side
+                (grid edge falls near 70%, slots begin near 74%).
+
+                The widget is cross-origin, so no element inside it can be given a
+                real border — this is a hairline drawn over the iframe, with
+                pointer-events:none so the widget stays clickable. The position is
+                measured off the rendered widget rather than read from its DOM, so
+                `left` is the one value to nudge if it doesn't sit flush.
+
+                lg and up only: below that the widget stacks the month above the
+                slots, where a full-height rule would cut through the calendar
+                instead of dividing two columns. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-y-0 hidden w-px bg-black/10 dark:bg-white/10 lg:block"
+              style={{ left: "72%" }}
             />
           </div>
         </div>
       </div>
 
-      <Script
-        src="https://link.msgsndr.com/js/form_embed.js"
-        strategy="afterInteractive"
-      />
     </section>
   );
 }

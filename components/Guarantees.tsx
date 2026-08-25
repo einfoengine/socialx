@@ -44,14 +44,14 @@ export default function Guarantees() {
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none is-circle filter blur-[120px] opacity-[0.04]"
         style={{
-          background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
+          background: "radial-gradient(circle, #3D4AFF 0%, transparent 70%)"
         }}
       />
 
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Consistent Section Header */}
         <div className="text-center mb-16 md:mb-20">
-          <div className="section-eyebrow text-[#2B50DC] dark:text-blue-sky/80 transition-colors duration-300">[ No-Risk Commitment ]</div>
+          <div className="section-eyebrow text-[#3D4AFF] dark:text-blue-sky/80 transition-colors duration-300">[ No-Risk Commitment ]</div>
           <h2 className="section-title text-gray-900 dark:text-white transition-colors duration-300">
             Grow with confidence.<br />
             We remove <span className="gradient-text bg-clip-text text-transparent bg-linear-to-r from-blue-neon to-blue-sky">all the friction</span>.

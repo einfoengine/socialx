@@ -144,7 +144,7 @@ export default function Pricing() {
       <div data-reveal className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="section-eyebrow text-[#2B50DC] dark:text-[#5B8DEF] transition-colors duration-300">[ Pricing ]</div>
+          <div className="section-eyebrow text-[#3D4AFF] dark:text-[#00A3FF] transition-colors duration-300">[ Pricing ]</div>
           <h2 className="section-title text-gray-900 dark:text-white font-grotesk text-3xl md:text-5xl font-bold tracking-tight mb-6 transition-colors duration-300">
             Pick your tier. <span className="gradient-text">Cancel anytime</span>.
           </h2>
@@ -168,7 +168,7 @@ export default function Pricing() {
               onClick={() => setShowLaunchDiscount(false)}
               className={`font-grotesk text-xs font-semibold px-5 py-2.5 transition-all duration-200 cursor-pointer whitespace-nowrap ${
                 !showLaunchDiscount
-                  ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_6px_rgba(0,0,0,0.15)]"
+                  ? "bg-[#04044A] text-white dark:bg-white dark:text-[#04044A] shadow-[0_2px_6px_rgba(0,0,0,0.15)]"
                   : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
               }`}
             >
@@ -178,7 +178,7 @@ export default function Pricing() {
               onClick={() => setShowLaunchDiscount(true)}
               className={`font-grotesk text-xs font-semibold px-5 py-2.5 transition-all duration-200 flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                 showLaunchDiscount
-                  ? "bg-gradient-to-r from-[#2B50DC] to-[#5B8DEF] text-white shadow-[0_2px_6px_rgba(43,80,220,0.3)]"
+                  ? "bg-gradient-to-r from-[#3D4AFF] to-[#00A3FF] text-white shadow-[0_2px_6px_rgba(61,74,255,0.3)]"
                   : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
               }`}
             >
@@ -203,7 +203,7 @@ export default function Pricing() {
                   onClick={() => setPeriod(p.key)}
                   className={`font-grotesk text-sm font-medium px-5 py-2.5 flex items-center gap-2.5 transition-all duration-200 whitespace-nowrap cursor-pointer ${
                     period === p.key
-                      ? "bg-[#111118] text-white dark:bg-white dark:text-[#111118] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
+                      ? "bg-[#04044A] text-white dark:bg-white dark:text-[#04044A] shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
                       : "bg-transparent text-gray-500 hover:text-gray-900 hover:bg-black/5 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/8"
                   }`}
                 >
@@ -213,7 +213,7 @@ export default function Pricing() {
                       className={`text-[11px] font-semibold px-2 py-0.5 transition-colors duration-200 ${
                         period === p.key
                           ? "bg-white/15 text-white/90 dark:bg-black/10 dark:text-black/80"
-                          : "bg-[#2B50DC]/10 text-[#2B50DC] dark:bg-[#2B50DC]/20 dark:text-[#5B8DEF]"
+                          : "bg-[#3D4AFF]/10 text-[#3D4AFF] dark:bg-[#3D4AFF]/20 dark:text-[#00A3FF]"
                       }`}
                     >
                       {Math.round(discountPercent * 100)}% off
@@ -237,8 +237,8 @@ export default function Pricing() {
                 key={tier.name}
                 className={`relative flex flex-col p-8 md:p-10 transition-all duration-300 hover:-translate-y-1 animate-fade-up ${
                   tier.featured
-                    ? "gradient-bg border-none shadow-[0_24px_64px_rgba(43,80,220,0.35)] scale-[1.03]"
-                    : "bg-white dark:bg-[#111118] border border-black/8 dark:border-white/8 shadow-sm dark:shadow-md scale-100"
+                    ? "gradient-bg border-none shadow-[0_24px_64px_rgba(61,74,255,0.35)] scale-[1.03]"
+                    : "bg-white dark:bg-[#04044A] border border-black/8 dark:border-white/8 shadow-sm dark:shadow-md scale-100"
                 }`}
                 style={{
                   animationDelay: `${i * 0.1 + 0.05}s`,
@@ -246,7 +246,7 @@ export default function Pricing() {
               >
                 {tier.featured && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 tracking-[0.8px] uppercase whitespace-nowrap bg-[#111118] dark:bg-white text-white dark:text-[#111118] transition-colors duration-300"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 font-grotesk text-[12px] font-semibold px-4 py-1.75 tracking-[0.8px] uppercase whitespace-nowrap bg-[#04044A] dark:bg-white text-white dark:text-[#04044A] transition-colors duration-300"
                   >
                     Most Popular
                   </div>
@@ -255,7 +255,7 @@ export default function Pricing() {
                 {/* Header info */}
                 <div
                   className={`font-grotesk text-sm font-semibold uppercase tracking-[1.5px] mb-2.5 ${
-                    tier.featured ? "text-white/80" : "text-[#2B50DC] dark:text-[#5B8DEF]"
+                    tier.featured ? "text-white/80" : "text-[#3D4AFF] dark:text-[#00A3FF]"
                   }`}
                 >
                   {tier.name}
@@ -284,7 +284,9 @@ export default function Pricing() {
                       </span>
                       <span
                         className={`font-grotesk text-[10px] font-bold px-2 py-0.5 uppercase tracking-[0.5px] ${
-                          tier.featured ? "bg-white text-[#2B50DC]" : "bg-rose-500 text-white"
+                          tier.featured
+                            ? "bg-white text-[#3D4AFF]"
+                            : "bg-rose-500 text-white"
                         }`}
                       >
                         {Math.round(discountPercent * 100)}% OFF
@@ -353,7 +355,7 @@ export default function Pricing() {
                     tier.featured ? "text-white" : "text-gray-900 dark:text-white"
                   }`}>
                     <span className={`w-1.5 h-1.5 ${
-                      tier.featured ? "bg-cyan-300 animate-pulse" : "bg-[#2B50DC]"
+                      tier.featured ? "bg-cyan-300 animate-pulse" : "bg-[#3D4AFF]"
                     }`} />
                     {tier.customization.level}
                   </div>
@@ -372,8 +374,8 @@ export default function Pricing() {
                   href={`/checkout?plan=${tier.name.toLowerCase()}&cycle=${period}`}
                   className={`btn w-full py-4 text-center font-grotesk font-semibold text-[15px] mb-8 block no-underline ${
                     tier.featured
-                      ? "btn-light bg-white text-[#111118]"
-                      : "btn-ink bg-[#111118] text-white dark:bg-white dark:text-[#111118]"
+                      ? "btn-light bg-white text-[#04044A]"
+                      : "btn-ink bg-[#04044A] text-white dark:bg-white dark:text-[#04044A]"
                   }`}
                 >
                   {tier.cta}
@@ -409,7 +411,7 @@ export default function Pricing() {
                         className={`${
                           tier.featured
                             ? f.hi ? "text-white" : "text-white/80"
-                            : f.hi ? "text-[#2B50DC] dark:text-[#5B8DEF] font-medium" : "text-gray-700 dark:text-gray-300"
+                            : f.hi ? "text-[#3D4AFF] dark:text-[#00A3FF] font-medium" : "text-gray-700 dark:text-gray-300"
                         }`}
                       >
                         {f.text}

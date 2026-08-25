@@ -6,7 +6,7 @@ import portfolioItems from "@/public/portfolio.json";
 
 function PortfolioCard({ item }: { item: typeof portfolioItems[0] }) {
   return (
-    <div className="w-[340px] h-[520px] bg-black border-r border-white/10 p-6 flex flex-col justify-between select-none shrink-0 text-left transition-colors hover:bg-[#111118]">
+    <div className="w-[340px] h-[520px] bg-black border-r border-white/10 p-6 flex flex-col justify-between select-none shrink-0 text-left transition-colors hover:bg-[#04044A]">
       {/* Header & Copy */}
       <div>
         <div className="flex items-center gap-3 mb-4">
@@ -62,7 +62,7 @@ export default function PortfolioMarquee() {
     <section id="gw-portfolio" className="bg-black py-0 relative overflow-hidden w-full border-b border-white/5">
       <div className="w-full flex flex-col md:flex-row items-stretch bg-black overflow-hidden">
         {/* Left Side: Solid Box */}
-        <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center bg-[#111118] border-b md:border-b-0 md:border-r border-white/10 md:w-[380px] lg:w-[420px] shrink-0 z-10 pl-6 md:pl-16 lg:pl-24 xl:pl-32 2xl:pl-40">
+        <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center bg-[#04044A] border-b md:border-b-0 md:border-r border-white/10 md:w-[380px] lg:w-[420px] shrink-0 z-10 pl-6 md:pl-16 lg:pl-24 xl:pl-32 2xl:pl-40">
           <span className="text-[11px] font-grotesk text-blue-sky uppercase tracking-[1.5px] mb-3 block">
             [ Live Content Proof ]
           </span>

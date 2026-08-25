@@ -10,7 +10,7 @@ export default function FinalCTA() {
             width: "600px",
             height: "600px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, #2B50DC 0%, #5B8DEF 40%, transparent 70%)",
+            background: "radial-gradient(circle, #3D4AFF 0%, #00A3FF 40%, transparent 70%)",
             filter: "blur(100px)",
             opacity: 0.18,
           }}
@@ -31,7 +31,7 @@ export default function FinalCTA() {
         </p>
         <a
           href="#gw-pricing"
-          className="btn btn-primary group gradient-bg text-white px-10 py-4.5 font-grotesk font-semibold text-base inline-flex items-center gap-2 shadow-[0_8px_32px_rgba(43,80,220,0.3)]"
+          className="btn btn-primary group gradient-bg text-white px-10 py-4.5 font-grotesk font-semibold text-base inline-flex items-center gap-2 shadow-[0_8px_32px_rgba(61,74,255,0.3)]"
         >
           <span>See plans</span>
           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

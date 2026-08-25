@@ -1,0 +1,86 @@
+{
+  "profiles": {
+    "growx": {
+      "name": "growX CRM",
+      "username": "growxcrm",
+      "avatar": "/growx-profile.jpg",
+      "letter": "G",
+      "color": "bg-indigo-600",
+      "bio": "All-in-one CRM for growing businesses"
+    }
+  },
+  "posts": [
+    {
+      "number": 1,
+      "example": "default",
+      "profile": "growx",
+      "title": "Every missed call is a customer you never meet",
+      "caption": "Every missed call is a customer you never meet.\nMost people who reach voicemail never call back.\nThey just call the next name on the list.\nNow picture this instead.\nEvery call answered on the first ring, day or night.\nEven at 2am. Even when you are closed.\nThat is what growX CRM does.\nIts AI receptionist answers every call, takes the details, and books the job.\nYou wake up to new work, not missed calls.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #SpeedToLead #BusinessAutomation",
+      "image": "/portfolio/gx-t-1.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 412,
+      "comments": 37
+    },
+    {
+      "number": 2,
+      "example": "default",
+      "profile": "growx",
+      "title": "A lead messaged you six hours ago",
+      "caption": "A lead messaged you six hours ago.\nYou were busy. You meant to reply.\nBy the time you saw it, they had already hired someone else.\nThis happens every day.\nPeople message a few businesses and go with the first one that answers.\nSix hours is not a reply. It is a goodbye.\ngrowX CRM answers every message in seconds.\nText, website chat, or social. Day and night.\nThe lead gets a fast reply, and you stay first in line.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #SpeedToLead #LeadResponse",
+      "image": "/portfolio/gx-t-2.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 268,
+      "comments": 24
+    },
+    {
+      "number": 3,
+      "example": "default",
+      "profile": "growx",
+      "title": "Most messages sit for hours before anyone replies",
+      "caption": "Most messages sit for hours before anyone replies.\nBy then the lead has moved on.\nNow imagine every message answered in about five seconds.\nAny hour. Any day. No one chained to a phone.\nThat is what growX CRM does.\nIt answers every text, website chat, and social message for you.\nIt replies fast, sounds human, and books the job.\nEvery lead gets a quick answer, even while you work.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #ConversationAI #CustomerExperience",
+      "image": "/portfolio/gx-t-3.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 331,
+      "comments": 29
+    },
+    {
+      "number": 8,
+      "example": "default",
+      "profile": "growx",
+      "title": "See your whole business in one dashboard",
+      "caption": "See your whole business in one dashboard.\nLeads, calendars, reviews, and follow ups, all in one place.\ngrowX CRM puts it together for you.\nOne login instead of five.\nOne bill instead of a stack.\nEverything you run, finally in a single view.\nIf you are tired of juggling tools, this is the fix.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #AllInOne #BusinessGrowth",
+      "image": "/portfolio/gx-t-8.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 295,
+      "comments": 18
+    },
+    {
+      "number": 9,
+      "example": "default",
+      "profile": "growx",
+      "title": "Most calls to small businesses go unanswered",
+      "caption": "Most calls to small businesses go unanswered.\nYou are on a job, driving, or already with a customer.\nSo the phone rings out.\nHere is the hard part.\nThat caller does not leave a message.\nThey just call the next business and book with them.\nEvery missed call is money walking out the door.\ngrowX CRM texts every missed caller back right away.\nA simple message that keeps the lead and starts the conversation.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #MissedCallTextBack #LeadRecovery",
+      "image": "/portfolio/gx-t-9.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 507,
+      "comments": 53
+    },
+    {
+      "number": 12,
+      "example": "default",
+      "profile": "growx",
+      "title": "Booking by phone wastes everyone's time",
+      "caption": "Booking by phone wastes everyone's time.\nYou play phone tag. They wait for a call back. Slots sit empty.\nNow imagine customers booking themselves, any time of day.\nThat is what growX CRM does.\nPeople pick a time that works and confirm on their own.\nNo back and forth. No missed calls. Fewer no shows.\nYour calendar fills while you get on with the work.\nBook a demo. Link in the first comment.\n#growXCRM #CRM #OnlineBooking #Scheduling",
+      "image": "/portfolio/gx-t-12.jpg",
+      "imageW": 2160,
+      "imageH": 2700,
+      "likes": 224,
+      "comments": 21
+    }
+  ]
+}

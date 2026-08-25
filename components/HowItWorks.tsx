@@ -43,7 +43,7 @@ function StepCard({ s, i }: { s: typeof steps[0]; i: number }) {
 
   return (
     <div
-      className="relative overflow-hidden card-sky p-10 animate-fade-up transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_20px_40px_rgba(43,80,220,0.15)] hover:border-blue-neon/30"
+      className="relative overflow-hidden card-sky p-10 animate-fade-up transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_20px_40px_rgba(61,74,255,0.15)] hover:border-blue-neon/30"
       style={{ animationDelay: `${i * 0.12}s` }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -113,7 +113,7 @@ export default function HowItWorks() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 100%, rgba(43,80,220,0.05) 0%, transparent 65%)",
+            "radial-gradient(ellipse at 50% 100%, rgba(61,74,255,0.05) 0%, transparent 65%)",
         }}
       />
 
@@ -141,11 +141,11 @@ export default function HowItWorks() {
             treatment used by the white-label block, so the two don't read as the
             same component, and so this lands as a hard stop at the end of the
             section. Points at #gw-book, the scheduler. */}
-        <div className="relative overflow-hidden mt-16 md:mt-24 bg-[#111118] dark:bg-black border border-black/10 dark:border-white/10 px-6 py-14 md:px-16 md:py-16 text-center">
+        <div className="relative overflow-hidden mt-16 md:mt-24 bg-[#04044A] dark:bg-black border border-black/10 dark:border-white/10 px-6 py-14 md:px-16 md:py-16 text-center">
           <div
             className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[520px] h-[320px] is-circle pointer-events-none blur-[110px] opacity-40"
             style={{
-              background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)",
+              background: "radial-gradient(circle, #3D4AFF 0%, transparent 70%)",
             }}
           />
 
@@ -169,7 +169,7 @@ export default function HowItWorks() {
 
             <a
               href="#gw-book"
-              className="btn btn-primary group gradient-bg text-white px-9 py-4.5 font-grotesk font-semibold text-base inline-flex items-center gap-2 shadow-[0_10px_28px_rgba(43,80,220,0.3)]"
+              className="btn btn-primary group gradient-bg text-white px-9 py-4.5 font-grotesk font-semibold text-base inline-flex items-center gap-2 shadow-[0_10px_28px_rgba(61,74,255,0.3)]"
             >
               <span>Book a call</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">
@@ -178,7 +178,7 @@ export default function HowItWorks() {
             </a>
 
             <div className="mt-6 font-grotesk text-[11px] uppercase tracking-[1.2px] text-gray-500">
-              30 minutes · No pitch · No contracts
+              No pitch · No contracts
             </div>
           </div>
         </div>

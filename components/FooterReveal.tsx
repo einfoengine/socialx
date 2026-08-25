@@ -21,7 +21,7 @@ export default function FooterReveal() {
       <div
         className="absolute w-[600px] h-[300px] pointer-events-none is-circle filter blur-[100px] opacity-[0.08]"
         style={{
-          background: "radial-gradient(circle, #2B50DC 0%, transparent 70%)"
+          background: "radial-gradient(circle, #3D4AFF 0%, transparent 70%)"
         }}
       />
 
