@@ -113,6 +113,55 @@ function Caption({ text, linkClass }: { text: string; linkClass: string }) {
 
 /* width/height come from the file's real pixels, so the browser reserves space
    and the feed doesn't jump while lazy images load. */
+/* Both Facebook and LinkedIn clamp a long post behind a "see more" affordance.
+   Cutting is done at the last whitespace before the limit so a word is never
+   sliced in half, and the caption's own line breaks count as break points.
+   The control toggles, so an expanded post can be collapsed again. */
+function ExpandableCaption({
+  text,
+  limit,
+  linkClass,
+  moreLabel,
+  lessLabel,
+  moreClass,
+}: {
+  text: string;
+  limit: number;
+  linkClass: string;
+  moreLabel: string;
+  lessLabel: string;
+  moreClass: string;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = text.length > limit;
+
+  let shown = text;
+  if (isLong && !expanded) {
+    const cut = text.slice(0, limit);
+    const brk = Math.max(cut.lastIndexOf(" "), cut.lastIndexOf("\n"));
+    shown = (brk > limit * 0.6 ? cut.slice(0, brk) : cut).trimEnd();
+  }
+
+  return (
+    <>
+      <Caption text={shown} linkClass={linkClass} />
+      {isLong && (
+        <>
+          {expanded ? " " : "\u2026 "}
+          <button
+            type="button"
+            aria-expanded={expanded}
+            onClick={() => setExpanded((v) => !v)}
+            className={moreClass}
+          >
+            {expanded ? lessLabel : moreLabel}
+          </button>
+        </>
+      )}
+    </>
+  );
+}
+
 function PostImage({ p }: { p: Post }) {
   return (
     <img
@@ -146,7 +195,14 @@ function FacebookPost({ p, i }: { p: Post; i: number }) {
       </header>
 
       <p className="whitespace-pre-line px-4 pb-3 text-[15px] leading-[1.35] text-[#050505] dark:text-[#E4E6EB]">
-        <Caption text={p.caption} linkClass="text-[#1877F2]" />
+        <ExpandableCaption
+          text={p.caption}
+          limit={220}
+          linkClass="text-[#1877F2]"
+          moreLabel="See more"
+          lessLabel="See less"
+          moreClass="font-medium text-[#65676B] hover:underline dark:text-[#B0B3B8]"
+        />
       </p>
 
       <PostImage p={p} />
@@ -301,10 +357,7 @@ function InstagramGrid({ posts, exampleLabel }: { posts: Post[]; exampleLabel: s
 }
 
 function LinkedInPost({ p, i }: { p: Post; i: number }) {
-  const [expanded, setExpanded] = useState(false);
   const prof = profileFor(p);
-  const isLong = p.caption.length > 240;
-  const shown = expanded || !isLong ? p.caption : p.caption.slice(0, 240).trimEnd();
 
   return (
     <article className="rounded-lg border border-black/10 bg-white dark:border-white/10 dark:bg-[#1D2226]">
@@ -327,19 +380,14 @@ function LinkedInPost({ p, i }: { p: Post; i: number }) {
       </header>
 
       <p className="whitespace-pre-line px-4 py-3 text-[14px] leading-[1.45] text-[rgba(0,0,0,0.9)] dark:text-[rgba(255,255,255,0.9)]">
-        <Caption text={shown} linkClass="text-[#0A66C2]" />
-        {isLong && !expanded && (
-          <>
-            {"… "}
-            <button
-              type="button"
-              onClick={() => setExpanded(true)}
-              className="text-[rgba(0,0,0,0.6)] hover:text-[#0A66C2] hover:underline dark:text-[rgba(255,255,255,0.6)]"
-            >
-              see more
-            </button>
-          </>
-        )}
+        <ExpandableCaption
+          text={p.caption}
+          limit={240}
+          linkClass="text-[#0A66C2]"
+          moreLabel="see more"
+          lessLabel="see less"
+          moreClass="text-[rgba(0,0,0,0.6)] hover:text-[#0A66C2] hover:underline dark:text-[rgba(255,255,255,0.6)]"
+        />
       </p>
 
       <PostImage p={p} />
