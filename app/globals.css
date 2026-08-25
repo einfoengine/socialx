@@ -177,12 +177,14 @@ input[type="radio"] {
   color: var(--nav-fg);
 }
 
-#gw-header .nav-icon {
+#gw-header .nav-icon,
+#gw-header .nav-btn {
   color: var(--nav-fg);
   border-color: var(--nav-line);
   transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
-#gw-header .nav-icon:hover {
+#gw-header .nav-icon:hover,
+#gw-header .nav-btn:hover {
   background-color: var(--nav-hover);
 }
 
@@ -190,6 +192,72 @@ input[type="radio"] {
 #gw-header .nav-drawer {
   background-color: inherit;
   border-color: var(--nav-line);
+}
+
+/* The desktop dropdown hangs below the bar, outside the header's own painted
+   box, so `inherit` would resolve to transparent and the page would show
+   through. The header script keeps --nav-surface in step with the bar colour;
+   the fallback matches the no-JS default tone. */
+#gw-header .nav-menu {
+  background-color: var(--nav-surface, #050508);
+  border-color: var(--nav-line);
+}
+
+/* Menu rows borrow the card language used by the marketing sections: a square
+   brand-tinted glyph tile beside a title and one line of body copy. On hover
+   the tile fills with the CTA gradient, which is the one accent strong enough
+   to read against both header tones. */
+#gw-header .nav-menu-eyebrow {
+  color: #00A3FF;
+}
+#gw-header[data-tone="light"] .nav-menu-eyebrow {
+  color: #3D4AFF;
+}
+
+#gw-header .nav-menu-row:hover {
+  background-color: var(--nav-hover);
+}
+
+#gw-header .nav-menu-tile {
+  background-color: rgba(0, 163, 255, 0.14);
+  color: #00A3FF;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+#gw-header[data-tone="light"] .nav-menu-tile {
+  background-color: rgba(61, 74, 255, 0.10);
+  color: #3D4AFF;
+}
+#gw-header .nav-menu-row:hover .nav-menu-tile {
+  background: var(--gradient-x);
+  color: #FFFFFF;
+}
+
+#gw-header .nav-menu-label {
+  color: var(--nav-fg);
+}
+#gw-header .nav-menu-desc {
+  color: var(--nav-muted);
+}
+
+#gw-header .nav-menu-arrow {
+  color: var(--nav-fg);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#gw-header .nav-menu-row:hover .nav-menu-arrow {
+  opacity: 0.65;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gw-header .nav-menu-tile,
+  #gw-header .nav-menu-arrow {
+    transition-duration: 0.01ms;
+  }
+  #gw-header .nav-menu-arrow {
+    transform: none;
+  }
 }
 
 /* ====== CARD VARIANTS ====== */
