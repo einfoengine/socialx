@@ -5,10 +5,10 @@
   "scripts": {
     "dev": "pnpm --parallel --filter \"./apps/*\" dev",
     "dev:site": "pnpm --filter @socialx/site dev",
-    "dev:portal": "pnpm --filter @socialx/portal dev",
+    "dev:console": "pnpm --filter @socialx/console dev",
     "build": "pnpm --filter \"./apps/*\" build",
     "build:site": "pnpm --filter @socialx/site build",
-    "build:portal": "pnpm --filter @socialx/portal build",
+    "build:console": "pnpm --filter @socialx/console build",
     "lint": "pnpm --filter \"./apps/*\" lint",
     "typecheck": "pnpm --filter \"./apps/*\" exec tsc --noEmit",
     "secure-env": "node scripts/secure-env.mjs",
