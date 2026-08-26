@@ -212,11 +212,14 @@ function Topbar({
   email,
   name,
   meta,
+  slot,
 }: {
   area: string;
   email: string | null;
   name?: string | null;
   meta?: string | null;
+  /** Optional control sitting just before the theme toggle. */
+  slot?: ReactNode;
 }) {
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-black/10 dark:border-white/10 bg-white/85 dark:bg-[#0C0C12]/85 backdrop-blur-md px-4 md:px-6 h-[57px]">
@@ -227,6 +230,7 @@ function Topbar({
         </span>
       </div>
       <div className="flex shrink-0 items-center gap-2.5">
+        {slot}
         <ThemeToggle />
         <ProfileMenu email={email} name={name} meta={meta} />
       </div>
@@ -568,6 +572,7 @@ export default function Shell({
   userEmail,
   userName,
   userMeta,
+  headerSlot,
   children,
 }: {
   /** What sits after the wordmark in the top bar: "Admin" or "Portal". */
@@ -579,6 +584,8 @@ export default function Shell({
   userEmail: string | null;
   userName?: string | null;
   userMeta?: string | null;
+  /** Rendered in the top bar, immediately before the theme toggle. */
+  headerSlot?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -590,7 +597,7 @@ export default function Shell({
         Skip to content
       </a>
 
-      <Topbar area={area} email={userEmail} name={userName} meta={userMeta} />
+      <Topbar area={area} email={userEmail} name={userName} meta={userMeta} slot={headerSlot} />
 
       <div className="flex min-h-[calc(100vh-57px)] flex-col md:flex-row">
         <Sidebar groups={groups} bottom={bottom} storageKey={storageKey} />

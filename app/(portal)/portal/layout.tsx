@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import Shell, { type NavGroup } from "@/components/portal/Shell";
 import { requireOrg } from "@/lib/dal/session";
-import { exitClientPortal } from "@/app/(admin)/admin/clients/actions";
+import { exitClientPortal } from "@/app/(portal)/admin/clients/actions";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {

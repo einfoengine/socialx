@@ -6,7 +6,6 @@ import {
 import Shell, { type NavGroup, type NavItem } from "@/components/portal/Shell";
 import { getStaffAccess } from "@/lib/dal/permissions";
 import { sectionForPath } from "@/lib/permissions";
-import { createClient } from "@/lib/supabase/server";
 import ViewAsSwitcher, { type ViewOption } from "./ViewAsSwitcher";
 
 export const metadata: Metadata = {
@@ -90,26 +89,20 @@ export default async function AdminLayout({
   /* The switcher belongs to the owner alone. Everyone else has exactly one
      vantage point and a control offering others would only mislead. */
   const isOwner = access.realRole === "owner";
-  let options: ViewOption[] = [];
-  if (isOwner) {
-    const supabase = await createClient();
-    const { data: orgs } = await supabase
-      .from("organizations")
-      .select("id, name")
-      .order("name");
-
-    options = [
-      { value: "self", label: "socialX owner, yourself", group: "Admin" },
-      { value: "role:ops", label: "Staff: ops", group: "Staff role" },
-      { value: "role:content", label: "Staff: content", group: "Staff role" },
-      { value: "role:finance", label: "Staff: finance", group: "Staff role" },
-      ...(orgs ?? []).map((o) => ({
-        value: `org:${o.id}`,
-        label: o.name as string,
-        group: "Client portal",
-      })),
-    ];
-  }
+  const options: ViewOption[] = isOwner
+    ? [
+        { value: "self", label: "socialX owner, yourself", group: "Admin" },
+        { value: "role:ops", label: "Staff: ops", group: "Staff role" },
+        { value: "role:content", label: "Staff: content", group: "Staff role" },
+        { value: "role:finance", label: "Staff: finance", group: "Staff role" },
+        // Arrived with the permission map, so this costs nothing extra.
+        ...access.orgs.map((o) => ({
+          value: `org:${o.id}`,
+          label: o.name,
+          group: "Client portal",
+        })),
+      ]
+    : [];
 
   return (
     <Shell
@@ -119,20 +112,22 @@ export default async function AdminLayout({
       storageKey="sx-admin-rail"
       userEmail={access.email}
       userMeta={`socialX ${access.staffRole}`}
-    >
-      {isOwner && (
-        <div className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+      headerSlot={
+        isOwner ? (
           <ViewAsSwitcher
             options={options}
             current={access.viewingAsRole ? `role:${access.staffRole}` : "self"}
             previewing={access.viewingAsRole}
           />
-          {access.viewingAsRole && (
-            <span className="font-grotesk text-[13px] text-gray-600 dark:text-gray-400">
-              The rail and every screen below are what {access.staffRole} reaches. Pick
-              yourself again to come back.
-            </span>
-          )}
+        ) : null
+      }
+    >
+      {/* The control moved to the top bar, so the reminder stays behind to say
+          what the highlighted selector means. */}
+      {access.viewingAsRole && (
+        <div className="mb-6 border border-[#3D4AFF]/35 bg-[#3D4AFF]/[0.07] px-5 py-3 font-grotesk text-[13px] text-gray-700 dark:text-gray-300">
+          Everything below is what {access.staffRole} reaches. Pick yourself in the top
+          bar to come back.
         </div>
       )}
       {children}

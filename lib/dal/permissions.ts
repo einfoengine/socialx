@@ -4,7 +4,8 @@ import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { requireStaff, type StaffSession } from "@/lib/dal/session";
+import { createClient as createSupabase } from "@/lib/supabase/server";
+import { type Session } from "@/lib/dal/session";
 import {
   emptyPermissions,
   satisfies,
@@ -17,7 +18,7 @@ import type { StaffRole } from "@/lib/types/db";
 /**
  * Section permissions for the signed-in staff member.
  *
- * This sits on top of requireStaff, which answers "are you socialX at all". This
+ * This answers both "are you socialX at all" and, in the same round trip, which
  * file answers "which of our screens are yours". Same doctrine as the rest of the
  * DAL: server actions are public endpoints that never pass through proxy.ts, so
  * the check on the page that rendered a form proves nothing about who posts it.
@@ -27,12 +28,17 @@ import type { StaffRole } from "@/lib/types/db";
  * readable by staff and writable only by an owner.
  */
 
-export type StaffAccess = StaffSession & {
+export type StaffAccess = Session & {
+  staffRole: StaffRole;
   permissions: PermissionMap;
   /** The role actually granted to this account, ignoring any preview. */
   realRole: StaffRole;
   /** True while an owner is looking at the admin through another role. */
   viewingAsRole: boolean;
+  /* Every organization, for the owner's view switcher. Empty for everyone else.
+     Carried back by staff_context so the layout does not make a second trip to
+     a database that is 300ms away. */
+  orgs: { id: string; name: string }[];
 };
 
 /** Cookie naming the staff role an owner is previewing. */
@@ -41,46 +47,73 @@ export const VIEW_ROLE_COOKIE = "sx-view-role";
 const STAFF_ROLES: StaffRole[] = ["owner", "ops", "content", "finance"];
 
 export const getStaffAccess = cache(async (): Promise<StaffAccess> => {
-  const session = await requireStaff();
+  const supabase = await createSupabase();
 
   /*
-   * Role preview. An owner can look at the admin as ops, content or finance to
-   * check what that role actually reaches.
+   * One call instead of three. staff_context returns is_staff, the real role,
+   * the effective role once any preview is applied, and the permission map,
+   * because each of those used to be its own network round trip.
    *
-   * Two rules make this safe rather than a privilege hole. Only an owner may
-   * preview, and owner is never a preview target, so the effective role is
-   * always narrower than the real one. Nothing here can widen access.
+   * The preview rules live in the function too: only an owner may preview and
+   * owner is never the target, so what comes back can only ever be narrower
+   * than the caller's real role.
    */
   const jar = await cookies();
-  const requested = jar.get(VIEW_ROLE_COOKIE)?.value as StaffRole | undefined;
-  const canPreview =
-    session.staffRole === "owner" &&
-    !!requested &&
-    requested !== "owner" &&
-    STAFF_ROLES.includes(requested);
+  const requested = jar.get(VIEW_ROLE_COOKIE)?.value ?? null;
 
-  const effectiveRole = canPreview ? (requested as StaffRole) : session.staffRole;
+  /*
+   * getClaims, not getUser.
+   *
+   * This project signs tokens with ES256 and publishes a JWKS, so getClaims
+   * fetches the public key once, caches it, and verifies the signature in
+   * process with WebCrypto. It checks exp itself and falls back to a real
+   * getUser call if the token is ever symmetric or WebCrypto is missing, so an
+   * unverifiable token is never waved through.
+   *
+   * What this gives up is revocation latency: a session killed server side
+   * stays usable until its token expires, at most an hour. That is acceptable
+   * here for one specific reason. Postgres already works this way. PostgREST
+   * verifies the same JWT locally and never asks the Auth server either, so
+   * every query already trusted a valid unexpired token. getUser was buying the
+   * app layer a guarantee the data layer underneath it never had.
+   *
+   * What has NOT been given up: staff_context reads staff_roles and
+   * staff_permissions live on every request, so revoking a role, changing the
+   * matrix, or deleting the account all take effect on the very next page load
+   * no matter what the token says.
+   */
+  const [claimsRes, ctxRes] = await Promise.all([
+    supabase.auth.getClaims(),
+    supabase.rpc("staff_context", { preview_role: requested }),
+  ]);
 
-  const supabase = await createClient();
+  const claims = claimsRes.data?.claims;
+  if (claimsRes.error || !claims?.sub) redirect("/login");
+  const user = { userId: claims.sub as string, email: (claims.email as string) ?? null };
+  const { data } = ctxRes;
+  const ctx = (data ?? {}) as {
+    is_staff?: boolean;
+    real_role?: StaffRole;
+    effective_role?: StaffRole;
+    permissions?: Record<string, string>;
+    orgs?: { id: string; name: string }[];
+  };
 
-  const { data } = await supabase
-    .from("staff_permissions")
-    .select("section, level")
-    .eq("role", effectiveRole);
+  if (!ctx.is_staff || !ctx.real_role || !ctx.effective_role) redirect("/portal");
 
-  // A section with no row reads as "none", so a screen added before its
-  // permission row exists is closed rather than open.
   const permissions = emptyPermissions();
-  for (const row of data ?? []) {
-    if (row.section in permissions) {
-      permissions[row.section as SectionKey] = row.level as AccessLevel;
-    }
+  for (const [section, level] of Object.entries(ctx.permissions ?? {})) {
+    if (section in permissions) permissions[section as SectionKey] = level as AccessLevel;
   }
+
   return {
-    ...session,
-    staffRole: effectiveRole,
-    realRole: session.staffRole,
-    viewingAsRole: canPreview,
+    userId: user.userId,
+    email: user.email,
+    isStaff: true,
+    staffRole: ctx.effective_role,
+    realRole: ctx.real_role,
+    viewingAsRole: ctx.effective_role !== ctx.real_role,
+    orgs: ctx.orgs ?? [],
     permissions,
   };
 });

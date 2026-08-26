@@ -2,8 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
-import { VIEW_ROLE_COOKIE } from "@/lib/dal/permissions";
+import { getStaffAccess, VIEW_ROLE_COOKIE } from "@/lib/dal/permissions";
 import { VIEW_AS_COOKIE } from "@/lib/dal/session";
 import { createClient } from "@/lib/supabase/server";
 import type { StaffRole } from "@/lib/types/db";
@@ -18,8 +17,10 @@ const STAFF_ROLES: StaffRole[] = ["ops", "content", "finance"];
  * use any of it, checked here rather than trusted from the form.
  */
 export async function setViewAs(formData: FormData) {
-  const session = await requireStaff();
-  if (session.staffRole !== "owner") redirect("/admin");
+  const session = await getStaffAccess();
+  // realRole, not staffRole: an owner previewing ops must still be able to
+  // switch back, and staffRole is the previewed one.
+  if (session.realRole !== "owner") redirect("/admin");
 
   const value = String(formData.get("view") ?? "").trim();
   const jar = await cookies();

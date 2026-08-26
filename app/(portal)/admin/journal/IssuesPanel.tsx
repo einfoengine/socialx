@@ -1,26 +1,15 @@
-import type { Metadata } from "next";
-import { requirePermission, can } from "@/lib/dal/permissions";
-import { createClient } from "@/lib/supabase/server";
 import IssueRow, { type Issue } from "./IssueRow";
-
-export const metadata: Metadata = { title: "Issues | socialX Admin" };
-
-export const dynamic = "force-dynamic";
 
 /* Open work first, in issue order. Closed items stay on the page rather than
    disappearing, because "we decided not to" is worth as much later as "we fixed
    it", and a list that hides its own history invites the same finding twice. */
-export default async function IssuesPage() {
-  await requirePermission("journal");
-  const canEdit = await can("journal", "full");
-  const supabase = await createClient();
-
-  const { data } = await supabase
-    .from("issues")
-    .select("id, number, title, detail, area, severity, status")
-    .order("number");
-
-  const issues = (data ?? []) as Issue[];
+export default function IssuesPanel({
+  issues,
+  canEdit,
+}: {
+  issues: Issue[];
+  canEdit: boolean;
+}) {
   const closed = (i: Issue) => i.status === "resolved" || i.status === "wont_fix";
   const openIssues = issues.filter((i) => !closed(i));
   const doneIssues = issues.filter(closed);

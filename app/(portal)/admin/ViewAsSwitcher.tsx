@@ -23,22 +23,18 @@ export default function ViewAsSwitcher({
   const groups = [...new Set(options.map((o) => o.group))];
 
   return (
-    <form action={setViewAs} className="flex items-center gap-2.5">
-      <label
-        htmlFor="view-as"
-        className="font-mono text-[10px] uppercase tracking-[0.14em] text-gray-400 dark:text-gray-600"
-      >
-        Viewing as
-      </label>
+    <form action={setViewAs} className="flex items-center">
       <select
         id="view-as"
         name="view"
+        aria-label="Viewing as"
+        title="Viewing as"
         defaultValue={current}
         onChange={(e) => e.currentTarget.form?.requestSubmit()}
-        className={`cursor-pointer border px-3 py-1.5 font-grotesk text-[12.5px] focus:outline-hidden transition-colors ${
+        className={`h-9 max-w-[190px] cursor-pointer border px-2.5 font-grotesk text-[12.5px] focus:outline-hidden transition-colors ${
           previewing
             ? "border-[#3D4AFF]/45 bg-[#3D4AFF]/[0.07] text-[#3D4AFF] dark:text-[#00A3FF] font-semibold"
-            : "border-black/12 dark:border-white/15 bg-white dark:bg-[#111118] text-gray-700 dark:text-gray-300"
+            : "border-black/12 dark:border-white/15 bg-transparent text-gray-600 dark:text-gray-400"
         }`}
       >
         {groups.map((g) => (

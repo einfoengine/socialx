@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
-import { requirePermission } from "@/lib/dal/permissions";
-import { createClient } from "@/lib/supabase/server";
-import { addIdea, rateIdea, setIdeaStatus, deleteIdea } from "../actions";
-import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass } from "../ui";
+import { addIdea, rateIdea, setIdeaStatus, deleteIdea } from "./actions";
+import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass } from "./ui";
 import StarRating from "./StarRating";
-
-export const metadata: Metadata = { title: "Ideas | socialX Admin" };
 
 type Idea = {
   id: string;
@@ -18,17 +13,14 @@ type Idea = {
 
 const STATUSES = ["open", "planned", "building", "shipped", "archived"];
 
-export default async function IdeasPage() {
-  await requirePermission("journal");
-  const supabase = await createClient();
+export default function IdeasPanel({
+  ideas,
+  error,
+}: {
+  ideas: Idea[];
+  error: boolean;
+}) {
 
-  const { data, error } = await supabase
-    .from("ideas")
-    .select("id, title, detail, source, rating, status")
-    .order("rating", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false });
-
-  const ideas = (data ?? []) as Idea[];
   const rated = ideas.filter((i) => i.rating !== null);
   const unrated = ideas.filter((i) => i.rating === null);
 

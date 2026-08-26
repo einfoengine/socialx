@@ -48,24 +48,32 @@ export const VIEW_AS_COOKIE = "sx-view-as";
 export const verifySession = cache(async (): Promise<Session | null> => {
   const supabase = await createClient();
 
-  // getUser revalidates the token against Supabase. getSession only reads the
-  // cookie, which is forgeable, so it is not safe for an authorization decision.
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  /*
+   * getClaims verifies the token's ES256 signature in process against the
+   * project's published JWKS, and rejects it if expired. Not getSession, which
+   * only reads the cookie and checks nothing, and no longer getUser, which asks
+   * the Auth server and costs a round trip to another continent on every render.
+   *
+   * The trade is revocation latency, bounded by the one hour token lifetime, and
+   * it is the same trade Postgres already makes: RLS verifies this JWT locally
+   * too. Membership and staff status are still read live below, so a removed
+   * user loses access on their next request regardless of their token.
+   */
+  const { data: claimsData, error } = await supabase.auth.getClaims();
+  const claims = claimsData?.claims;
 
-  if (error || !user) return null;
+  if (error || !claims?.sub) return null;
+  const userId = claims.sub as string;
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("is_staff")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
 
   return {
-    userId: user.id,
-    email: user.email ?? null,
+    userId,
+    email: (claims.email as string) ?? null,
     isStaff: profile?.is_staff ?? false,
   };
 });

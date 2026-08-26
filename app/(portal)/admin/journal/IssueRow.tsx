@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { setIssueStatus } from "./actions";
+import { setIssueStatus } from "./issues-actions";
 
 export type Issue = {
   id: string;

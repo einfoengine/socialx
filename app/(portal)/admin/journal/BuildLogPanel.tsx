@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
-import { requirePermission } from "@/lib/dal/permissions";
-import { createClient } from "@/lib/supabase/server";
-import { addBuildLogEntry } from "../actions";
-import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass, fmtDate } from "../ui";
-
-export const metadata: Metadata = { title: "Build log | socialX Admin" };
+import { addBuildLogEntry } from "./actions";
+import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass, fmtDate } from "./ui";
 
 type Entry = {
   id: string;
@@ -15,18 +10,13 @@ type Entry = {
   author: string;
 };
 
-export default async function BuildLogPage() {
-  await requirePermission("journal");
-  const supabase = await createClient();
-
-  const { data, error } = await supabase
-    .from("build_log_entries")
-    .select("id, entry_date, release, title, body, author")
-    .order("entry_date", { ascending: false })
-    .order("created_at", { ascending: false })
-    .limit(200);
-
-  const entries = (data ?? []) as Entry[];
+export default function BuildLogPanel({
+  entries,
+  error,
+}: {
+  entries: Entry[];
+  error: boolean;
+}) {
 
   // Group by day so the log reads as a diary rather than a flat feed.
   const byDate = new Map<string, Entry[]>();

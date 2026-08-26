@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
-import { requirePermission } from "@/lib/dal/permissions";
 import {
   ACTOR_LABEL,
   JOURNEY,
   JOURNEY_LOOPS_TO,
   type JourneyActor,
 } from "@/lib/journey";
-
-export const metadata: Metadata = { title: "Journey | socialX Admin" };
 
 /* Who moves at each step. Colour separates the two sides at a glance, which is
    the whole reason to read this list rather than a paragraph. */
@@ -17,9 +13,7 @@ const ACTOR_STYLE: Record<JourneyActor, string> = {
   both: "bg-black/[0.06] dark:bg-white/[0.08] text-gray-600 dark:text-gray-400",
 };
 
-export default async function JourneyPage() {
-  await requirePermission("journal");
-
+export default function JourneyPanel() {
   return (
     <div className="flex flex-col gap-8 max-w-[760px]">
       {JOURNEY.map((phase) => (

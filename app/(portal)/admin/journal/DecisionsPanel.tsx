@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
-import { requirePermission } from "@/lib/dal/permissions";
-import { createClient } from "@/lib/supabase/server";
-import { addDecision, supersedeDecision } from "../actions";
-import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass, fmtDate } from "../ui";
-
-export const metadata: Metadata = { title: "Decisions | socialX Admin" };
+import { addDecision, supersedeDecision } from "./actions";
+import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass, fmtDate } from "./ui";
 
 type Decision = {
   id: string;
@@ -17,17 +12,14 @@ type Decision = {
   supersedes_id: string | null;
 };
 
-export default async function DecisionsPage() {
-  await requirePermission("journal");
-  const supabase = await createClient();
+export default function DecisionsPanel({
+  all,
+  error,
+}: {
+  all: Decision[];
+  error: boolean;
+}) {
 
-  const { data, error } = await supabase
-    .from("decisions")
-    .select("id, decided_on, topic, decision, rationale, decided_by, status, supersedes_id")
-    .order("decided_on", { ascending: false })
-    .order("created_at", { ascending: false });
-
-  const all = (data ?? []) as Decision[];
   const active = all.filter((d) => d.status === "active");
   const superseded = all.filter((d) => d.status !== "active");
 

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import JournalTabs from "./JournalTabs";
 
 export const metadata: Metadata = {
   title: "Plan & Context | socialX Admin",
@@ -23,8 +22,6 @@ export default function JournalLayout({
           the project carries between sessions.
         </p>
       </div>
-
-      <JournalTabs />
 
       <div>{children}</div>
     </div>
