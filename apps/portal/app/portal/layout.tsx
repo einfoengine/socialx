@@ -6,7 +6,6 @@ import {
 import Shell, { type NavGroup } from "@/components/portal/Shell";
 import { requireOrg } from "@/lib/dal/session";
 import { exitClientPortal } from "@/app/admin/clients/actions";
-import { createClient } from "@socialx/core/supabase/server";
 
 export const metadata: Metadata = {
   title: "Portal | socialX",
@@ -16,17 +15,12 @@ export const metadata: Metadata = {
 export default async function PortalLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  /* One round trip for the whole gate. The org name and the approvals badge come
+     back with it, so the shell no longer waits on two further queries before it
+     can paint. Page content streams in behind this. */
   const session = await requireOrg();
-  const supabase = await createClient();
-
-  const [{ data: org }, { count: waiting }] = await Promise.all([
-    supabase.from("organizations").select("name").eq("id", session.orgId).single(),
-    supabase
-      .from("batches")
-      .select("*", { count: "exact", head: true })
-      .eq("org_id", session.orgId)
-      .eq("status", "in_review"),
-  ]);
+  const org = { name: session.orgName };
+  const waiting = session.waitingCount;
 
   /*
    * The client rail is short, and its groups default open. Collapsing a menu

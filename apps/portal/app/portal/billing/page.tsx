@@ -1,13 +1,41 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { requireOrg } from "@/lib/dal/session";
 import { createClient } from "@socialx/core/supabase/server";
 import { Status } from "@/components/portal/DataTable";
 import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/format";
 import { openBillingPortal } from "../actions";
+import { SkeletonCard, SkeletonRows } from "@/components/portal/Skeleton";
 
 export const metadata: Metadata = { title: "Billing | socialX" };
 
-export default async function BillingPage() {
+/* Nothing here is guessable, so everything below the heading waits. The heading
+   and the promise are static and land immediately. */
+export default function BillingPage() {
+  return (
+    <div className="max-w-[760px]">
+      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
+        Billing
+      </h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">
+        Your plan, your invoices, and your card. Month to month, cancel anytime.
+      </p>
+
+      <Suspense
+        fallback={
+          <div className="flex flex-col gap-6">
+            <SkeletonCard lines={4} />
+            <SkeletonRows n={3} />
+          </div>
+        }
+      >
+        <BillingDetail />
+      </Suspense>
+    </div>
+  );
+}
+
+async function BillingDetail() {
   const session = await requireOrg();
   const supabase = await createClient();
 
@@ -60,14 +88,7 @@ export default async function BillingPage() {
     : { data: null };
 
   return (
-    <div className="max-w-[760px]">
-      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-        Billing
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">
-        Your plan, your invoices, and your card. Month to month, cancel anytime.
-      </p>
-
+    <>
       {!sub ? (
         <div className="border border-dashed border-black/15 dark:border-white/15 p-8 text-sm text-gray-500">
           No subscription on this workspace yet.
@@ -181,7 +202,7 @@ export default async function BillingPage() {
           )}
         </>
       )}
-    </div>
+    </>
   );
 }
 

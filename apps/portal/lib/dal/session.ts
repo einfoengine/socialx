@@ -29,6 +29,10 @@ export type StaffSession = Session & { staffRole: StaffRole };
 export type OrgSession = Session & {
   orgId: string;
   role: MemberRole;
+  /* Carried back by the same call that resolved the org, so the portal shell
+     can render its title and badge without a second and third round trip. */
+  orgName: string | null;
+  waitingCount: number;
   /* True when a staff member is looking at someone else's portal. Read only:
      every portal mutation refuses while this is set, because an approval is the
      contractual gate before anything publishes and it has to be the client's. */
@@ -111,37 +115,54 @@ export const requireStaff = cache(async (): Promise<StaffSession> => {
  * explicit org switcher and every caller already takes the org id from here.
  */
 export const requireOrg = cache(async (): Promise<OrgSession> => {
-  const session = await requireUser();
-
-  /* Staff previewing a client. Checked before the membership lookup so it also
-     works for staff who hold no membership at all, which is most of them. The
-     cookie is only ever set by the admin action, which gates on the Clients
-     permission; this re-checks isStaff so a stray cookie on a client session is
-     inert. RLS still applies underneath: staff read every org, clients do not. */
-  if (session.isStaff) {
-    const jar = await cookies();
-    const previewOrgId = jar.get(VIEW_AS_COOKIE)?.value;
-    if (previewOrgId) {
-      return { ...session, orgId: previewOrgId, role: "viewer", viewingAs: true };
-    }
-  }
-
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("memberships")
-    .select("org_id, role")
-    .eq("user_id", session.userId)
-    .order("created_at", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+
+  const jar = await cookies();
+  const previewOrgId = jar.get(VIEW_AS_COOKIE)?.value ?? null;
+
+  /*
+   * One call for the whole gate. getClaims verifies the token locally, so the
+   * only thing crossing the network here is client_context, which returns
+   * is_staff, the org, the caller's role in it, its name and the number of
+   * batches waiting on them.
+   *
+   * Both run together because neither needs the other's answer: Postgres
+   * verifies the same JWT itself to resolve auth.uid().
+   */
+  const [claimsRes, ctxRes] = await Promise.all([
+    supabase.auth.getClaims(),
+    supabase.rpc("client_context", { preview_org: previewOrgId }),
+  ]);
+
+  const claims = claimsRes.data?.claims;
+  if (claimsRes.error || !claims?.sub) redirect("/login");
+
+  const ctx = (ctxRes.data ?? {}) as {
+    signed_in?: boolean;
+    is_staff?: boolean;
+    has_org?: boolean;
+    org_id?: string;
+    role?: MemberRole;
+    org_name?: string | null;
+    waiting?: number;
+  };
 
   // A staff member with no client membership belongs in the admin portal.
-  if (!data) {
-    if (session.isStaff) redirect("/admin");
+  if (!ctx.has_org || !ctx.org_id) {
+    if (ctx.is_staff) redirect("/admin");
     redirect("/no-access");
   }
 
-  return { ...session, orgId: data.org_id, role: data.role as MemberRole, viewingAs: false };
+  return {
+    userId: claims.sub as string,
+    email: (claims.email as string) ?? null,
+    isStaff: !!ctx.is_staff,
+    orgId: ctx.org_id,
+    role: (ctx.role ?? "viewer") as MemberRole,
+    orgName: ctx.org_name ?? null,
+    waitingCount: ctx.waiting ?? 0,
+    viewingAs: !!ctx.is_staff && !!previewOrgId,
+  };
 });
 
 /**

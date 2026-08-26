@@ -1,13 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { requireOrg } from "@/lib/dal/session";
 import { createClient } from "@socialx/core/supabase/server";
 import { Status } from "@/components/portal/DataTable";
 import { revisionLabel } from "@/lib/format";
+import { SkeletonRows } from "@/components/portal/Skeleton";
 
 export const metadata: Metadata = { title: "Approvals | socialX" };
 
-export default async function ApprovalsPage() {
+/* The promise at the top of this page is the reason a client opens it, so it is
+   static and lands immediately. The batch list streams in behind it. */
+export default function ApprovalsPage() {
+  return (
+    <div>
+      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
+        Approvals
+      </h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8 max-w-[64ch]">
+        Nothing publishes until you approve it. Review a month, approve the whole batch,
+        or send back the pieces you want changed.
+      </p>
+
+      <Suspense fallback={<SkeletonRows n={3} />}>
+        <Batches />
+      </Suspense>
+    </div>
+  );
+}
+
+async function Batches() {
   const session = await requireOrg();
   const supabase = await createClient();
 
@@ -21,14 +43,7 @@ export default async function ApprovalsPage() {
   const rest = (batches ?? []).filter((b) => b.status !== "in_review");
 
   return (
-    <div>
-      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-        Approvals
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8 max-w-[64ch]">
-        Nothing publishes until you approve it. Review a month, approve the whole batch,
-        or send back the pieces you want changed.
-      </p>
+    <>
 
       {waiting.length > 0 && (
         <section className="mb-10">
@@ -88,7 +103,7 @@ export default async function ApprovalsPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }
 
