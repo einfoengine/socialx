@@ -1,0 +1,467 @@
+/*
+ * The socialX design system: tokens, the square-corner reset, and the shared
+ * utilities. Imported by both apps so the two halves cannot drift apart.
+ *
+ * `@import "tailwindcss"` is deliberately NOT here. Each app pulls Tailwind in
+ * first from its own globals.css, then this file, because @theme and
+ * @custom-variant have to be layered on top of Tailwind rather than before it.
+ */
+
+/* Force CSS compiler to rebuild. Enable class-based manual dark mode strategy for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-navy: #04044A;
+  --color-navy-lift: #0A0A66;
+  --color-blue-dark: #04044A;
+  --color-blue-sky: #00A3FF;
+  --color-blue-neon: #3D4AFF;
+  --color-cream: #F4F2EF;
+
+  --animate-marquee: marquee 35s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 35s linear infinite;
+  --animate-marquee-slow: marquee 120s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+}
+
+@theme inline {
+  --font-grotesk: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  --gradient-x: linear-gradient(135deg, #00A3FF 0%, #3D4AFF 100%);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  @apply bg-[#F4F2EF] dark:bg-[#050508] text-[#04044A] dark:text-[#F4F2EF] transition-colors duration-300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ====== SHARP CORNERS ======
+   The design language is fully square. Zero every radius globally so nothing
+   rounded can creep back in via a stray utility, then opt back in only for the
+   shapes that are circular by function rather than being boxes with softened
+   corners: the ambient glow blobs and the loading spinner. */
+
+*,
+*::before,
+*::after {
+  border-radius: 0;
+}
+
+.is-circle {
+  border-radius: 9999px;
+}
+
+/* ---- Platform mockups (the /demos gallery) ----
+   These imitate Facebook, Instagram and LinkedIn post chrome, where circular
+   avatars and softly rounded cards ARE the identity being reproduced — a square
+   avatar instantly reads as "not Facebook". This restores the radius utilities
+   inside `.native-ui` only; the site's own UI stays square everywhere else.
+   These selectors outrank the `*` reset above on specificity. */
+.native-ui .rounded-full { border-radius: 9999px; }
+.native-ui .rounded-xl   { border-radius: 0.75rem; }
+.native-ui .rounded-lg   { border-radius: 0.5rem; }
+.native-ui .rounded-md   { border-radius: 0.375rem; }
+.native-ui .rounded-sm   { border-radius: 0.125rem; }
+
+/* Native radios have no square equivalent — keep them round if one is ever added. */
+input[type="radio"] {
+  border-radius: 9999px;
+}
+
+/* ====== UTILITY CLASSES ====== */
+
+.gradient-text {
+  background: var(--gradient-x);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-bg {
+  background: var(--gradient-x);
+}
+
+/* Highlight for headings that sit on the brand-blue background, where the
+   standard blue gradient-text would disappear into the surface. Runs cyan into
+   white so it reads as a highlight rather than a colour change. */
+.gradient-text-light {
+  background: linear-gradient(135deg, #7FF0FF 0%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-eyebrow {
+  font-family: var(--font-grotesk);
+  font-size: 13px;
+  color: #3D4AFF;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-grotesk);
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: -1.8px;
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.08;
+  @apply text-[#04044A] dark:text-white transition-colors duration-300;
+}
+
+@media (max-width: 768px) {
+  .section-title { font-size: 34px; letter-spacing: -1px; }
+}
+
+.section-sub {
+  @apply text-[#55555E] dark:text-gray-400 transition-colors duration-300;
+  font-size: 19px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 60px;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .section-sub { font-size: 16px; }
+}
+
+/* ====== ADAPTIVE HEADER ======
+   The sticky bar takes the background of whichever section is currently behind
+   it (set inline by the script in Header.tsx) and flips its own foreground
+   between two tones, because the sections run from cream and white through
+   brand blue to near-black. Colours are tokens so every child reads from one
+   place rather than hard-coding white.
+
+   Default is the dark tone, which is also the no-JS fallback. */
+#gw-header {
+  --nav-fg: #F4F2EF;
+  --nav-muted: rgba(244, 242, 239, 0.62);
+  --nav-line: rgba(255, 255, 255, 0.12);
+  --nav-hover: rgba(255, 255, 255, 0.10);
+  border-bottom: 1px solid var(--nav-line);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+#gw-header[data-tone="light"] {
+  --nav-fg: #04044A;
+  --nav-muted: rgba(4, 4, 74, 0.60);
+  --nav-line: rgba(4, 4, 74, 0.12);
+  --nav-hover: rgba(4, 4, 74, 0.06);
+}
+
+#gw-header .nav-logo,
+#gw-header .nav-bar {
+  color: var(--nav-fg);
+  transition: color 0.4s ease, background-color 0.4s ease;
+}
+#gw-header .nav-bar { background-color: var(--nav-fg); }
+
+#gw-header .nav-link {
+  color: var(--nav-muted);
+  transition: color 0.3s ease;
+}
+#gw-header .nav-link:hover {
+  color: var(--nav-fg);
+}
+
+#gw-header .nav-icon,
+#gw-header .nav-btn {
+  color: var(--nav-fg);
+  border-color: var(--nav-line);
+  transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+#gw-header .nav-icon:hover,
+#gw-header .nav-btn:hover {
+  background-color: var(--nav-hover);
+}
+
+/* The mobile drawer sits under the bar, so it inherits the same surface. */
+#gw-header .nav-drawer {
+  background-color: inherit;
+  border-color: var(--nav-line);
+}
+
+/* The desktop dropdown hangs below the bar, outside the header's own painted
+   box, so `inherit` would resolve to transparent and the page would show
+   through. The header script keeps --nav-surface in step with the bar colour;
+   the fallback matches the no-JS default tone. */
+#gw-header .nav-menu {
+  background-color: var(--nav-surface, #050508);
+  border-color: var(--nav-line);
+}
+
+/* Menu rows borrow the card language used by the marketing sections: a square
+   brand-tinted glyph tile beside a title and one line of body copy. On hover
+   the tile fills with the CTA gradient, which is the one accent strong enough
+   to read against both header tones. */
+#gw-header .nav-menu-eyebrow {
+  color: #00A3FF;
+}
+#gw-header[data-tone="light"] .nav-menu-eyebrow {
+  color: #3D4AFF;
+}
+
+#gw-header .nav-menu-row:hover {
+  background-color: var(--nav-hover);
+}
+
+#gw-header .nav-menu-tile {
+  background-color: rgba(0, 163, 255, 0.14);
+  color: #00A3FF;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+#gw-header[data-tone="light"] .nav-menu-tile {
+  background-color: rgba(61, 74, 255, 0.10);
+  color: #3D4AFF;
+}
+#gw-header .nav-menu-row:hover .nav-menu-tile {
+  background: var(--gradient-x);
+  color: #FFFFFF;
+}
+
+#gw-header .nav-menu-label {
+  color: var(--nav-fg);
+}
+#gw-header .nav-menu-desc {
+  color: var(--nav-muted);
+}
+
+#gw-header .nav-menu-arrow {
+  color: var(--nav-fg);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#gw-header .nav-menu-row:hover .nav-menu-arrow {
+  opacity: 0.65;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gw-header .nav-menu-tile,
+  #gw-header .nav-menu-arrow {
+    transition-duration: 0.01ms;
+  }
+  #gw-header .nav-menu-arrow {
+    transform: none;
+  }
+}
+
+/* ====== CARD VARIANTS ====== */
+
+.card-sky {
+  @apply bg-white dark:bg-[#04044A] border border-black/[0.07] dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-md transition-all duration-300;
+}
+.card-sky:hover {
+  @apply border-[#3D4AFF]/20 dark:border-[#3D4AFF]/40 shadow-[0_8px_32px_rgba(61,74,255,0.1)] dark:shadow-[0_8px_32px_rgba(61,74,255,0.2)] -translate-y-[2px];
+}
+
+.card-red {
+  @apply bg-white dark:bg-[#04044A] border border-black/[0.07] dark:border-white/[0.08] shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-md transition-all duration-300;
+}
+.card-red:hover {
+  @apply border-red-500/20 dark:border-red-500/40 shadow-[0_8px_32px_rgba(239,68,68,0.07)] dark:shadow-[0_8px_32px_rgba(239,68,68,0.15)] -translate-y-[2px];
+}
+
+/* ====== BUTTONS ======
+   Hover slides the button's own gradient left to right, and lifts it slightly.
+   No new colour is introduced and there is no keyframe loop — just a transition
+   on background-position.
+
+   The image holds the two brand stops mirrored (A -> B -> A) at twice the
+   button's width. At rest the visible half is exactly #00A3FF -> #3D4AFF, the
+   resting gradient; on hover it slides one button-width to the right. */
+
+.btn {
+  position: relative;
+  cursor: pointer;
+  transition: background-position 0.45s ease,
+              transform 0.25s ease,
+              box-shadow 0.25s ease,
+              color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--btn-shadow, 0 12px 28px rgba(4, 4, 74, 0.22));
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--btn-shadow-active, 0 2px 6px rgba(4, 4, 74, 0.18));
+  transition-duration: 0.1s;
+}
+
+.btn:focus-visible {
+  outline: 2px solid #3D4AFF;
+  outline-offset: 3px;
+}
+
+/* Gradient CTAs — the only variant with a gradient to slide. */
+.btn-primary {
+  background-image: linear-gradient(
+    135deg,
+    #00A3FF 0%,
+    #3D4AFF 50%,
+    #00A3FF 100%
+  );
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  --btn-shadow: 0 14px 34px rgba(61, 74, 255, 0.45);
+  --btn-shadow-active: 0 4px 10px rgba(61, 74, 255, 0.35);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-position: 100% 50%;
+}
+
+/* Solid variants: lift and glow only, both in the button's own hue. */
+.btn-blue {
+  --btn-shadow: 0 12px 28px rgba(61, 74, 255, 0.42);
+  --btn-shadow-active: 0 3px 8px rgba(61, 74, 255, 0.3);
+}
+
+.btn-ink {
+  --btn-shadow: 0 12px 28px rgba(4, 4, 74, 0.3);
+  --btn-shadow-active: 0 3px 8px rgba(4, 4, 74, 0.26);
+}
+html.dark .btn-ink {
+  --btn-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+}
+
+.btn-light {
+  --btn-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  --btn-shadow-active: 0 3px 8px rgba(0, 0, 0, 0.22);
+}
+
+.btn-ghost {
+  --btn-shadow: 0 10px 24px rgba(4, 4, 74, 0.12);
+  --btn-shadow-active: 0 2px 6px rgba(4, 4, 74, 0.1);
+}
+html.dark .btn-ghost {
+  --btn-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+}
+
+/* Small square icon buttons. */
+.btn-icon {
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease,
+              transform 0.2s ease;
+}
+.btn-icon:hover {
+  transform: translateY(-1px);
+}
+.btn-icon:active {
+  transform: translateY(0);
+  transition-duration: 0.06s;
+}
+.btn-icon:focus-visible {
+  outline: 2px solid #3D4AFF;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn-icon {
+    transition-duration: 0.01ms;
+  }
+  .btn:hover,
+  .btn:focus-visible,
+  .btn:active,
+  .btn-icon:hover,
+  .btn-icon:active {
+    transform: none;
+  }
+}
+
+/* ====== GRID HELPER UTILITIES ====== */
+.subtle-grid {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+html.dark .subtle-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.subtle-grid-why {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+html.dark .subtle-grid-why {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+}
+
+/* ====== ANIMATIONS ====== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(61,74,255, 0.7); }
+  70%       { opacity: 0.7; box-shadow: 0 0 0 8px rgba(61,74,255, 0); }
+}
+
+/* Wistia placeholder: blurred swatch + reserved 16:9 height before the player loads */
+wistia-player[media-id='xe9k8lhdfb']:not(:defined) {
+  background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/xe9k8lhdfb/swatch');
+  display: block;
+  filter: blur(5px);
+  padding-top: 56.25%;
+}
+
+.animate-float     { animation: float 5s ease-in-out infinite; }
+.animate-fade-up   { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+.animate-pulse-dot { animation: pulseDot 2.5s ease-in-out infinite; }
+
+/* ====== SCROLL REVEAL ======
+   Subtle fade + rise as elements enter the viewport.
+   Gated by `.js` so content is always visible without JS,
+   and disabled entirely for users who prefer reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .js [data-reveal][data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+}
