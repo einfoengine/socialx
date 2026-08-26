@@ -89,6 +89,11 @@ type NavLink = { label: string; href: string };
 type MenuLink = NavLink & { description: string; icon: React.ReactNode };
 type NavItem = NavLink | { label: string; eyebrow: string; children: MenuLink[] };
 
+/* The portal is not live yet, so the public site does not advertise a sign-in.
+   Flip this to true to bring the Login button back in both the bar and the
+   drawer; the markup below is kept intact rather than deleted for that reason. */
+const SHOW_LOGIN = false;
+
 const navItems: NavItem[] = [
   { label: "Demos", href: "/demos" },
   {
@@ -393,14 +398,16 @@ export default function Header() {
                 <path d="m9 15.5 2 2 4-4" />
               </svg>
             </a>
-            {/* Existing clients, not prospects — outlined so it stays clearly
+            {/* Existing clients, not prospects: outlined so it stays clearly
                 secondary to the one primary call to action beside it. */}
-            <a
-              href={portalUrl("/login")}
-              className="nav-btn btn-icon hidden lg:inline-flex h-9 shrink-0 items-center border px-4 font-grotesk text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
-            >
-              Login
-            </a>
+            {SHOW_LOGIN && (
+              <a
+                href={portalUrl("/login")}
+                className="nav-btn btn-icon hidden lg:inline-flex h-9 shrink-0 items-center border px-4 font-grotesk text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
+              >
+                Login
+              </a>
+            )}
             <a
               href="/#gw-pricing"
               className="btn btn-primary group hidden lg:inline-flex shrink-0 items-center gap-2 whitespace-nowrap gradient-bg text-white font-grotesk font-semibold text-xs tracking-wider uppercase px-6 py-3 shadow-[0_8px_20px_rgba(61,74,255,0.25)]"
@@ -470,13 +477,15 @@ export default function Header() {
                 </a>
               )
             )}
-            <a
-              href={portalUrl("/login")}
-              onClick={closeDrawer}
-              className="nav-btn btn-icon flex items-center justify-center border py-3 mt-4 font-grotesk text-xs font-semibold uppercase tracking-wider"
-            >
-              Login
-            </a>
+            {SHOW_LOGIN && (
+              <a
+                href={portalUrl("/login")}
+                onClick={closeDrawer}
+                className="nav-btn btn-icon flex items-center justify-center border py-3 mt-4 font-grotesk text-xs font-semibold uppercase tracking-wider"
+              >
+                Login
+              </a>
+            )}
             <a
               href="/#gw-pricing"
               onClick={closeDrawer}
