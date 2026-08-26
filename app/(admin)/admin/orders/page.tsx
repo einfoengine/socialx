@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/portal/DataTable";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Orders | socialX Admin" };
  * onboarding, so this is the queue of accounts waiting on someone.
  */
 export default async function OrdersPage() {
-  await requireStaff();
+  await requirePermission("orders");
   const supabase = await createClient();
 
   const { data } = await supabase

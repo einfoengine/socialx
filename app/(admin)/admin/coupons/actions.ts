@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getStripe } from "@/lib/stripe";
 
@@ -18,7 +18,7 @@ const KINDS = ["regular", "launch"] as const;
 const CYCLES = ["monthly", "quarterly", "half", "yearly"] as const;
 
 export async function createCoupon(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("coupons", "full");
 
   const kind = String(formData.get("kind") ?? "regular");
   const rawCode = String(formData.get("code") ?? "").trim().toUpperCase();
@@ -109,7 +109,7 @@ export async function createCoupon(formData: FormData) {
 }
 
 export async function toggleCoupon(formData: FormData) {
-  await requireStaff();
+  await requirePermission("coupons", "full");
   const id = String(formData.get("id") ?? "");
   const next = formData.get("active") === "true";
   if (!id) return;
@@ -121,7 +121,7 @@ export async function toggleCoupon(formData: FormData) {
 }
 
 export async function deleteCoupon(formData: FormData) {
-  await requireStaff();
+  await requirePermission("coupons", "full");
   const id = String(formData.get("id") ?? "");
   if (!id) return;
 

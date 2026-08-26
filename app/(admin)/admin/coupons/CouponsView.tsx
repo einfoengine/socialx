@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, EmptyRow } from "@/components/portal/DataTable";
 import { CYCLE_LABELS } from "@/lib/format";
@@ -17,7 +17,7 @@ const PRESETS: Record<string, number[]> = {
 };
 
 export default async function CouponsView({ kind }: { kind: "regular" | "launch" }) {
-  await requireStaff();
+  await requirePermission("coupons");
   const supabase = await createClient();
 
   const { data: coupons } = await supabase

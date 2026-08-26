@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/portal/DataTable";
 import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/format";
@@ -8,7 +8,7 @@ import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/fo
 export const metadata: Metadata = { title: "Subscriptions | socialX Admin" };
 
 export default async function SubscriptionsPage() {
-  await requireStaff();
+  await requirePermission("subscriptions");
   const supabase = await createClient();
 
   const { data } = await supabase

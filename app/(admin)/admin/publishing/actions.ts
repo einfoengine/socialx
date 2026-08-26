@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -13,7 +13,7 @@ import { createClient } from "@/lib/supabase/server";
  * so the automation later swaps out who performs the action, not what it means.
  */
 export async function markScheduled(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("publishing", "full");
   const supabase = await createClient();
 
   const postId = String(formData.get("post_id") ?? "");
@@ -62,7 +62,7 @@ export async function markScheduled(formData: FormData) {
 }
 
 export async function markPublished(formData: FormData) {
-  await requireStaff();
+  await requirePermission("publishing", "full");
   const supabase = await createClient();
   const postId = String(formData.get("post_id") ?? "");
   if (!postId) return;

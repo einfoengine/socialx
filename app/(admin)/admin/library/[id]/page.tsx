@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Status } from "@/components/portal/DataTable";
 import { saveVersion, updateTemplateMeta } from "../actions";
@@ -14,7 +14,7 @@ export default async function TemplateDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireStaff();
+  await requirePermission("library");
   const { id } = await params;
   const supabase = await createClient();
 

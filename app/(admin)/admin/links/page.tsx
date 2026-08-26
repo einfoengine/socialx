@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead } from "@/components/portal/DataTable";
 import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/format";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Links | socialX Admin" };
  * an amount socialX did not publish.
  */
 export default async function LinksPage() {
-  await requireStaff();
+  await requirePermission("links");
   const supabase = await createClient();
 
   const [{ data: plans }, { data: prices }, { data: coupons }] = await Promise.all([

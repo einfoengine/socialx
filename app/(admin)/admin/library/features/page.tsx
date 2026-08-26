@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead } from "@/components/portal/DataTable";
 import { setFeatureStatus, addFeature } from "../actions";
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "HighLevel features | socialX Admin" 
  * built from those versions.
  */
 export default async function FeaturesPage() {
-  await requireStaff();
+  await requirePermission("library");
   const supabase = await createClient();
 
   const [{ data: features }, { data: links }] = await Promise.all([

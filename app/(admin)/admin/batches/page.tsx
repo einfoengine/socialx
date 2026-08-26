@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/portal/DataTable";
 import { revisionLabel } from "@/lib/format";
@@ -9,7 +9,7 @@ import { createBatch } from "./actions";
 export const metadata: Metadata = { title: "Batches | socialX Admin" };
 
 export default async function BatchesPage() {
-  await requireStaff();
+  await requirePermission("batches");
   const supabase = await createClient();
 
   const [{ data: batches }, { data: orgs }] = await Promise.all([

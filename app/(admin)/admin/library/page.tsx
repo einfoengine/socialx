@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { resolveAssetUrls } from "@/lib/dal/media";
 import type { Asset } from "@/lib/types/db";
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: "Library | socialX Admin" };
  * pillar mix is the first thing that goes wrong in a library nobody looks at.
  */
 export default async function LibraryPage() {
-  await requireStaff();
+  await requirePermission("library");
   const supabase = await createClient();
 
   const [{ data: templates }, { data: pillars }] = await Promise.all([

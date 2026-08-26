@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Status } from "@/components/portal/DataTable";
+import { viewClientPortal } from "../actions";
 import { formatMoney, CYCLE_LABELS, revisionLabel } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Client | socialX Admin" };
@@ -13,7 +14,7 @@ export default async function ClientDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireStaff();
+  await requirePermission("clients");
   const { id } = await params;
   const supabase = await createClient();
 
@@ -62,7 +63,18 @@ export default async function ClientDetail({
       </Link>
 
       <div className="mt-3">
-        <PageHead title={org.name} sub={org.owner_email ?? undefined} />
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <PageHead title={org.name} sub={org.owner_email ?? undefined} />
+          <form action={viewClientPortal}>
+            <input type="hidden" name="org_id" value={org.id} />
+            <button
+              type="submit"
+              className="border border-black/15 dark:border-white/20 px-4 py-2 font-grotesk text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer whitespace-nowrap"
+            >
+              View their portal
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-8">

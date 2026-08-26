@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -18,7 +18,7 @@ function code(n: number) {
 }
 
 export async function createTemplate(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("library", "full");
   const supabase = await createClient();
 
   const title = String(formData.get("title") ?? "").trim();
@@ -85,7 +85,7 @@ export async function createTemplate(formData: FormData) {
  * stale copy after HighLevel ships a change.
  */
 export async function saveVersion(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("library", "full");
   const supabase = await createClient();
 
   const templateId = String(formData.get("template_id") ?? "");
@@ -125,7 +125,7 @@ export async function saveVersion(formData: FormData) {
 }
 
 export async function updateTemplateMeta(formData: FormData) {
-  await requireStaff();
+  await requirePermission("library", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
@@ -162,7 +162,7 @@ export async function updateTemplateMeta(formData: FormData) {
  * from the affected versions.
  */
 export async function setFeatureStatus(formData: FormData) {
-  await requireStaff();
+  await requirePermission("library", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
@@ -181,7 +181,7 @@ export async function setFeatureStatus(formData: FormData) {
 }
 
 export async function addFeature(formData: FormData) {
-  await requireStaff();
+  await requirePermission("library", "full");
   const supabase = await createClient();
 
   const name = String(formData.get("name") ?? "").trim();

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell } from "@/components/portal/DataTable";
 import { rel } from "@/lib/rel";
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Settings | socialX Admin" };
  * delivery side reads: entitlements, which rate card is live, and the pillar mix.
  */
 export default async function SettingsPage() {
-  await requireStaff();
+  await requirePermission("settings");
   const supabase = await createClient();
 
   const [{ data: ents }, { data: cards }, { data: pillars }, { data: features }] =
@@ -41,6 +41,27 @@ export default async function SettingsPage() {
         title="Settings"
         sub="The machinery delivery reads. Read only by design: these change in the seed files and are applied with the migration runner."
       />
+
+      <H>Access</H>
+      <div className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] p-5 text-[13.5px] text-gray-600 dark:text-gray-400 leading-relaxed max-w-[78ch]">
+        What each staff role can reach is set on{" "}
+        <Link href="/admin/settings/permissions" className="text-[#3D4AFF] dark:text-[#00A3FF]">
+          Access
+        </Link>
+        . Roles are assigned per person on{" "}
+        <Link href="/admin/people" className="text-[#3D4AFF] dark:text-[#00A3FF]">People</Link>.
+        Unlike the rest of this screen, access is editable, and only a staff owner can change it.
+      </div>
+
+      <H>Plan and context</H>
+      <div className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] p-5 text-[13.5px] text-gray-600 dark:text-gray-400 leading-relaxed max-w-[78ch]">
+        Build context, locked decisions and ideas worth keeping live in{" "}
+        <Link href="/admin/journal" className="text-[#3D4AFF] dark:text-[#00A3FF]">
+          Plan &amp; Context
+        </Link>
+        . It has its own access level, so a role can be given it without being given
+        the rest of Settings.
+      </div>
 
       <H>Where pricing lives now</H>
       <div className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] p-5 text-[13.5px] text-gray-600 dark:text-gray-400 leading-relaxed max-w-[78ch]">

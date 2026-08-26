@@ -132,24 +132,58 @@ export default function Booking() {
               CROP: the widget's own stylesheet puts 64px of padding on
               #appointment_widgets--revamp (.appointment_widgets-xl--revamp in
               _main.*.css), which renders as a blank band directly under our
-              header strip. It's cross-origin, so it can't be overridden — the
-              iframe is pulled up by exactly that 64px and clipped by the parent,
-              with the same amount added to its height so the visible viewport
-              stays 700px. */}
-          <div className="relative isolate overflow-hidden">
-            <iframe
-              src="https://api.leadconnectorhq.com/widget/booking/RbjuKxBNLN8bLfUEviTE"
-              title="Book a call with socialX"
-              style={{
-                display: "block",
-                width: "100%",
-                height: "764px",
-                marginTop: "-64px",
-                border: "none",
-              }}
-              scrolling="no"
-              id="RbjuKxBNLN8bLfUEviTE_1781096728327"
+              header strip. It's cross-origin, so it can't be overridden, and the
+              iframe is instead pulled up by that amount and clipped by the
+              parent. In the two-column layout it is pulled up by 116px rather
+              than 64px so the widget's own heading goes with the padding: see
+              the note on that below. pt-3.5 gives the panel back a little room
+              under the header strip, on a white ground because the widget
+              renders white in both site themes. */}
+          <div className="relative isolate bg-white min-[1056px]:pt-3.5">
+            {/* The clip lives on this inner box, not on the padded parent:
+                overflow-hidden clips at the border box, so padding on the same
+                element would just slide the iframe back down and reveal the very
+                heading the crop removes. Clipping below the padding keeps the two
+                independent. */}
+            <div className="overflow-hidden">
+              <iframe
+                src="https://api.leadconnectorhq.com/widget/booking/RbjuKxBNLN8bLfUEviTE"
+                title="Book a call with socialX"
+                className="mt-[-64px] block h-[764px] w-full border-0 min-[1056px]:mt-[-116px]"
+                scrolling="no"
+                id="RbjuKxBNLN8bLfUEviTE_1781096728327"
+              />
+            </div>
+            {/* The widget prints its own "Select Date & Time" heading
+                (h4.label-select-date) above the date column, which repeats the
+                "Pick a time" strip and wastes a band of vertical space. It is
+                cross-origin, so it cannot be hidden with CSS, and painting over
+                it would leave the empty band behind. Instead the crop above is
+                deepened to lift the heading clean off the top of the frame,
+                so the band it occupied is gone rather than painted over.
+
+                116px is measured, not guessed. The heading's TEXT box ends at
+                y=115 and the service name's text box starts at y=117, so the
+                crop has to land in that 2px window to take the heading without
+                shaving the name. It holds from 992 to 1216px of iframe width,
+                which is the full two-column range.
+
+                The widget switches to a stacked layout below 992px of IFRAME
+                width, where the heading sits mid-flow and no crop can reach it.
+                The iframe is the container width (viewport-48 below lg, then
+                min(viewport,1280)-64), so that threshold is a 1056px viewport,
+                hence the explicit pixel variants rather than lg. In the stacked
+                band the heading is covered in place instead. Under an 816px
+                viewport the widget drops the heading itself. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-[35%] right-0 top-0 hidden h-[20px] bg-white min-[1056px]:block"
             />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-[206px] hidden h-[46px] bg-white min-[816px]:block min-[1056px]:hidden"
+            />
+
             {/* Vertical rule sitting in the GUTTER between the month grid and the
                 slot column — centred in the gap rather than hugging either side
                 (grid edge falls near 70%, slots begin near 74%).

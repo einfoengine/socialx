@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell } from "@/components/portal/DataTable";
 import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/format";
@@ -16,7 +16,7 @@ export default async function PackageDetail({
 }: {
   params: Promise<{ key: string }>;
 }) {
-  await requireStaff();
+  await requirePermission("packages");
   const { key } = await params;
   const supabase = await createClient();
 

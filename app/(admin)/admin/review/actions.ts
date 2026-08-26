@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 
 export async function resolveRevision(formData: FormData) {
-  await requireStaff();
+  await requirePermission("review", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");

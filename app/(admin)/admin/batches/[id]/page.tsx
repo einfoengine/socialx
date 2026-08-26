@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { Status } from "@/components/portal/DataTable";
 import { revisionLabel } from "@/lib/format";
@@ -24,7 +24,7 @@ export default async function BatchBuilder({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ pillar?: string }>;
 }) {
-  await requireStaff();
+  await requirePermission("batches");
   const { id } = await params;
   const { pillar } = await searchParams;
   const supabase = await createClient();

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireOrg } from "@/lib/dal/session";
+import { requireOrg, assertNotViewingAs } from "@/lib/dal/session";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -16,6 +16,7 @@ import { createServiceClient } from "@/lib/supabase/service";
  */
 export async function saveOnboarding(formData: FormData) {
   const session = await requireOrg();
+  assertNotViewingAs(session);
   const supabase = await createClient();
 
   const platforms = formData.getAll("platforms").map(String).filter(Boolean);

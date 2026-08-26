@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -30,7 +30,7 @@ async function quotaState(supabase: Awaited<ReturnType<typeof createClient>>, ba
 
 /** Adds a library template to a batch as a customizable post instance. */
 export async function addPostFromTemplate(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("batches", "full");
   const supabase = await createClient();
 
   const batchId = String(formData.get("batch_id") ?? "");
@@ -92,7 +92,7 @@ export async function addPostFromTemplate(formData: FormData) {
 
 /** A post written from scratch, which is what Scale actually buys. */
 export async function addCustomPost(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("batches", "full");
   const supabase = await createClient();
 
   const batchId = String(formData.get("batch_id") ?? "");
@@ -122,7 +122,7 @@ export async function addCustomPost(formData: FormData) {
 }
 
 export async function updatePost(formData: FormData) {
-  await requireStaff();
+  await requirePermission("batches", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
@@ -158,7 +158,7 @@ export async function updatePost(formData: FormData) {
 }
 
 export async function deletePost(formData: FormData) {
-  await requireStaff();
+  await requirePermission("batches", "full");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   const batchId = String(formData.get("batch_id") ?? "");
@@ -174,7 +174,7 @@ export async function deletePost(formData: FormData) {
  * reaches a client half-specified wastes a revision round on our own mistake.
  */
 export async function submitBatch(formData: FormData) {
-  const session = await requireStaff();
+  const session = await requirePermission("batches", "full");
   const supabase = await createClient();
 
   const batchId = String(formData.get("batch_id") ?? "");
@@ -222,7 +222,7 @@ export async function submitBatch(formData: FormData) {
 
 /** Creates the next month's batch, snapshotting quota from the plan as it stands now. */
 export async function createBatch(formData: FormData) {
-  await requireStaff();
+  await requirePermission("batches", "full");
   const supabase = await createClient();
 
   const orgId = String(formData.get("org_id") ?? "");

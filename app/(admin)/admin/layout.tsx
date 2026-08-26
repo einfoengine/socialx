@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import {
   BookOpen, CalendarRange, CreditCard, LayoutDashboard, Library, Link2,
-  MessageSquareWarning, Package, Send, Settings, ShoppingBag, Ticket, Users,
+  MessageSquareWarning, Package, Send, Settings, ShoppingBag, Ticket, UserCog, Users,
 } from "lucide-react";
 import Shell, { type NavGroup, type NavItem } from "@/components/portal/Shell";
-import { requireStaff } from "@/lib/dal/session";
+import { getStaffAccess } from "@/lib/dal/permissions";
+import { sectionForPath } from "@/lib/permissions";
+import { createClient } from "@/lib/supabase/server";
+import ViewAsSwitcher, { type ViewOption } from "./ViewAsSwitcher";
 
 export const metadata: Metadata = {
   title: "Admin | socialX",
@@ -16,15 +19,15 @@ export const metadata: Metadata = {
  * which table a screen reads. Money, Delivery, and Content are three different
  * jobs on three different days.
  *
- * The first group carries no title, so Today and Journal never collapse: they
- * are the two screens opened without a reason.
+ * The first group carries no title, so Overview never collapses: it is the one
+ * screen opened without a reason. Plan & Context sits on the floor with People
+ * and Settings, because it is reference material rather than a daily job.
  */
 const GROUPS: NavGroup[] = [
   {
     title: "",
     items: [
-      { href: "/admin", label: "Today", icon: <LayoutDashboard size={16} /> },
-      { href: "/admin/journal", label: "Journal", icon: <BookOpen size={16} /> },
+      { href: "/admin", label: "Overview", icon: <LayoutDashboard size={16} /> },
     ],
   },
   {
@@ -56,8 +59,13 @@ const GROUPS: NavGroup[] = [
   },
 ];
 
-/* Settings sits on the rail's floor. It is reached deliberately, not browsed. */
+/* Settings sits on the rail's floor. It is reached deliberately, not browsed, and
+   People is the same kind of screen: opened to do one specific job. Note that
+   People is not Clients. Clients, under Money, is the organizations that pay.
+   People is the accounts that can sign in, staff included. */
 const BOTTOM: NavItem[] = [
+  { href: "/admin/journal", label: "Plan & Context", icon: <BookOpen size={16} /> },
+  { href: "/admin/people", label: "People", icon: <UserCog size={16} /> },
   { href: "/admin/settings", label: "Settings", icon: <Settings size={16} /> },
 ];
 
@@ -65,17 +73,68 @@ export default async function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   /* Authorization happens here, not in proxy.ts. This runs on every admin render. */
-  const session = await requireStaff();
+  const access = await getStaffAccess();
+
+  /* The rail shows what this role can open. Hiding a link is presentation, not
+     protection: every page and every server action re-checks for itself, because
+     a hidden link is still a reachable URL. */
+  const visible = (href: string) => {
+    const section = sectionForPath(href);
+    return section ? access.permissions[section.key] !== "none" : true;
+  };
+
+  const groups = GROUPS
+    .map((g) => ({ ...g, items: g.items.filter((i) => visible(i.href)) }))
+    .filter((g) => g.items.length > 0);
+
+  /* The switcher belongs to the owner alone. Everyone else has exactly one
+     vantage point and a control offering others would only mislead. */
+  const isOwner = access.realRole === "owner";
+  let options: ViewOption[] = [];
+  if (isOwner) {
+    const supabase = await createClient();
+    const { data: orgs } = await supabase
+      .from("organizations")
+      .select("id, name")
+      .order("name");
+
+    options = [
+      { value: "self", label: "socialX owner, yourself", group: "Admin" },
+      { value: "role:ops", label: "Staff: ops", group: "Staff role" },
+      { value: "role:content", label: "Staff: content", group: "Staff role" },
+      { value: "role:finance", label: "Staff: finance", group: "Staff role" },
+      ...(orgs ?? []).map((o) => ({
+        value: `org:${o.id}`,
+        label: o.name as string,
+        group: "Client portal",
+      })),
+    ];
+  }
 
   return (
     <Shell
       area="Admin"
-      groups={GROUPS}
-      bottom={BOTTOM}
+      groups={groups}
+      bottom={BOTTOM.filter((i) => visible(i.href))}
       storageKey="sx-admin-rail"
-      userEmail={session.email}
-      userMeta={`socialX ${session.staffRole}`}
+      userEmail={access.email}
+      userMeta={`socialX ${access.staffRole}`}
     >
+      {isOwner && (
+        <div className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <ViewAsSwitcher
+            options={options}
+            current={access.viewingAsRole ? `role:${access.staffRole}` : "self"}
+            previewing={access.viewingAsRole}
+          />
+          {access.viewingAsRole && (
+            <span className="font-grotesk text-[13px] text-gray-600 dark:text-gray-400">
+              The rail and every screen below are what {access.staffRole} reaches. Pick
+              yourself again to come back.
+            </span>
+          )}
+        </div>
+      )}
       {children}
     </Shell>
   );

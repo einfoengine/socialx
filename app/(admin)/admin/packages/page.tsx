@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead } from "@/components/portal/DataTable";
 import { formatMoney, CYCLE_LABELS } from "@/lib/format";
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Packages | socialX Admin" };
 type Include = { text: string; highlight?: boolean };
 
 export default async function PackagesPage() {
-  await requireStaff();
+  await requirePermission("packages");
   const supabase = await createClient();
 
   const [{ data: plans }, { data: prices }, { data: ents }] = await Promise.all([

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  useCallback, useEffect, useRef, useState, useSyncExternalStore,
+  useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore,
   type ReactNode, type RefObject,
 } from "react";
 import { railStore, themeStore } from "./prefs";
@@ -398,10 +398,30 @@ function Sidebar({
     railStore.getServerSnapshot
   );
 
-  const isActive = useCallback(
-    (href: string) => pathname === href || pathname.startsWith(href + "/"),
-    [pathname]
+  const allItems = useMemo(
+    () => groups.flatMap((g) => g.items).concat(bottom ?? []),
+    [groups, bottom]
   );
+
+  /*
+   * Exactly one row is current, and it is the deepest match.
+   *
+   * A plain prefix test made every admin screen light up Overview, because its
+   * href is /admin and that prefixes all of them. Resolving the longest matching
+   * href first and then comparing against it keeps a parent from claiming its
+   * children.
+   */
+  const activeHref = useMemo(() => {
+    let best: string | null = null;
+    for (const it of allItems) {
+      if (pathname === it.href || pathname.startsWith(it.href + "/")) {
+        if (best === null || it.href.length > best.length) best = it.href;
+      }
+    }
+    return best;
+  }, [allItems, pathname]);
+
+  const isActive = useCallback((href: string) => href === activeHref, [activeHref]);
 
   /*
    * Whether a group is open, resolved rather than stored.
@@ -431,7 +451,6 @@ function Sidebar({
     [storageKey, stored, isOpen]
   );
 
-  const allItems = groups.flatMap((g) => g.items).concat(bottom ?? []);
   const activeLabel = allItems.find((it) => isActive(it.href))?.label ?? "Menu";
   const totalBadge = allItems.reduce((sum, it) => sum + (it.badge ?? 0), 0);
 

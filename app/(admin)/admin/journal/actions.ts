@@ -1,19 +1,19 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 
 /**
  * Journal mutations.
  *
- * Every action calls requireStaff() first. Server actions never pass through
+ * Every action calls requirePermission("journal", "full") first. Server actions never pass through
  * proxy.ts, so this is the only thing standing between a POST and the table,
  * with RLS underneath as the floor.
  */
 
 export async function addBuildLogEntry(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const title = String(formData.get("title") ?? "").trim();
@@ -31,7 +31,7 @@ export async function addBuildLogEntry(formData: FormData) {
 }
 
 export async function addDecision(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const topic = String(formData.get("topic") ?? "").trim();
@@ -54,7 +54,7 @@ export async function addDecision(formData: FormData) {
  * something changed stays readable months later.
  */
 export async function supersedeDecision(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const oldId = String(formData.get("id") ?? "");
@@ -80,7 +80,7 @@ export async function supersedeDecision(formData: FormData) {
 }
 
 export async function addIdea(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const title = String(formData.get("title") ?? "").trim();
@@ -104,7 +104,7 @@ export async function addIdea(formData: FormData) {
  * degrade into keeping it.
  */
 export async function rateIdea(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
@@ -121,7 +121,7 @@ export async function rateIdea(formData: FormData) {
 }
 
 export async function setIdeaStatus(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
 
   const id = String(formData.get("id") ?? "");
@@ -134,7 +134,7 @@ export async function setIdeaStatus(formData: FormData) {
 }
 
 export async function deleteIdea(formData: FormData) {
-  await requireStaff();
+  await requirePermission("journal", "full");
   const supabase = await createClient();
   const id = String(formData.get("id") ?? "");
   if (!id) return;

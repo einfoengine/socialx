@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/portal/DataTable";
 import { markScheduled, markPublished } from "./actions";
@@ -8,7 +8,7 @@ import { markScheduled, markPublished } from "./actions";
 export const metadata: Metadata = { title: "Publishing | socialX Admin" };
 
 export default async function PublishingPage() {
-  await requireStaff();
+  await requirePermission("publishing");
   const supabase = await createClient();
 
   const { data: posts } = await supabase

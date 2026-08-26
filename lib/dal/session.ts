@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { MemberRole, StaffRole } from "@/lib/types/db";
@@ -25,7 +26,17 @@ export type Session = {
 };
 
 export type StaffSession = Session & { staffRole: StaffRole };
-export type OrgSession = Session & { orgId: string; role: MemberRole };
+export type OrgSession = Session & {
+  orgId: string;
+  role: MemberRole;
+  /* True when a staff member is looking at someone else's portal. Read only:
+     every portal mutation refuses while this is set, because an approval is the
+     contractual gate before anything publishes and it has to be the client's. */
+  viewingAs: boolean;
+};
+
+/** Cookie naming the org a staff member is previewing. Set from /admin/clients. */
+export const VIEW_AS_COOKIE = "sx-view-as";
 
 /**
  * Verifies the session. Memoized per render pass with React `cache`, so calling it
@@ -94,6 +105,19 @@ export const requireStaff = cache(async (): Promise<StaffSession> => {
 export const requireOrg = cache(async (): Promise<OrgSession> => {
   const session = await requireUser();
 
+  /* Staff previewing a client. Checked before the membership lookup so it also
+     works for staff who hold no membership at all, which is most of them. The
+     cookie is only ever set by the admin action, which gates on the Clients
+     permission; this re-checks isStaff so a stray cookie on a client session is
+     inert. RLS still applies underneath: staff read every org, clients do not. */
+  if (session.isStaff) {
+    const jar = await cookies();
+    const previewOrgId = jar.get(VIEW_AS_COOKIE)?.value;
+    if (previewOrgId) {
+      return { ...session, orgId: previewOrgId, role: "viewer", viewingAs: true };
+    }
+  }
+
   const supabase = await createClient();
   const { data } = await supabase
     .from("memberships")
@@ -109,8 +133,19 @@ export const requireOrg = cache(async (): Promise<OrgSession> => {
     redirect("/no-access");
   }
 
-  return { ...session, orgId: data.org_id, role: data.role as MemberRole };
+  return { ...session, orgId: data.org_id, role: data.role as MemberRole, viewingAs: false };
 });
+
+/**
+ * Refuses a write while a staff member is previewing a client portal.
+ *
+ * Called by every portal mutation. Without it, "view as" would let socialX
+ * approve a batch on the client's behalf and the approval record would claim the
+ * client did it, which is exactly the thing the review loop exists to prove.
+ */
+export function assertNotViewingAs(session: OrgSession): void {
+  if (session.viewingAs) redirect("/portal?readonly=1");
+}
 
 /**
  * Asserts the signed-in user may act on a given org. RLS already scopes reads, but

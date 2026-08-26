@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { addIdea, rateIdea, setIdeaStatus, deleteIdea } from "../actions";
 import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass } from "../ui";
@@ -19,7 +19,7 @@ type Idea = {
 const STATUSES = ["open", "planned", "building", "shipped", "archived"];
 
 export default async function IdeasPage() {
-  await requireStaff();
+  await requirePermission("journal");
   const supabase = await createClient();
 
   const { data, error } = await supabase

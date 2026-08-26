@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead } from "@/components/portal/DataTable";
 import { createTemplate } from "../actions";
@@ -9,7 +9,7 @@ import { Field, Group, INPUT, CopyLawFields, FeaturePicker } from "../TemplateFo
 export const metadata: Metadata = { title: "New template | socialX Admin" };
 
 export default async function NewTemplatePage() {
-  await requireStaff();
+  await requirePermission("library");
   const supabase = await createClient();
 
   const [{ data: pillars }, { data: features }] = await Promise.all([

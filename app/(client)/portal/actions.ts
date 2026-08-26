@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireOrg } from "@/lib/dal/session";
+import { requireOrg, assertNotViewingAs } from "@/lib/dal/session";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getStripe } from "@/lib/stripe";
@@ -17,6 +17,7 @@ import { getStripe } from "@/lib/stripe";
 
 async function assertOwnsBatch(batchId: string) {
   const session = await requireOrg();
+  assertNotViewingAs(session);
   const supabase = await createClient();
 
   // RLS already scopes this select to the caller's org, so a batch belonging to
@@ -146,6 +147,7 @@ export async function requestChanges(formData: FormData) {
 
 export async function addComment(formData: FormData) {
   const session = await requireOrg();
+  assertNotViewingAs(session);
   const supabase = await createClient();
 
   const postId = String(formData.get("post_id") ?? "");
@@ -168,6 +170,7 @@ export async function addComment(formData: FormData) {
 /** Sends the client to Stripe's billing portal for cards, invoices, and cancellation. */
 export async function openBillingPortal() {
   const session = await requireOrg();
+  assertNotViewingAs(session);
   const db = createServiceClient();
 
   const { data: sub } = await db

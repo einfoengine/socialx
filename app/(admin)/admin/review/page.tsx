@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, EmptyRow } from "@/components/portal/DataTable";
 import { resolveRevision } from "./actions";
@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Review queue | socialX Admin" };
  * how long the client has been waiting, not by client name.
  */
 export default async function ReviewQueue() {
-  await requireStaff();
+  await requirePermission("review");
   const supabase = await createClient();
 
   const { data: open } = await supabase

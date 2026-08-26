@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/portal/DataTable";
 
 export const metadata: Metadata = { title: "Clients | socialX Admin" };
 
 export default async function ClientsPage() {
-  await requireStaff();
+  await requirePermission("clients");
   const supabase = await createClient();
 
   const { data } = await supabase

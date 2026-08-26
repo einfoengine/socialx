@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requireStaff } from "@/lib/dal/session";
+import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@/lib/supabase/server";
 import { addBuildLogEntry } from "../actions";
 import { Card, Tag, Empty, Field, AddPanel, inputClass, btnClass, fmtDate } from "../ui";
@@ -16,7 +16,7 @@ type Entry = {
 };
 
 export default async function BuildLogPage() {
-  await requireStaff();
+  await requirePermission("journal");
   const supabase = await createClient();
 
   const { data, error } = await supabase

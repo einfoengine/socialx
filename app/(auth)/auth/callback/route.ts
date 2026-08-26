@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -11,16 +12,30 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/portal";
 
-  if (!code) {
+  const supabase = await createClient();
+
+  /* Two shapes arrive here.
+     A link the browser asked for carries ?code=, because signInWithOtp stores a
+     PKCE verifier first. A link minted server side with the service role carries
+     ?token_hash=, and has no verifier to exchange against. Supporting both means
+     seeded accounts can sign in without a deliverable inbox, which is the only
+     way to reach an address like nathan@flowstackpro.demo. */
+  let failed: boolean;
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    failed = Boolean(error);
+  } else if (tokenHash && type) {
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
+    failed = Boolean(error);
+  } else {
     return NextResponse.redirect(`${origin}/login?error=Missing sign-in code`);
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
-
-  if (error) {
+  if (failed) {
     return NextResponse.redirect(`${origin}/login?error=That link has expired`);
   }
 
