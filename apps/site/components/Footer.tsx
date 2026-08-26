@@ -90,7 +90,7 @@ export default function Footer() {
 
           {/* Links Columns */}
           {[
-            { title: "Product", links: productLinks },
+            { title: "The service", links: productLinks },
             { title: "Company", links: companyLinks },
             { title: "Legal", links: legalLinks },
           ].map((col) => (

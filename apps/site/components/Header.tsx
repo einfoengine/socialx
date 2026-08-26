@@ -75,8 +75,13 @@ function MenuIcon({ children }: { children: React.ReactNode }) {
 
 /* The bar used to carry all seven section anchors side by side, which left the
    three regions fighting for width and nothing readable at a glance. The four
-   mid-funnel sections now sit behind one "Product" trigger; Demos, Pricing and
-   FAQ stay one click away because they are what visitors actually hunt for.
+   mid-funnel sections now sit behind one "How It Works" trigger; Demos, Pricing
+   and FAQ stay one click away because they are what visitors actually hunt for.
+
+   It was "Product" with a "[ The platform ]" eyebrow. Both were wrong for this
+   brand: socialX is a productized service, and HighLevel is the platform, which
+   the site must never appear to claim. The children are named after the section
+   eyebrows they open, so "Features" no longer lands a visitor on the pain cards.
 
    Each row carries a one-line summary drawn from the section it points at, so
    the menu previews the page rather than just naming anchors. */
@@ -87,11 +92,11 @@ type NavItem = NavLink | { label: string; eyebrow: string; children: MenuLink[] 
 const navItems: NavItem[] = [
   { label: "Demos", href: "/demos" },
   {
-    label: "Product",
-    eyebrow: "[ The platform ]",
+    label: "How It Works",
+    eyebrow: "[ The service ]",
     children: [
       {
-        label: "Features",
+        label: "The Trust Gap",
         href: "/#gw-problem",
         description: "Why a dead feed costs you deals.",
         icon: (
@@ -104,7 +109,7 @@ const navItems: NavItem[] = [
         ),
       },
       {
-        label: "How It Works",
+        label: "The Process",
         href: "/#gw-how",
         description: "Three steps. Then it runs monthly.",
         icon: (
