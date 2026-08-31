@@ -36,5 +36,6 @@
     "pg": "^8.23.0",
     "stripe": "^22.5.0",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }
