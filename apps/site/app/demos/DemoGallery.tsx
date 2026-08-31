@@ -453,11 +453,48 @@ const COLUMN: Record<Platform, string> = {
   linkedin: "space-y-2",
 };
 
-const EXAMPLES: { key: string; label: string; dot: string }[] = [
-  { key: "default", label: "Default", dot: "bg-gray-400" },
-  { key: "light", label: "Light customization", dot: "bg-blue-sky" },
-  { key: "heavy", label: "Heavy customization", dot: "bg-blue-neon" },
-  { key: "custom", label: "Custom build", dot: "bg-linear-to-br from-blue-neon to-blue-sky" },
+/* Each example expands in place when selected and says what that level of
+   customization actually buys. `tag` names the plan that includes it, straight
+   from the pricing table: light is Starter, heavy is Growth, bespoke is Scale.
+   Default carries no tag because it is the library itself, not a plan. */
+const EXAMPLES: {
+  key: string;
+  label: string;
+  dot: string;
+  tag?: string;
+  description: string;
+}[] = [
+  {
+    key: "default",
+    label: "Default",
+    dot: "bg-gray-400",
+    description:
+      "The library as it ships, built on growX CRM, the demo brand. This is the default content library every post starts from.",
+  },
+  {
+    key: "light",
+    label: "Light customization",
+    dot: "bg-blue-sky",
+    tag: "Starter",
+    description:
+      "Your logo, colors, and CTAs dropped into proven, feature-targeted posts. Strong copy, wearing your brand.",
+  },
+  {
+    key: "heavy",
+    label: "Heavy customization",
+    dot: "bg-blue-neon",
+    tag: "Growth",
+    description:
+      "Rewritten in your voice, angled to your niche and the exact services your SaaS sells, with your positioning woven in. Tailored, not templated.",
+  },
+  {
+    key: "custom",
+    label: "Custom build",
+    dot: "bg-linear-to-br from-blue-neon to-blue-sky",
+    tag: "Scale",
+    description:
+      "No fixed formula. We study your offer and audience, then decide post by post: rebuild a library piece completely for you, or write one from scratch. Whatever sells your software best.",
+  },
 ];
 
 export default function DemoGallery() {
@@ -520,7 +557,7 @@ export default function DemoGallery() {
         </header>
 
         <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-          <aside className="w-full lg:sticky lg:top-24 lg:w-[264px] lg:shrink-0 lg:self-start">
+          <aside className="w-full lg:sticky lg:top-24 lg:w-[300px] lg:shrink-0 lg:self-start">
             <div className="border border-black/10 bg-white dark:border-white/10 dark:bg-white/[0.03]">
               <div className="p-5">
                 <div className="mb-4 font-grotesk text-[11px] font-semibold uppercase tracking-[1.2px] text-gray-500 dark:text-gray-400">
@@ -563,12 +600,12 @@ export default function DemoGallery() {
                   {EXAMPLES.map((e) => {
                     const selected = example === e.key;
                     return (
+                      <div key={e.key}>
                       <button
-                        key={e.key}
                         type="button"
                         aria-pressed={selected}
                         onClick={() => setExample(e.key)}
-                        className={`relative flex w-full items-center gap-2.5 py-2.5 pl-3 pr-3 text-left font-grotesk text-sm transition-colors ${
+                        className={`relative flex w-full items-center gap-2 py-2.5 pl-3 pr-3 text-left font-grotesk text-[13.5px] transition-colors ${
                           selected
                             ? "bg-[#3D4AFF]/10 font-semibold text-[#3D4AFF] dark:bg-[#3D4AFF]/20 dark:text-[#00A3FF]"
                             : "text-gray-600 hover:bg-black/[0.03] hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
@@ -580,6 +617,17 @@ export default function DemoGallery() {
                         />
                         <span aria-hidden="true" className={`h-2 w-2 shrink-0 ${e.dot}`} />
                         <span className="truncate">{e.label}</span>
+                        {e.tag && (
+                          <span
+                            className={`shrink-0 border px-1 py-px font-grotesk text-[9px] font-semibold uppercase tracking-[0.8px] ${
+                              selected
+                                ? "border-[#3D4AFF]/40 text-[#3D4AFF] dark:border-[#00A3FF]/40 dark:text-[#00A3FF]"
+                                : "border-black/15 text-gray-400 dark:border-white/15 dark:text-gray-500"
+                            }`}
+                          >
+                            {e.tag}
+                          </span>
+                        )}
                         <span
                           className={`ml-auto text-xs tabular-nums ${
                             selected ? "opacity-70" : "text-gray-400 dark:text-gray-500"
@@ -588,6 +636,22 @@ export default function DemoGallery() {
                           {countExample(e.key)}
                         </span>
                       </button>
+                      {/* The selected example expands to say what this level
+                          actually buys. Collapsed rows keep the panel in the DOM
+                          at zero height so the open and close both animate: the
+                          grid-rows trick, since height cannot transition to auto. */}
+                      <div
+                        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                          selected ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="border-l-[3px] border-[#3D4AFF] bg-[#3D4AFF]/[0.04] px-3 pb-3 pt-2 text-[12.5px] leading-relaxed text-gray-600 dark:bg-[#3D4AFF]/10 dark:text-gray-300">
+                            {e.description}
+                          </p>
+                        </div>
+                      </div>
+                      </div>
                     );
                   })}
                 </div>
