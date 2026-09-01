@@ -124,6 +124,63 @@ export async function saveVersion(formData: FormData) {
   revalidatePath(`/admin/library/${templateId}`);
 }
 
+export type DeleteResult = { ok: true; message: string } | { ok: false; error: string };
+
+/**
+ * Deletes a template outright, guarded by usage.
+ *
+ * posts.template_version_id is ON DELETE SET NULL, so deleting a template that a
+ * client post was built from would quietly blank that post's provenance: the
+ * "which live posts run stale copy" question becomes unanswerable. A template in
+ * use is therefore refused here regardless of what the UI showed, and the answer
+ * for it is status=retired on the detail screen. Versions, feature tags and
+ * variants cascade from the template row itself.
+ *
+ * Takes (prev, formData) because the list drives it through useActionState: a
+ * refusal belongs next to the button, not in an error boundary.
+ */
+export async function deleteTemplate(
+  _prev: DeleteResult | null,
+  formData: FormData
+): Promise<DeleteResult> {
+  await requirePermission("library", "full");
+  const supabase = await createClient();
+
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return { ok: false, error: "Missing the template." };
+
+  const { data: versions } = await supabase
+    .from("template_versions")
+    .select("id")
+    .eq("template_id", id);
+  const versionIds = (versions ?? []).map((v) => v.id);
+
+  if (versionIds.length) {
+    const { count } = await supabase
+      .from("posts")
+      .select("id", { count: "exact", head: true })
+      .in("template_version_id", versionIds);
+    if (count) {
+      return {
+        ok: false,
+        error: `In use by ${count} client post${count === 1 ? "" : "s"}. Retire it from its detail page instead.`,
+      };
+    }
+  }
+
+  const { data: gone, error } = await supabase
+    .from("templates")
+    .delete()
+    .eq("id", id)
+    .select("code")
+    .maybeSingle();
+  if (error) return { ok: false, error: error.message };
+  if (!gone) return { ok: false, error: "Already deleted." };
+
+  revalidatePath("/admin/library");
+  return { ok: true, message: `${gone.code} deleted.` };
+}
+
 export async function updateTemplateMeta(formData: FormData) {
   await requirePermission("library", "full");
   const supabase = await createClient();

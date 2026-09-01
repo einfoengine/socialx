@@ -9,7 +9,10 @@ import { Field, Group, INPUT, CopyLawFields, FeaturePicker } from "../TemplateFo
 export const metadata: Metadata = { title: "New template | socialX Admin" };
 
 export default async function NewTemplatePage() {
-  await requirePermission("library");
+  /* "full", not "view": this screen only exists to submit createTemplate, which
+     demands full. Letting a view-level role fill the form in and be bounced at
+     submit would be worse than not showing it the door. */
+  await requirePermission("library", "full");
   const supabase = await createClient();
 
   const [{ data: pillars }, { data: features }] = await Promise.all([

@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { resolveAssetUrls } from "@/lib/dal/media";
 import type { Asset } from "@socialx/core/types/db";
 import { PageHead } from "@/components/DataTable";
 import { rel } from "@/lib/rel";
+import DeleteTemplate from "./DeleteTemplate";
 
 export const metadata: Metadata = { title: "Library | socialX Admin" };
 
 /**
- * The library, read only for now.
+ * The library, and the way into everything done to it.
  *
- * The batch builder and full editing are R2 proper. This exists because ten
- * templates in a table nobody can see are indistinguishable from none, and the
- * pillar mix is the first thing that goes wrong in a library nobody looks at.
+ * Create lives at /new, editing on each template's detail page; this list is
+ * where both are reached, plus the one operation with no screen of its own:
+ * delete, guarded by usage. Write affordances render only for full access, but
+ * that is presentation. Every action re-checks for itself.
  */
 export default async function LibraryPage() {
-  await requirePermission("library");
+  const access = await requirePermission("library");
+  const canWrite = access.permissions.library === "full";
   const supabase = await createClient();
 
   const [{ data: templates }, { data: pillars }] = await Promise.all([
@@ -30,6 +34,22 @@ export default async function LibraryPage() {
   ]);
 
   const rows = templates ?? [];
+
+  /* How many client posts were built from each template, across every version,
+     not just the current one. This is what decides delete versus retire. */
+  const { data: allVersions } = await supabase
+    .from("template_versions")
+    .select("id, template_id");
+  const { data: usedBy } = await supabase
+    .from("posts")
+    .select("template_version_id")
+    .not("template_version_id", "is", null);
+  const versionOwner = new Map((allVersions ?? []).map((v) => [v.id, v.template_id]));
+  const inUse = new Map<string, number>();
+  for (const post of usedBy ?? []) {
+    const owner = versionOwner.get(post.template_version_id as string);
+    if (owner) inUse.set(owner, (inUse.get(owner) ?? 0) + 1);
+  }
 
   const versionIds = rows.map((t) => t.current_version_id).filter(Boolean) as string[];
   const { data: versions } = versionIds.length
@@ -59,10 +79,20 @@ export default async function LibraryPage() {
 
   return (
     <div>
-      <PageHead
-        title="Library"
-        sub={`${rows.length} template${rows.length === 1 ? "" : "s"}. Every one built around a real HighLevel feature, niche neutral until a batch customizes it.`}
-      />
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <PageHead
+          title="Library"
+          sub={`${rows.length} template${rows.length === 1 ? "" : "s"}. Every one built around a real HighLevel feature, niche neutral until a batch customizes it.`}
+        />
+        {canWrite && (
+          <Link
+            href="/admin/library/new"
+            className="btn btn-primary gradient-bg shrink-0 px-5 py-2.5 font-grotesk text-[13px] font-semibold text-white no-underline"
+          >
+            New template
+          </Link>
+        )}
+      </div>
 
       <h2 className="font-mono text-[10px] uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600 mb-3">
         Pillar mix against target
@@ -126,9 +156,12 @@ export default async function LibraryPage() {
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2 mb-1.5">
                   <span className="font-mono text-[10.5px] text-gray-400">{t.code}</span>
-                  <span className="font-grotesk text-[15px] font-semibold text-gray-900 dark:text-white">
+                  <Link
+                    href={`/admin/library/${t.id}`}
+                    className="font-grotesk text-[15px] font-semibold text-gray-900 no-underline hover:text-[#2B50DC] dark:text-white dark:hover:text-[#5B8DEF]"
+                  >
                     {t.title}
-                  </span>
+                  </Link>
                   <Tag>{t.pillar_key.replace(/_/g, " ")}</Tag>
                   {t.format === "motion" && <Tag accent>motion</Tag>}
                   {features.map((f) => (
@@ -167,6 +200,16 @@ export default async function LibraryPage() {
                     v{v?.version ?? 1}
                   </span>
                 </div>
+              </div>
+
+              <div className="flex shrink-0 flex-col items-end justify-between gap-2">
+                <Link
+                  href={`/admin/library/${t.id}`}
+                  className="font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500 no-underline hover:text-[#2B50DC]"
+                >
+                  {canWrite ? "Edit" : "Open"}
+                </Link>
+                {canWrite && <DeleteTemplate id={t.id} code={t.code} inUse={inUse.get(t.id) ?? 0} />}
               </div>
             </article>
           );
