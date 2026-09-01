@@ -19,7 +19,7 @@ export type SectionKey =
   | "today" | "journal"
   | "orders" | "subscriptions" | "clients" | "packages" | "coupons" | "links"
   | "batches" | "review" | "publishing"
-  | "library"
+  | "library" | "website"
   | "people" | "settings";
 
 export type Section = {
@@ -42,6 +42,7 @@ export const SECTIONS: Section[] = [
   { key: "review",        label: "Review queue", group: "Delivery", href: "/admin/review" },
   { key: "publishing",    label: "Publishing",   group: "Delivery", href: "/admin/publishing" },
   { key: "library",       label: "Library",      group: "Content",  href: "/admin/library" },
+  { key: "website",       label: "Website",      group: "Content",  href: "/admin/website" },
   { key: "journal",       label: "Plan & Context", group: "Account",  href: "/admin/journal" },
   { key: "people",        label: "People",       group: "Account",  href: "/admin/people" },
   { key: "settings",      label: "Settings",     group: "Account",  href: "/admin/settings" },

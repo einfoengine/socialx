@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import {
-  BookOpen, CalendarRange, CreditCard, LayoutDashboard, Library, Link2,
+  BookOpen, CalendarRange, Globe, CreditCard, LayoutDashboard, Library, Link2,
   MessageSquareWarning, Package, Send, Settings, ShoppingBag, Ticket, UserCog, Users,
 } from "lucide-react";
 import Shell, { type NavGroup, type NavItem } from "@/components/Shell";
@@ -54,7 +54,13 @@ const GROUPS: NavGroup[] = [
   },
   {
     title: "Content",
-    items: [{ href: "/admin/library", label: "Library", icon: <Library size={16} /> }],
+    items: [
+      { href: "/admin/library", label: "Library", icon: <Library size={16} /> },
+      /* Website is the marketing site's data, not the client content library:
+         named JSON the site renders, edited here so a copy change is not a
+         deploy. */
+      { href: "/admin/website", label: "Website", icon: <Globe size={16} /> },
+    ],
   },
 ];
 

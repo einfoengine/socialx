@@ -28,7 +28,8 @@
     "test:links": "node scripts/test-links.mjs",
     "test:embedded": "node scripts/test-embedded.mjs",
     "seed:demo": "node scripts/seed-demo.mjs",
-    "seed:demo:remove": "node scripts/seed-demo.mjs --remove"
+    "seed:demo:remove": "node scripts/seed-demo.mjs --remove",
+    "test:site-content": "node scripts/test-site-content.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.112.3",
