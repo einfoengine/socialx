@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead } from "@/components/DataTable";
@@ -51,10 +52,7 @@ export default async function LinksPage() {
 
   return (
     <div>
-      <PageHead
-        title="Links"
-        sub="Direct checkout links. Paste one into an email, a DM or a proposal and it goes straight to payment with the right package, cycle and discount already applied."
-      />
+      <PageHead {...pageMeta("/admin/links")} />
 
       <LinkBuilder plans={planList} prices={priceList} coupons={couponList} />
 

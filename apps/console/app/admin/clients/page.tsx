@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -19,7 +20,7 @@ export default async function ClientsPage() {
 
   return (
     <div>
-      <PageHead title="Clients" sub="Every organization, whatever state it is in." />
+      <PageHead {...pageMeta("/admin/clients")} />
       <Table head={["Client", "Plan", "HL location", "Status", "Since"]}>
         {orgs.length === 0 && (
           <EmptyRow cols={5}>

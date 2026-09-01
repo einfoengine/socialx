@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -26,10 +27,7 @@ export default async function OrdersPage() {
 
   return (
     <div>
-      <PageHead
-        title="Orders"
-        sub="Accounts that have paid but have not finished onboarding. Each one is waiting on either the client or us."
-      />
+      <PageHead {...pageMeta("/admin/orders")} />
 
       <Table head={["Client", "Plan", "Billing", "Onboarding", "Status", "Paid"]}>
         {orders.length === 0 && (

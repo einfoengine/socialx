@@ -1,7 +1,10 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import { requirePermission } from "@/lib/dal/permissions";
+import { withPermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
+import { pageMeta } from "@/lib/page-meta";
 import { PageHead, Table, Row, Cell, EmptyRow } from "@/components/DataTable";
+import { SkeletonTableRows } from "@/components/Skeleton";
 import { CYCLE_LABELS } from "@/lib/format";
 import { createCoupon, toggleCoupon, deleteCoupon } from "./actions";
 import CopyLink from "@/components/CopyLink";
@@ -16,25 +19,23 @@ const PRESETS: Record<string, number[]> = {
   launch: [30, 40, 50],
 };
 
-export default async function CouponsView({ kind }: { kind: "regular" | "launch" }) {
-  await requirePermission("coupons");
-  const supabase = await createClient();
-
-  const { data: coupons } = await supabase
-    .from("coupons")
-    .select("id, code, name, kind, percent_off, cycle_key, auto_apply, is_active, max_redemptions, times_redeemed, redeem_by, stripe_coupon_id")
-    .eq("kind", kind)
-    .order("auto_apply", { ascending: false })
-    .order("percent_off", { ascending: true });
-
-  const rows = coupons ?? [];
-
+/**
+ * Both coupon tabs, as one screen.
+ *
+ * Not async, deliberately. Everything on this page except the list of existing
+ * coupons is decided by `kind`, which arrives in the URL: the heading, the tabs,
+ * the paragraph explaining what this kind of discount does, and the whole create
+ * form. None of it needs a database, so none of it waits for one. An async
+ * component would have held all of it back behind a query 260ms away, which is
+ * what it used to do.
+ *
+ * Only the table body is uncertain, so only the table body sits in Suspense. The
+ * table's own header renders with the shell, because its columns are fixed.
+ */
+export default function CouponsView({ kind }: { kind: "regular" | "launch" }) {
   return (
     <div>
-      <PageHead
-        title="Coupons"
-        sub="Discounts applied at checkout. The buyer sees the list price struck through and what they are saving, which a pre-discounted price cannot show."
-      />
+      <PageHead {...pageMeta(`/admin/coupons/${kind}`)} />
 
       {/* Tabs are real routes, so each one deep links and appears in history. */}
       <nav className="flex border-b border-black/10 dark:border-white/10 mb-6">
@@ -139,10 +140,45 @@ export default async function CouponsView({ kind }: { kind: "regular" | "launch"
       </details>
 
       <Table head={["Code", "Off", "Cycle", "Applies", "Used", "Status", ""]}>
-        {rows.length === 0 && (
-          <EmptyRow cols={7}>No {kind} coupons yet.</EmptyRow>
-        )}
-        {rows.map((c) => (
+        <Suspense fallback={<SkeletonTableRows rows={4} cols={7} />}>
+          <CouponRows kind={kind} />
+        </Suspense>
+      </Table>
+    </div>
+  );
+}
+
+/**
+ * The rows, and the only part of this screen that needs a query.
+ *
+ * The permission check goes out alongside the query rather than in front of it,
+ * so the page pays for one round trip instead of two. Every action on these rows
+ * re-checks for itself, because a server action never passes through the page
+ * that rendered it.
+ */
+async function CouponRows({ kind }: { kind: "regular" | "launch" }) {
+  const supabase = await createClient();
+
+  /* async, not a bare arrow: a Supabase query builder is a thenable rather than
+     a real Promise, and withPermission needs something it can attach a handler
+     to. Wrapping it in an async function is what makes it one. */
+  const { data: result } = await withPermission("coupons", async () =>
+    supabase
+      .from("coupons")
+      .select("id, code, name, kind, percent_off, cycle_key, auto_apply, is_active, max_redemptions, times_redeemed, redeem_by, stripe_coupon_id")
+      .eq("kind", kind)
+      .order("auto_apply", { ascending: false })
+      .order("percent_off", { ascending: true })
+  );
+
+  const rows = result.data ?? [];
+
+  return (
+    <>
+      {rows.length === 0 && (
+        <EmptyRow cols={7}>No {kind} coupons yet.</EmptyRow>
+      )}
+      {rows.map((c) => (
           <Row key={c.id}>
             <Cell strong>
               <span className="font-mono text-[12.5px]">{c.code}</span>
@@ -203,9 +239,8 @@ export default async function CouponsView({ kind }: { kind: "regular" | "launch"
               </div>
             </Cell>
           </Row>
-        ))}
-      </Table>
-    </div>
+      ))}
+    </>
   );
 }
 

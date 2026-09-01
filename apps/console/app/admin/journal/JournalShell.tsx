@@ -1,23 +1,11 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { TABS, TAB_CLASS, type TabKey } from "./tabs";
 
-export type TabKey =
-  | "journey"
-  | "issues"
-  | "guidelines"
-  | "build-log"
-  | "decisions"
-  | "ideas";
-
-const TABS: { key: TabKey; label: string }[] = [
-  { key: "journey", label: "Journey" },
-  { key: "issues", label: "Issues" },
-  { key: "guidelines", label: "Guidelines" },
-  { key: "build-log", label: "Daily build log" },
-  { key: "decisions", label: "Locked decisions" },
-  { key: "ideas", label: "Ideas" },
-];
+/* Re-exported so the pages that already import TabKey from here keep working;
+   the list itself lives in tabs.ts, which the loading fallback also reads. */
+export type { TabKey };
 
 /**
  * The journal's tabs.
@@ -61,7 +49,7 @@ export default function JournalShell({
               type="button"
               onClick={() => setTab(t.key)}
               aria-current={active ? "page" : undefined}
-              className={`cursor-pointer px-4 py-3 font-grotesk text-[13.5px] font-medium border-b-2 -mb-px transition-colors ${
+              className={`${TAB_CLASS} ${
                 active
                   ? "border-[#3D4AFF] text-[#3D4AFF] dark:border-[#00A3FF] dark:text-[#00A3FF]"
                   : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"

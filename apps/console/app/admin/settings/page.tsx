@@ -1,4 +1,5 @@
 import { requirePermission } from "@/lib/dal/permissions";
+import { pageMeta } from "@/lib/page-meta";
 import { DEFINITIONS, readSettings } from "@/lib/settings";
 import SettingsForm from "./SettingsForm";
 import { Note, Panel, ReadOnlyNotice, SectionHead } from "./ui";
@@ -23,10 +24,7 @@ export default async function GeneralSettingsPage() {
 
   return (
     <div>
-      <SectionHead
-        title="General"
-        sub="How socialX names itself and where it points people. Read at request time, so a change here is live on the next page load."
-      />
+      <SectionHead {...pageMeta("/admin/settings")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

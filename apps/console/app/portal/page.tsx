@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import Placeholder from "@/components/Placeholder";
 import { SkeletonTiles, SkeletonCard } from "@/components/Skeleton";
@@ -24,12 +25,8 @@ export default function PortalHome() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-          Overview
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Your plan, your batch, and anything waiting on you.
-        </p>
+        <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">{pageMeta("/portal").title}</h1>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{pageMeta("/portal").sub}</p>
       </div>
 
       <Suspense fallback={<SkeletonCard lines={2} />}>

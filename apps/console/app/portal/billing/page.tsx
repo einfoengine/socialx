@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import { Suspense } from "react";
 import { requireOrg } from "@/lib/dal/session";
 import { createClient } from "@socialx/core/supabase/server";
@@ -14,12 +15,8 @@ export const metadata: Metadata = { title: "Billing | socialX" };
 export default function BillingPage() {
   return (
     <div className="max-w-[760px]">
-      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-        Billing
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">
-        Your plan, your invoices, and your card. Month to month, cancel anytime.
-      </p>
+      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">{pageMeta("/portal/billing").title}</h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">{pageMeta("/portal/billing").sub}</p>
 
       <Suspense
         fallback={

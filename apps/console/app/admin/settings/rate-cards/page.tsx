@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import RateCardsForm, { type CardRow } from "./RateCardsForm";
@@ -34,10 +35,7 @@ export default async function RateCardsPage() {
 
   return (
     <div>
-      <SectionHead
-        title="Rate cards"
-        sub="Which pricing is live, and until when. Checkout takes the highest sorted active card whose window covers today."
-      />
+      <SectionHead {...pageMeta("/admin/settings/rate-cards")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

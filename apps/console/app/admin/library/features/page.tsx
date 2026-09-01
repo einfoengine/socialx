@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -35,10 +36,7 @@ export default async function FeaturesPage() {
         back to library
       </Link>
       <div className="mt-3">
-        <PageHead
-          title="HighLevel features"
-          sub="The tagging axis that crosses every pillar. Mark one changed when HighLevel ships an update and every template built on it surfaces for review."
-        />
+        <PageHead {...pageMeta("/admin/library/features")} />
       </div>
 
       <details className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] mb-6">

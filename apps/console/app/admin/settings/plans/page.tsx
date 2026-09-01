@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { rel } from "@/lib/rel";
@@ -51,10 +52,7 @@ export default async function PlansPage() {
 
   return (
     <div>
-      <SectionHead
-        title="Plans"
-        sub="The tier contract the system enforces. Quotas, revision allowances and the promised first batch."
-      />
+      <SectionHead {...pageMeta("/admin/settings/plans")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

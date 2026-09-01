@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -30,10 +31,7 @@ export default async function BatchesPage() {
 
   return (
     <div>
-      <PageHead
-        title="Batches"
-        sub="The monthly cycle for every client. This is what replaces the ClickUp board."
-      />
+      <PageHead {...pageMeta("/admin/batches")} />
 
       <details className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] mb-6">
         <summary className="px-5 py-3.5 cursor-pointer font-grotesk text-[13.5px] font-semibold text-gray-900 dark:text-white select-none">

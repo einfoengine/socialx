@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -22,10 +23,7 @@ export default async function PackagesPage() {
 
   return (
     <div>
-      <PageHead
-        title="Packages"
-        sub="The three tiers as they are sold. Name, what a client gets, and the four billing options behind each one."
-      />
+      <PageHead {...pageMeta("/admin/packages")} />
 
       <div className="flex flex-col gap-5">
         {(plans ?? []).map((plan) => {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import { Suspense } from "react";
 import { requireOrg } from "@/lib/dal/session";
 import { createClient } from "@socialx/core/supabase/server";
@@ -11,12 +12,8 @@ export const metadata: Metadata = { title: "Team | socialX" };
 export default function TeamPage() {
   return (
     <div className="max-w-[640px]">
-      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-        Team
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">
-        Who can see and approve content on this workspace.
-      </p>
+      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">{pageMeta("/portal/team").title}</h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8">{pageMeta("/portal/team").sub}</p>
 
       <Suspense fallback={<SkeletonRows n={3} />}>
         <Members />

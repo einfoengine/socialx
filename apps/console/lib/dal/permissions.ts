@@ -119,6 +119,54 @@ export const getStaffAccess = cache(async (): Promise<StaffAccess> => {
 });
 
 /**
+ * Runs a page's own queries concurrently with its permission check.
+ *
+ * The section check is one round trip, and from here a round trip is around
+ * 260ms whatever it asks. Issued before a page starts fetching it is additive;
+ * issued alongside, it finishes inside the time the data takes anyway. Against
+ * this database the two shapes measured 549ms and 272ms.
+ *
+ * How much that is worth in practice depends on something worth stating plainly
+ * rather than claiming credit for: the admin layout already awaits
+ * getStaffAccess to build its rail, and that call is memoized per render pass.
+ * Where the layout resolves first, a page's own check is already a cache hit and
+ * costs nothing, so this saves nothing there. It earns its keep wherever the
+ * check would otherwise be a fresh round trip in front of a query, and it is
+ * never worse. Do not read the two numbers above as a per page saving; they are
+ * the cost of the two request shapes, not a before and after of this file.
+ *
+ * Note what is NOT being traded away here. The
+ * permission map is still read live from the database on this very request, so
+ * revoking a role still takes effect on the next page load. What changed is only
+ * that the query left earlier.
+ *
+ * Why that is safe, stated plainly because it is the part worth arguing with:
+ * row level security is the gate on the rows, not this function. Every library
+ * and delivery table carries a staff-only policy and no client policy at all, so
+ * a caller who is not staff reads nothing here regardless of what this returns,
+ * and a staff member without a section is someone Postgres already considers
+ * entitled to those rows. The section check is a product boundary layered on top
+ * of that, deciding whether a screen renders. Nothing fetched under a failed
+ * check is ever rendered: requirePermission redirects first.
+ *
+ * The empty catch is an orphan guard, not error swallowing. If the check
+ * redirects, the in-flight query has nobody left to await it, and an unhandled
+ * rejection would crash the process on a network blip. Attaching a handler to
+ * the promise does not replace it, so the real await below still sees any error.
+ */
+export async function withPermission<T>(
+  section: SectionKey,
+  work: () => Promise<T>,
+  needed: "view" | "full" = "view"
+): Promise<{ access: StaffAccess; data: T }> {
+  const pending = work();
+  pending.catch(() => {});
+
+  const access = await requirePermission(section, needed);
+  return { access, data: await pending };
+}
+
+/**
  * Gate for an admin page or action. Redirects rather than throwing, so a staff
  * member who follows a stale link lands somewhere real instead of on an error.
  */

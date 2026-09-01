@@ -67,3 +67,28 @@ export function SkeletonRows({ n = 4 }: { n?: number }) {
     </div>
   );
 }
+
+/**
+ * Placeholder rows for inside a Table's tbody.
+ *
+ * Emits real table rows rather than a block, because a Suspense fallback sitting
+ * in a tbody has to be valid there: a div would be hoisted out by the browser's
+ * parser and the table would jump when the real rows arrived. Cell widths repeat
+ * so the columns do not visibly resize on the swap.
+ */
+export function SkeletonTableRows({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) {
+  const widths = ["55%", "30%", "45%", "35%", "50%", "25%", "40%"];
+  return (
+    <>
+      {Array.from({ length: rows }, (_, r) => (
+        <tr key={r} className="border-b border-black/6 last:border-0 dark:border-white/6">
+          {Array.from({ length: cols }, (_, c) => (
+            <td key={c} className="px-4 py-3.5 align-top">
+              <SkeletonLine w={widths[c % widths.length]} h={10} />
+            </td>
+          ))}
+        </tr>
+      ))}
+    </>
+  );
+}

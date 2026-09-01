@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead } from "@/components/DataTable";
@@ -37,10 +38,7 @@ export default async function WebsitePage() {
 
   return (
     <div>
-      <PageHead
-        title="Website"
-        sub="Named JSON the marketing site renders. Change a value here and the site picks it up without a deploy."
-      />
+      <PageHead {...pageMeta("/admin/website")} />
       {migrationMissing ? (
         <div className="max-w-[78ch] border border-amber-500/40 bg-amber-500/10 p-5 text-[13.5px] leading-relaxed text-gray-700 dark:text-gray-300">
           <strong className="text-gray-900 dark:text-white">One-time setup needed.</strong>{" "}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -47,10 +48,7 @@ export default async function SubscriptionsPage() {
 
   return (
     <div>
-      <PageHead
-        title="Subscriptions"
-        sub="Every subscription, what it bills, and when it renews."
-      />
+      <PageHead {...pageMeta("/admin/subscriptions")} />
 
       <div className="grid sm:grid-cols-3 gap-px bg-black/10 dark:bg-white/10 border border-black/10 dark:border-white/10 mb-6">
         {[

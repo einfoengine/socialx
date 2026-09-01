@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -29,7 +30,7 @@ export default async function NewTemplatePage() {
         back to library
       </Link>
       <div className="mt-3">
-        <PageHead title="New template" sub="Niche neutral by default. Niche enters at customization, never in the base library." />
+        <PageHead {...pageMeta("/admin/library/new")} />
       </div>
 
       <form action={createTemplate} className="flex flex-col gap-6">

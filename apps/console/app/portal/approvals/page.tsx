@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { Suspense } from "react";
 import { requireOrg } from "@/lib/dal/session";
@@ -14,13 +15,8 @@ export const metadata: Metadata = { title: "Approvals | socialX" };
 export default function ApprovalsPage() {
   return (
     <div>
-      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">
-        Approvals
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8 max-w-[64ch]">
-        Nothing publishes until you approve it. Review a month, approve the whole batch,
-        or send back the pieces you want changed.
-      </p>
+      <h1 className="font-grotesk text-2xl font-semibold tracking-[-0.6px] text-gray-900 dark:text-white">{pageMeta("/portal/approvals").title}</h1>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-8 max-w-[64ch]">{pageMeta("/portal/approvals").sub}</p>
 
       <Suspense fallback={<SkeletonRows n={3} />}>
         <Batches />

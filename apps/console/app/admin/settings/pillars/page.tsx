@@ -1,4 +1,5 @@
 import { requirePermission } from "@/lib/dal/permissions";
+import { pageMeta } from "@/lib/page-meta";
 import { createClient } from "@socialx/core/supabase/server";
 import PillarsForm, { type PillarRow } from "./PillarsForm";
 import { Note, ReadOnlyNotice, SectionHead } from "../ui";
@@ -34,10 +35,7 @@ export default async function PillarsPage() {
 
   return (
     <div>
-      <SectionHead
-        title="Content pillars"
-        sub="The default monthly mix a batch is assembled to. Per-client plans can depart from it; this is where they start."
-      />
+      <SectionHead {...pageMeta("/admin/settings/pillars")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

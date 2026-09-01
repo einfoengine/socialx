@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead } from "@/components/DataTable";
@@ -21,10 +22,7 @@ export default async function PeoplePage() {
 
   return (
     <div>
-      <PageHead
-        title="People"
-        sub="Everyone who can sign in, staff and clients together. Checkout creates client accounts on its own; this is the manual way in."
-      />
+      <PageHead {...pageMeta("/admin/people")} />
       <PeopleView accounts={accounts} orgs={orgs ?? []} currentUserId={session.userId} />
     </div>
   );

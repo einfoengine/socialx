@@ -93,7 +93,7 @@ export async function saveVersion(formData: FormData) {
 
   const { data: latest } = await supabase
     .from("template_versions")
-    .select("version")
+    .select("version, asset_id")
     .eq("template_id", templateId)
     .order("version", { ascending: false })
     .limit(1)
@@ -111,6 +111,12 @@ export async function saveVersion(formData: FormData) {
       outcome: String(formData.get("outcome") ?? "").trim() || null,
       cta: String(formData.get("cta") ?? "").trim() || null,
       changelog: String(formData.get("changelog") ?? "").trim() || null,
+      /* The design carries forward as a starting point. Most new versions are a
+         copy change against artwork that still holds, and starting from nothing
+         would mean a card losing its thumbnail every time a line is reworded.
+         The previous version keeps its own reference, so a client post built
+         from it still shows what was actually delivered. */
+      asset_id: latest?.asset_id ?? null,
       published_at: new Date().toISOString(),
       created_by: session.userId,
     })

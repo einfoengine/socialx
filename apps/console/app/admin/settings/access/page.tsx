@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission, readMatrix } from "@/lib/dal/permissions";
 import PermissionsMatrix from "./PermissionsMatrix";
 import { Note, SectionHead } from "../ui";
@@ -23,10 +24,7 @@ export default async function AccessPage() {
 
   return (
     <div>
-      <SectionHead
-        title="Access"
-        sub="What each staff role can reach. Roles are assigned per person on People; this is what a role means."
-      />
+      <SectionHead {...pageMeta("/admin/settings/access")} />
 
       {!canWrite && (
         <div className="mb-6 border border-black/10 bg-black/[0.02] px-5 py-3.5 text-[13px] leading-relaxed text-gray-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-gray-400">

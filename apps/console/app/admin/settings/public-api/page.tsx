@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { pageMeta } from "@/lib/page-meta";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { portalUrl } from "@socialx/core/urls";
@@ -47,10 +48,7 @@ export default async function PublicApiPage() {
 
   return (
     <div>
-      <SectionHead
-        title="Public API"
-        sub="What the API serves with no credential at all. Everything else needs a key."
-      />
+      <SectionHead {...pageMeta("/admin/settings/public-api")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

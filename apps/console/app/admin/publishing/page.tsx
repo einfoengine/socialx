@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -22,10 +23,7 @@ export default async function PublishingPage() {
 
   return (
     <div>
-      <PageHead
-        title="Publishing"
-        sub="Approved posts waiting to be loaded into the client's HL Social Planner. Automated in R4; a human does it today and marks it here."
-      />
+      <PageHead {...pageMeta("/admin/publishing")} />
 
       <div className="border border-[#2B50DC]/30 bg-[#2B50DC]/5 p-4 mb-6 text-[13px] text-gray-700 dark:text-gray-300 max-w-[80ch]">
         The portal is already the record of what is scheduled. R4 swaps out who performs

@@ -1,4 +1,5 @@
 import { requirePermission } from "@/lib/dal/permissions";
+import { pageMeta } from "@/lib/page-meta";
 import { createClient } from "@socialx/core/supabase/server";
 import { rel } from "@/lib/rel";
 import type { Scope } from "@/lib/api/scopes";
@@ -37,7 +38,7 @@ export default async function ApiKeysPage() {
   if (error?.code === "42P01") {
     return (
       <div>
-        <SectionHead title="API keys" sub="Credentials for the socialX content API." />
+        <SectionHead {...pageMeta("/admin/settings/api-keys")} />
         <div className="max-w-[78ch] border border-amber-500/40 bg-amber-500/10 p-5 text-[13.5px] leading-relaxed text-gray-700 dark:text-gray-300">
           <strong className="text-gray-900 dark:text-white">One-time setup needed.</strong>{" "}
           The api_keys table does not exist yet. Run{" "}
@@ -67,10 +68,7 @@ export default async function ApiKeysPage() {
 
   return (
     <div>
-      <SectionHead
-        title="API keys"
-        sub="Credentials for the socialX content API, each scoped to what it may do and to the domains it may be used from."
-      />
+      <SectionHead {...pageMeta("/admin/settings/api-keys")} />
 
       {!canWrite && <ReadOnlyNotice />}
 

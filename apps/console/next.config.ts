@@ -13,6 +13,13 @@ const nextConfig: NextConfig = {
   /* The workspace packages ship TypeScript source rather than a build step, so
      Next has to compile them the same way it compiles this app's own files. */
   transpilePackages: ["@socialx/core", "@socialx/ui"],
+  experimental: {
+    /* A server action body is capped at 1MB by default, which a single post
+       design exceeds without trying. 8MB matches the ceiling set on the storage
+       bucket in migration 0025, so the two refusals cannot disagree: a file that
+       gets through here is a file the bucket will accept. */
+    serverActions: { bodySizeLimit: "8mb" },
+  },
   images: {
     remotePatterns: [
       // HighLevel's asset hosts. filesafe.space is what this account actually

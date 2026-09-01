@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
@@ -27,10 +28,7 @@ export default async function ReviewQueue() {
 
   return (
     <div>
-      <PageHead
-        title="Review queue"
-        sub="Open change requests across every client, oldest first. Each one is a revision round the client has already paid for."
-      />
+      <PageHead {...pageMeta("/admin/review")} />
 
       <Table head={["Client", "Month", "Round", "What they want", "Waiting", "Action"]}>
         {(open ?? []).length === 0 && (

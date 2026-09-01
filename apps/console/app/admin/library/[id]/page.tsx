@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requirePermission } from "@/lib/dal/permissions";
+import { withPermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
+import { resolveAssetUrls } from "@/lib/dal/media";
+import type { Asset } from "@socialx/core/types/db";
+import { rel } from "@/lib/rel";
 import { PageHead, Status } from "@/components/DataTable";
 import { saveVersion, updateTemplateMeta } from "../actions";
 import { Field, Group, INPUT, CopyLawFields, FeaturePicker } from "../TemplateForm";
+import TemplateImage, { type CurrentImage, type LibraryAsset } from "../TemplateImage";
 
 export const metadata: Metadata = { title: "Template | socialX Admin" };
 
@@ -14,41 +18,161 @@ export default async function TemplateDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requirePermission("library");
   const { id } = await params;
   const supabase = await createClient();
 
-  const { data: template } = await supabase
-    .from("templates")
-    .select("id, code, title, pillar_key, format, status, master_concept, current_version_id")
-    .eq("id", id)
-    .maybeSingle();
+  /*
+   * One wave.
+   *
+   * This used to be a chain: fetch the template, then wait for it before asking
+   * for anything else, and inside that second batch a nested await for the very
+   * version ids the batch was about to query anyway. A round trip to Supabase
+   * from here costs around 270ms no matter how small the question, so a chain of
+   * six is a page that sits still for a second and a half before it renders a
+   * character. Awaiting in sequence is what makes a server component slow;
+   * nothing about the framework can unpick it.
+   *
+   * None of these actually depend on each other. The template id comes from the
+   * URL, not from the first query, so every one of them can leave at once.
+   *
+   *   posts(count) via an inner join replaces "fetch every version id, then
+   *   fetch every post carrying one, then count the array in JavaScript". Only
+   *   the number was ever used.
+   *
+   *   assets(*) is embedded on the version, so the design arrives with the copy
+   *   instead of forcing another wave once its id is known.
+   *
+   * The permission check rides along in the same wave. It is still read live from
+   * the database on this request, so revoking access still lands on the next page
+   * load; it just no longer costs its own round trip in front of everything else.
+   */
+  const versionSelect = (withDesign: boolean) =>
+    "id, version, hook, middle_beat, outcome, cta, changelog, published_at" +
+    (withDesign ? ", asset_id, assets(*)" : "");
 
+  const { access, data: firstWave } = await withPermission("library", () =>
+    Promise.all([
+    supabase
+      .from("templates")
+      .select("id, code, title, pillar_key, format, status, master_concept, current_version_id")
+      .eq("id", id)
+      .maybeSingle(),
+    supabase
+      .from("template_versions")
+      .select(versionSelect(true))
+      .eq("template_id", id)
+      .order("version", { ascending: false }),
+    supabase.from("pillars").select("key, name").order("sort"),
+    supabase.from("hl_features").select("id, name, status").order("name"),
+    supabase.from("template_features").select("feature_id").eq("template_id", id),
+    supabase
+      .from("posts")
+      .select("id, template_versions!inner(template_id)", { count: "exact", head: true })
+      .eq("template_versions.template_id", id),
+    /* The picker's shelf. Capped and newest first: this is a picker, not a media
+       manager, and loading the whole assets table to render thumbnails nobody
+       scrolls to is how this screen gets slow as the library grows. */
+    supabase
+      .from("assets")
+      .select("*")
+      .is("org_id", null)
+      .order("created_at", { ascending: false })
+      .limit(60),
+    ])
+  );
+
+  const [
+    { data: template },
+    versionsRes,
+    { data: pillars },
+    { data: features },
+    { data: tags },
+    { count: usageCount },
+    { data: libraryRows },
+  ] = firstWave;
+
+  const canWrite = access.permissions.library === "full";
   if (!template) notFound();
 
-  const [{ data: versions }, { data: pillars }, { data: features }, { data: tags }, { data: usage }] =
-    await Promise.all([
-      supabase
+  /*
+   * The design column ships ahead of the migration that creates it.
+   *
+   * PostgREST refuses the whole select when one column is unknown, so asking for
+   * asset_id on a database still on 0024 returns no versions at all. That is far
+   * worse than a missing feature: the copy history empties, the next version
+   * number resets to 1, and the screen reports "no version yet" for a template
+   * that plainly has one. Falling back to the select without it keeps every part
+   * of this page working and turns the gap into one honest notice.
+   *
+   * 42703 is undefined_column.
+   */
+  const schemaReady = versionsRes.error?.code !== "42703";
+  const { data: fallbackVersions } = schemaReady
+    ? { data: null }
+    : await supabase
         .from("template_versions")
-        .select("id, version, hook, middle_beat, outcome, cta, changelog, published_at")
+        .select(versionSelect(false))
         .eq("template_id", id)
-        .order("version", { ascending: false }),
-      supabase.from("pillars").select("key, name").order("sort"),
-      supabase.from("hl_features").select("id, name, status").order("name"),
-      supabase.from("template_features").select("feature_id").eq("template_id", id),
-      supabase
-        .from("posts")
-        .select("id, org_id, status, template_version_id, organizations(name)")
-        .in(
-          "template_version_id",
-          (
-            await supabase.from("template_versions").select("id").eq("template_id", id)
-          ).data?.map((v) => v.id) ?? ["00000000-0000-0000-0000-000000000000"]
-        ),
-    ]);
+        .order("version", { ascending: false });
 
-  const current = (versions ?? []).find((v) => v.id === template.current_version_id) ?? versions?.[0];
+  type VersionRow = {
+    id: string;
+    version: number;
+    hook: string | null;
+    middle_beat: string | null;
+    outcome: string | null;
+    cta: string | null;
+    changelog: string | null;
+    published_at: string | null;
+    asset_id?: string | null;
+    assets?: Asset | Asset[] | null;
+  };
+
+  const versions = ((versionsRes.data ?? fallbackVersions ?? []) as unknown as VersionRow[]);
+
+  /* Every asset on the page resolved together: the designs attached to versions,
+     plus the picker's shelf. Signing a Supabase URL is a network call, so doing
+     this in one batch is the difference between one round trip and thirty. */
+  const libraryList = (libraryRows ?? []) as Asset[];
+  const assetPool = new Map<string, Asset>(libraryList.map((a) => [a.id, a]));
+  for (const v of versions) {
+    const embedded = rel<Asset>(v.assets ?? null);
+    if (embedded?.id) assetPool.set(embedded.id, embedded);
+  }
+  const resolved = await resolveAssetUrls([...assetPool.values()]);
+
+  const library: LibraryAsset[] = libraryList.map((a) => ({
+    id: a.id,
+    url: resolved.get(a.id)?.url ?? "",
+    alt: a.alt,
+    provider: a.provider,
+    isBroken: resolved.get(a.id)?.isBroken ?? true,
+  }));
+
+  const imageFor = (version: VersionRow | undefined): CurrentImage | null => {
+    const asset = rel<Asset>(version?.assets ?? null);
+    if (!asset?.id) return null;
+    const r = resolved.get(asset.id);
+    if (!r) return null;
+    return {
+      assetId: asset.id,
+      url: r.url,
+      alt: asset.alt,
+      provider: asset.provider,
+      mime: asset.mime,
+      width: asset.width,
+      height: asset.height,
+      bytes: asset.bytes,
+      isBroken: r.isBroken,
+    };
+  };
+
   const selected = (tags ?? []).map((t) => t.feature_id);
+  const usage = { length: usageCount ?? 0 };
+
+  const current = versions.find((v) => v.id === template.current_version_id) ?? versions[0];
+  const currentImage = imageFor(current);
+
 
   return (
     <div className="max-w-[900px]">
@@ -81,6 +205,16 @@ export default async function TemplateDetail({
       )}
 
       <div className="flex flex-col gap-6">
+        <TemplateImage
+          templateId={template.id}
+          versionId={current?.id ?? null}
+          version={current?.version ?? 1}
+          current={currentImage}
+          library={library}
+          canWrite={canWrite}
+          schemaReady={schemaReady}
+        />
+
         <form action={updateTemplateMeta}>
           <input type="hidden" name="id" value={template.id} />
           <Group title="Meta">
@@ -124,7 +258,7 @@ export default async function TemplateDetail({
         <form action={saveVersion}>
           <input type="hidden" name="template_id" value={template.id} />
           <Group
-            title={`New version (would be v${(versions?.[0]?.version ?? 0) + 1})`}
+            title={`New version (would be v${(versions[0]?.version ?? 0) + 1})`}
             note="Copy is versioned rather than edited in place. Posts reference the version they were built from, so overwriting would silently rewrite history for every client already running this."
           >
             <CopyLawFields defaults={current ?? undefined} />
@@ -142,15 +276,30 @@ export default async function TemplateDetail({
             Version history
           </h2>
           <div className="flex flex-col gap-2">
-            {(versions ?? []).map((v) => (
+            {versions.map((v) => {
+              const shot = imageFor(v);
+              return (
               <div
                 key={v.id}
-                className={`border p-4 bg-white dark:bg-[#111118] ${
+                className={`border p-4 bg-white dark:bg-[#111118] flex gap-4 ${
                   v.id === template.current_version_id
                     ? "border-[#2B50DC]/40"
                     : "border-black/10 dark:border-white/10"
                 }`}
               >
+                {/* The design shipped with the copy, so the history shows both.
+                    Reading a changelog without seeing what the artwork was at the
+                    time answers half the question. */}
+                {shot && !shot.isBroken && shot.url && (
+                  /* eslint-disable-next-line @next/next/no-img-element -- arbitrary remote host */
+                  <img
+                    src={shot.url}
+                    alt=""
+                    loading="lazy"
+                    className="h-[76px] w-[76px] shrink-0 border border-black/10 object-cover dark:border-white/10"
+                  />
+                )}
+                <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="font-grotesk font-semibold text-gray-900 dark:text-white">v{v.version}</span>
                   {v.id === template.current_version_id && (
@@ -173,8 +322,10 @@ export default async function TemplateDetail({
                   {v.outcome && <p className="mb-1"><Beat>outcome</Beat>{v.outcome}</p>}
                   {v.cta && <p><Beat>cta</Beat>{v.cta}</p>}
                 </div>
+                </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
