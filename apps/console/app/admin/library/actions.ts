@@ -181,6 +181,76 @@ export async function deleteTemplate(
   return { ok: true, message: `${gone.code} deleted.` };
 }
 
+/**
+ * One operation applied to a selection.
+ *
+ * Publish and retire are plain status writes. Bulk delete reuses the same rule
+ * as single delete, applied per template: anything a client post was built from
+ * survives, and the result says so, because "deleted 3, kept 2 that are in use"
+ * is an answer and a silent partial delete is a mystery.
+ */
+export async function bulkTemplates(
+  _prev: DeleteResult | null,
+  formData: FormData
+): Promise<DeleteResult> {
+  await requirePermission("library", "full");
+  const supabase = await createClient();
+
+  const op = String(formData.get("op") ?? "");
+  const ids = formData.getAll("ids").map(String).filter(Boolean);
+  if (!ids.length) return { ok: false, error: "Nothing selected." };
+
+  if (op === "publish" || op === "retire") {
+    const status = op === "publish" ? "published" : "retired";
+    const { error, count } = await supabase
+      .from("templates")
+      .update({ status }, { count: "exact" })
+      .in("id", ids);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/library");
+    return { ok: true, message: `${count ?? 0} template${count === 1 ? "" : "s"} ${status}.` };
+  }
+
+  if (op !== "delete") return { ok: false, error: "Unknown operation." };
+
+  const { data: versions } = await supabase
+    .from("template_versions")
+    .select("id, template_id")
+    .in("template_id", ids);
+  const versionIds = (versions ?? []).map((v) => v.id);
+
+  const used = new Set<string>();
+  if (versionIds.length) {
+    const { data: posts } = await supabase
+      .from("posts")
+      .select("template_version_id")
+      .in("template_version_id", versionIds);
+    const owner = new Map((versions ?? []).map((v) => [v.id, v.template_id]));
+    for (const post of posts ?? []) {
+      const t = owner.get(post.template_version_id as string);
+      if (t) used.add(t);
+    }
+  }
+
+  const deletable = ids.filter((id) => !used.has(id));
+  if (deletable.length) {
+    const { error } = await supabase.from("templates").delete().in("id", deletable);
+    if (error) return { ok: false, error: error.message };
+  }
+
+  revalidatePath("/admin/library");
+  const kept = ids.length - deletable.length;
+  if (!deletable.length) {
+    return { ok: false, error: `Nothing deleted: all ${kept} selected template${kept === 1 ? " is" : "s are"} in use by client posts. Retire them instead.` };
+  }
+  return {
+    ok: true,
+    message:
+      `Deleted ${deletable.length}.` +
+      (kept ? ` Kept ${kept} in use by client posts; retire ${kept === 1 ? "it" : "them"} instead.` : ""),
+  };
+}
+
 export async function updateTemplateMeta(formData: FormData) {
   await requirePermission("library", "full");
   const supabase = await createClient();

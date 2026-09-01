@@ -6,7 +6,7 @@ import { resolveAssetUrls } from "@/lib/dal/media";
 import type { Asset } from "@socialx/core/types/db";
 import { PageHead } from "@/components/DataTable";
 import { rel } from "@/lib/rel";
-import DeleteTemplate from "./DeleteTemplate";
+import TemplateList, { type TemplateItem } from "./TemplateList";
 
 export const metadata: Metadata = { title: "Library | socialX Admin" };
 
@@ -77,6 +77,31 @@ export default async function LibraryPage() {
   const counts = new Map<string, number>();
   for (const t of rows) counts.set(t.pillar_key, (counts.get(t.pillar_key) ?? 0) + 1);
 
+  /* Everything a card shows, flattened to plain values: the list itself is a
+     client component because bulk selection is shared state, and it should not
+     have to know how assets resolve or how relations come back. */
+  const items: TemplateItem[] = rows.map((t) => {
+    const v = (versions ?? []).find((x) => x.id === t.current_version_id);
+    const myVariants = (variants ?? []).filter((x) => x.template_version_id === t.current_version_id);
+    const img = myVariants.map((x) => x.asset_id).find(Boolean);
+    return {
+      id: t.id,
+      code: t.code,
+      title: t.title,
+      pillar: t.pillar_key,
+      format: t.format,
+      status: t.status,
+      features: ((t.template_features ?? []) as { hl_features?: { name?: string } }[])
+        .map((f) => rel<{ name?: string }>(f.hl_features)?.name)
+        .filter((x): x is string => Boolean(x)),
+      beats: { hook: v?.hook ?? null, middle: v?.middle_beat ?? null, outcome: v?.outcome ?? null },
+      platforms: myVariants.map((x) => x.platform as string),
+      version: v?.version ?? 1,
+      imageUrl: img ? (images.get(img)?.url ?? null) : null,
+      inUse: inUse.get(t.id) ?? 0,
+    };
+  });
+
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -124,111 +149,14 @@ export default async function LibraryPage() {
       <h2 className="font-mono text-[10px] uppercase tracking-[0.13em] text-gray-400 dark:text-gray-600 mb-3">
         Templates
       </h2>
-      <div className="flex flex-col gap-3">
-        {rows.length === 0 && (
-          <div className="border border-dashed border-black/15 dark:border-white/15 p-8 text-sm text-gray-500">
-            No templates yet. Run <span className="font-mono">pnpm seed:demo</span> for a sample set.
-          </div>
-        )}
-        {rows.map((t) => {
-          const v = (versions ?? []).find((x) => x.id === t.current_version_id);
-          const myVariants = (variants ?? []).filter((x) => x.template_version_id === t.current_version_id);
-          const img = myVariants.map((x) => x.asset_id).find(Boolean);
-          const url = img ? images.get(img)?.url : null;
-          const features = ((t.template_features ?? []) as { hl_features?: { name?: string } }[])
-            .map((f) => rel<{ name?: string }>(f.hl_features)?.name)
-            .filter(Boolean);
-
-          return (
-            <article
-              key={t.id}
-              className="border border-black/10 dark:border-white/10 bg-white dark:bg-[#111118] p-4 flex gap-4"
-            >
-              {url && (
-                /* eslint-disable-next-line @next/next/no-img-element -- arbitrary remote host */
-                <img
-                  src={url}
-                  alt=""
-                  loading="lazy"
-                  className="w-[92px] h-[92px] shrink-0 object-cover border border-black/10 dark:border-white/10"
-                />
-              )}
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                  <span className="font-mono text-[10.5px] text-gray-400">{t.code}</span>
-                  <Link
-                    href={`/admin/library/${t.id}`}
-                    className="font-grotesk text-[15px] font-semibold text-gray-900 no-underline hover:text-[#2B50DC] dark:text-white dark:hover:text-[#5B8DEF]"
-                  >
-                    {t.title}
-                  </Link>
-                  <Tag>{t.pillar_key.replace(/_/g, " ")}</Tag>
-                  {t.format === "motion" && <Tag accent>motion</Tag>}
-                  {features.map((f) => (
-                    <Tag key={f}>{f}</Tag>
-                  ))}
-                </div>
-
-                {/* The copy law as columns, so a draft that leads with the product
-                    is visible at a glance rather than buried in one body field. */}
-                {v && (
-                  <dl className="grid sm:grid-cols-3 gap-x-5 gap-y-1 mt-2">
-                    {[
-                      ["Hook", v.hook],
-                      ["HL feature", v.middle_beat],
-                      ["Outcome", v.outcome],
-                    ].map(([k, val]) => (
-                      <div key={k as string}>
-                        <dt className="font-mono text-[9px] uppercase tracking-[0.12em] text-gray-400 mb-0.5">
-                          {k as string}
-                        </dt>
-                        <dd className="text-[12.5px] text-gray-600 dark:text-gray-400 leading-snug">
-                          {val as string}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-
-                <div className="flex flex-wrap gap-1.5 mt-2.5">
-                  {myVariants.map((x) => (
-                    <span key={x.platform} className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-gray-400">
-                      {x.platform}
-                    </span>
-                  ))}
-                  <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-gray-400 ml-auto">
-                    v{v?.version ?? 1}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex shrink-0 flex-col items-end justify-between gap-2">
-                <Link
-                  href={`/admin/library/${t.id}`}
-                  className="font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500 no-underline hover:text-[#2B50DC]"
-                >
-                  {canWrite ? "Edit" : "Open"}
-                </Link>
-                {canWrite && <DeleteTemplate id={t.id} code={t.code} inUse={inUse.get(t.id) ?? 0} />}
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      {rows.length === 0 ? (
+        <div className="border border-dashed border-black/15 dark:border-white/15 p-8 text-sm text-gray-500">
+          No templates yet. Run <span className="font-mono">pnpm seed:demo</span> for a sample set.
+        </div>
+      ) : (
+        <TemplateList items={items} canWrite={canWrite} />
+      )}
     </div>
   );
 }
 
-function Tag({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
-  return (
-    <span
-      className={`font-mono text-[9px] uppercase tracking-[0.11em] border px-1.5 py-0.5 ${
-        accent
-          ? "border-[#2B50DC]/40 text-[#2B50DC] dark:text-[#5B8DEF]"
-          : "border-black/12 dark:border-white/15 text-gray-500"
-      }`}
-    >
-      {children}
-    </span>
-  );
-}
