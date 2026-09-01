@@ -30,8 +30,13 @@ const LEVEL_STYLE: Record<AccessLevel, string> = {
 
 export default function PermissionsMatrix({
   initial,
+  canWrite,
 }: {
   initial: Record<StaffRole, PermissionMap>;
+  /* False for anyone who is not a staff owner. The grid still renders, because
+     knowing what a role means is useful to anyone who can open Settings; what it
+     loses is the ability to post. */
+  canWrite: boolean;
 }) {
   const [matrix, setMatrix] = useState(initial);
   const [state, formAction, pending] = useActionState<SaveResult | null, FormData>(
@@ -42,7 +47,7 @@ export default function PermissionsMatrix({
   const dirty = JSON.stringify(matrix) !== JSON.stringify(initial);
 
   function cycle(role: StaffRole, section: SectionKey) {
-    if (isLockedRole(role)) return;
+    if (!canWrite || isLockedRole(role)) return;
     setMatrix((m) => {
       const current = m[role][section];
       const next = LEVELS[(LEVELS.indexOf(current) + 1) % LEVELS.length];
@@ -118,7 +123,7 @@ export default function PermissionsMatrix({
                     </td>
                     {ROLES.map((r) => {
                       const level = matrix[r][s.key];
-                      const locked = isLockedRole(r);
+                      const locked = isLockedRole(r) || !canWrite;
                       return (
                         <td key={r} className="px-3 py-2 text-center">
                           <button
@@ -145,6 +150,7 @@ export default function PermissionsMatrix({
         </table>
       </div>
 
+      {canWrite && (
       <div className="mt-5 flex flex-wrap items-center gap-4">
         <button
           type="submit"
@@ -174,11 +180,12 @@ export default function PermissionsMatrix({
           </span>
         )}
       </div>
+      )}
 
       <p className="mt-4 text-[12.5px] leading-relaxed text-gray-500 dark:text-gray-500 max-w-[70ch]">
-        Click a cell to cycle it. None hides the section from the rail and blocks the
-        URL. View opens the screen but refuses every write on it. Owner is locked to
-        Full so there is always a way back into this page.
+        {canWrite ? "Click a cell to cycle it. None" : "None"} hides the section from
+        the rail and blocks the URL. View opens the screen but refuses every write on
+        it. Owner is locked to Full so there is always a way back into this page.
       </p>
     </form>
   );

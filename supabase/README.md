@@ -42,4 +42,13 @@ select id, 'owner' from profiles where email = 'shariful@vidiosa.com';
 - **The library has no client policy on purpose.** Clients see their own batch, never
   the templates behind it.
 - **Quota is snapshotted onto the batch,** so a mid-cycle plan change cannot rewrite the
-  terms of work already in production.
+  terms of work already in production. That snapshot is what makes the entitlements on
+  `/admin/settings/plans` safe to edit.
+- **`api_keys` never holds a usable credential.** The column is a SHA-256 of the whole
+  token, and the plain secret exists only in the server action response that created it.
+  There is no recovery path by design: a lost key is reissued, not retrieved.
+- **An empty `allowed_origins` means no browser, not every browser.** Listing a domain is
+  what grants browser access to a key, so the permissive state is always one somebody
+  chose. `site_content.is_public` works the other way round and is off by default.
+- **Rate card windows are editable from the console** as of 0024; the amounts on each card
+  are still seed only. Which card applies is configuration, what it charges is the offer.

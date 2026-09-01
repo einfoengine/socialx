@@ -98,9 +98,14 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Everything except static assets and image files. Auth cookies need
-     * refreshing on real navigations, not on every icon request.
+     * Everything except static assets, image files, and the public API.
+     *
+     * Auth cookies need refreshing on real navigations, not on every icon
+     * request. /api/v1 is excluded for a second reason: it authenticates by key
+     * rather than by cookie, so refreshing a session there is work nobody asked
+     * for on a path that has no session. Leaving it in also meant an
+     * unauthenticated public call paid for a Supabase client it never used.
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|woff2?)$).*)",
+    "/((?!api/v1|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|woff2?)$).*)",
   ],
 };

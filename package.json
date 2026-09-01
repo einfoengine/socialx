@@ -29,7 +29,8 @@
     "test:embedded": "node scripts/test-embedded.mjs",
     "seed:demo": "node scripts/seed-demo.mjs",
     "seed:demo:remove": "node scripts/seed-demo.mjs --remove",
-    "test:site-content": "node scripts/test-site-content.mjs"
+    "test:site-content": "node scripts/test-site-content.mjs",
+    "test:api": "node scripts/test-api.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.112.3",
