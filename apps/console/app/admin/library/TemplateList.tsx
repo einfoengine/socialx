@@ -11,10 +11,10 @@ import { bulkTemplates, type DeleteResult } from "./actions";
  * selection is state shared across every card. The page keeps all the data
  * assembly; what arrives here is already plain values.
  *
- * The bulk bar offers publish, retire, delete. Delete follows the same rule as
- * the per-card button, applied per template on the server: used templates
- * survive and the result message counts both halves. Selection clears after a
- * successful action because the rows it referred to just changed under it.
+ * The bulk bar offers publish, retire, delete. Delete removes everything
+ * selected, in use or not, and the result counts how many client posts lost
+ * their template link because of it. Selection clears after a successful
+ * action because the rows it referred to just changed under it.
  */
 export type TemplateItem = {
   id: string;
@@ -89,7 +89,7 @@ export default function TemplateList({
                 busy={busy}
                 danger
                 onClick={(e) => {
-                  if (!confirm(`Delete ${sel.size} template${sel.size === 1 ? "" : "s"}? Templates in use by client posts are kept.`)) {
+                  if (!confirm(`Delete ${sel.size} template${sel.size === 1 ? "" : "s"}? Client posts built from them keep their content but lose their template links.`)) {
                     e.preventDefault();
                   }
                 }}

@@ -127,17 +127,19 @@ export async function saveVersion(formData: FormData) {
 export type DeleteResult = { ok: true; message: string } | { ok: false; error: string };
 
 /**
- * Deletes a template outright, guarded by usage.
+ * Deletes a template outright, in use or not.
  *
- * posts.template_version_id is ON DELETE SET NULL, so deleting a template that a
- * client post was built from would quietly blank that post's provenance: the
- * "which live posts run stale copy" question becomes unanswerable. A template in
- * use is therefore refused here regardless of what the UI showed, and the answer
- * for it is status=retired on the detail screen. Versions, feature tags and
- * variants cascade from the template row itself.
+ * Deleting one that client posts were built from is allowed by an explicit
+ * decision: a post copies its content at build time, so nothing a client sees
+ * changes. What is lost is provenance. posts.template_version_id is ON DELETE
+ * SET NULL, so those posts stop answering "which template was this built from",
+ * and the stale-copy review after a HighLevel change cannot see them. That cost
+ * is stated in the confirm before the click and counted in the result after,
+ * rather than silently absorbed. Versions, feature tags and variants cascade
+ * with the template row.
  *
- * Takes (prev, formData) because the list drives it through useActionState: a
- * refusal belongs next to the button, not in an error boundary.
+ * Takes (prev, formData) because the list drives it through useActionState: the
+ * outcome belongs next to the button, not in an error boundary.
  */
 export async function deleteTemplate(
   _prev: DeleteResult | null,
@@ -149,23 +151,20 @@ export async function deleteTemplate(
   const id = String(formData.get("id") ?? "").trim();
   if (!id) return { ok: false, error: "Missing the template." };
 
+  // Counted before the delete, because afterwards the links are already null.
   const { data: versions } = await supabase
     .from("template_versions")
     .select("id")
     .eq("template_id", id);
   const versionIds = (versions ?? []).map((v) => v.id);
 
+  let unlinked = 0;
   if (versionIds.length) {
     const { count } = await supabase
       .from("posts")
       .select("id", { count: "exact", head: true })
       .in("template_version_id", versionIds);
-    if (count) {
-      return {
-        ok: false,
-        error: `In use by ${count} client post${count === 1 ? "" : "s"}. Retire it from its detail page instead.`,
-      };
-    }
+    unlinked = count ?? 0;
   }
 
   const { data: gone, error } = await supabase
@@ -178,16 +177,22 @@ export async function deleteTemplate(
   if (!gone) return { ok: false, error: "Already deleted." };
 
   revalidatePath("/admin/library");
-  return { ok: true, message: `${gone.code} deleted.` };
+  return {
+    ok: true,
+    message:
+      `${gone.code} deleted.` +
+      (unlinked
+        ? ` ${unlinked} client post${unlinked === 1 ? " kept its" : "s kept their"} content but lost the template link.`
+        : ""),
+  };
 }
 
 /**
  * One operation applied to a selection.
  *
- * Publish and retire are plain status writes. Bulk delete reuses the same rule
- * as single delete, applied per template: anything a client post was built from
- * survives, and the result says so, because "deleted 3, kept 2 that are in use"
- * is an answer and a silent partial delete is a mystery.
+ * Publish and retire are plain status writes. Bulk delete removes everything
+ * selected, in use or not, same as the single delete: client posts keep their
+ * content and lose only the template link, and the result counts how many did.
  */
 export async function bulkTemplates(
   _prev: DeleteResult | null,
@@ -219,35 +224,30 @@ export async function bulkTemplates(
     .in("template_id", ids);
   const versionIds = (versions ?? []).map((v) => v.id);
 
-  const used = new Set<string>();
+  // Counted before the delete, because afterwards the links are already null.
+  let unlinked = 0;
   if (versionIds.length) {
-    const { data: posts } = await supabase
+    const { count } = await supabase
       .from("posts")
-      .select("template_version_id")
+      .select("id", { count: "exact", head: true })
       .in("template_version_id", versionIds);
-    const owner = new Map((versions ?? []).map((v) => [v.id, v.template_id]));
-    for (const post of posts ?? []) {
-      const t = owner.get(post.template_version_id as string);
-      if (t) used.add(t);
-    }
+    unlinked = count ?? 0;
   }
 
-  const deletable = ids.filter((id) => !used.has(id));
-  if (deletable.length) {
-    const { error } = await supabase.from("templates").delete().in("id", deletable);
-    if (error) return { ok: false, error: error.message };
-  }
+  const { error, count: removed } = await supabase
+    .from("templates")
+    .delete({ count: "exact" })
+    .in("id", ids);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin/library");
-  const kept = ids.length - deletable.length;
-  if (!deletable.length) {
-    return { ok: false, error: `Nothing deleted: all ${kept} selected template${kept === 1 ? " is" : "s are"} in use by client posts. Retire them instead.` };
-  }
   return {
     ok: true,
     message:
-      `Deleted ${deletable.length}.` +
-      (kept ? ` Kept ${kept} in use by client posts; retire ${kept === 1 ? "it" : "them"} instead.` : ""),
+      `Deleted ${removed ?? 0}.` +
+      (unlinked
+        ? ` ${unlinked} client post${unlinked === 1 ? " kept its" : "s kept their"} content but lost the template link.`
+        : ""),
   };
 }
 
