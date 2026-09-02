@@ -1,9 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { metaForPath, type PageShape } from "@/lib/page-meta";
-import { PageHead } from "@/components/DataTable";
-import { SkeletonLine, SkeletonRows } from "@/components/Skeleton";
+import { metaForPath, type PageMeta, type PageShape } from "@/lib/page-meta";
+import { PageHead, Table } from "@/components/DataTable";
+import { SkeletonLine, SkeletonRows, SkeletonTableRows } from "@/components/Skeleton";
 
 /**
  * The loading fallback for an admin screen, drawn with its real heading.
@@ -55,12 +55,12 @@ export default function PageSkeleton({
           <SkeletonLine w="380px" h={11} />
         </div>
       )}
-      <Body shape={meta?.shape ?? fallbackShape} />
+      <Body shape={meta?.shape ?? fallbackShape} columns={meta?.columns} />
     </div>
   );
 }
 
-function Body({ shape }: { shape: PageShape }) {
+function Body({ shape, columns }: { shape: PageShape; columns?: PageMeta["columns"] }) {
   if (shape === "panels") {
     return (
       <div className="flex flex-col gap-6">
@@ -110,6 +110,18 @@ function Body({ shape }: { shape: PageShape }) {
           </div>
         ))}
       </div>
+    );
+  }
+
+  /* A table screen whose columns are known draws its real header row, and greys
+     only the cells below it. Nothing about those headings waits on a query, and
+     when the rows arrive the header does not move by a pixel. Screens that have
+     not declared their columns fall back to plain bordered rows. */
+  if (columns?.length) {
+    return (
+      <Table head={columns}>
+        <SkeletonTableRows rows={6} cols={columns.length} />
+      </Table>
     );
   }
 

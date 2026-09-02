@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/page-meta";
+import { pageMeta, pageColumns } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/DataTable";
 import { formatMoney, CYCLE_LABELS, CYCLE_MONTHS, applyDiscount } from "@/lib/format";
+import { applySiteFilter } from "@/lib/dal/scoped";
+import { adminSiteContext } from "@/lib/sites/admin";
 
-export const metadata: Metadata = { title: "Subscriptions | socialX Admin" };
+export const metadata: Metadata = { title: "Subscriptions | Admin" };
 
 export default async function SubscriptionsPage() {
   await requirePermission("subscriptions");
   const supabase = await createClient();
+  const { filterId } = await adminSiteContext();
 
-  const { data } = await supabase
-    .from("subscriptions")
-    .select(
-      "id, status, cycle_key, rate_card_key, current_period_end, delivery_hold, org_id, organizations(name), plans(name, key)"
-    )
-    .order("created_at", { ascending: false });
+  const { data } = await applySiteFilter(
+    supabase
+      .from("subscriptions")
+      .select(
+        "id, status, cycle_key, rate_card_key, current_period_end, delivery_hold, org_id, organizations(name), plans(name, key)"
+      ),
+    filterId
+  ).order("created_at", { ascending: false });
 
   const subs = data ?? [];
 
@@ -65,7 +70,7 @@ export default async function SubscriptionsPage() {
         ))}
       </div>
 
-      <Table head={["Client", "Plan", "Cycle", "Billing", "Renews", "Status"]}>
+      <Table head={pageColumns("/admin/subscriptions")}>
         {subs.length === 0 && <EmptyRow cols={6}>No subscriptions yet.</EmptyRow>}
         {subs.map((s) => {
           const planKey = (s.plans as { key?: string } | null)?.key;

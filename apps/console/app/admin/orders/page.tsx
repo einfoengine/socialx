@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/page-meta";
+import { pageMeta, pageColumns } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/DataTable";
+import { applySiteFilter } from "@/lib/dal/scoped";
+import { adminSiteContext } from "@/lib/sites/admin";
 
-export const metadata: Metadata = { title: "Orders | socialX Admin" };
+export const metadata: Metadata = { title: "Orders | Admin" };
 
 /**
  * New business. An order is an organization that has paid but has not finished
@@ -14,14 +16,17 @@ export const metadata: Metadata = { title: "Orders | socialX Admin" };
 export default async function OrdersPage() {
   await requirePermission("orders");
   const supabase = await createClient();
+  const { filterId } = await adminSiteContext();
 
-  const { data } = await supabase
-    .from("organizations")
-    .select(
-      "id, name, owner_email, status, created_at, subscriptions(status, cycle_key, rate_card_key, plans(name)), brand_profiles(completed_at)"
-    )
-    .in("status", ["pending", "onboarding"])
-    .order("created_at", { ascending: false });
+  const { data } = await applySiteFilter(
+    supabase
+      .from("organizations")
+      .select(
+        "id, name, owner_email, status, created_at, subscriptions(status, cycle_key, rate_card_key, plans(name)), brand_profiles(completed_at)"
+      )
+      .in("status", ["pending", "onboarding"]),
+    filterId
+  ).order("created_at", { ascending: false });
 
   const orders = data ?? [];
 
@@ -29,7 +34,7 @@ export default async function OrdersPage() {
     <div>
       <PageHead {...pageMeta("/admin/orders")} />
 
-      <Table head={["Client", "Plan", "Billing", "Onboarding", "Status", "Paid"]}>
+      <Table head={pageColumns("/admin/orders")}>
         {orders.length === 0 && (
           <EmptyRow cols={6}>
             No open orders. New checkouts appear here the moment Stripe confirms payment.

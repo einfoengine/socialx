@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/page-meta";
+import { pageMeta, pageColumns } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead, Table, Row, Cell, EmptyRow } from "@/components/DataTable";
 import { resolveRevision } from "./actions";
+import { applySiteFilter } from "@/lib/dal/scoped";
+import { adminSiteContext } from "@/lib/sites/admin";
 
-export const metadata: Metadata = { title: "Review queue | socialX Admin" };
+export const metadata: Metadata = { title: "Review queue | Admin" };
 
 /**
  * Every open change request across all clients, oldest first.
@@ -17,12 +19,15 @@ export const metadata: Metadata = { title: "Review queue | socialX Admin" };
 export default async function ReviewQueue() {
   await requirePermission("review");
   const supabase = await createClient();
+  const { filterId } = await adminSiteContext();
 
-  const { data: open } = await supabase
-    .from("revisions")
-    .select("id, round, note, created_at, batch_id, post_id, status, batches(org_id, period_start, organizations(name)), posts(title)")
-    .eq("status", "open")
-    .order("created_at", { ascending: true });
+  const { data: open } = await applySiteFilter(
+    supabase
+      .from("revisions")
+      .select("id, round, note, created_at, batch_id, post_id, status, batches(org_id, period_start, organizations(name)), posts(title)")
+      .eq("status", "open"),
+    filterId
+  ).order("created_at", { ascending: true });
 
   const now = await nowMs();
 
@@ -30,7 +35,7 @@ export default async function ReviewQueue() {
     <div>
       <PageHead {...pageMeta("/admin/review")} />
 
-      <Table head={["Client", "Month", "Round", "What they want", "Waiting", "Action"]}>
+      <Table head={pageColumns("/admin/review")}>
         {(open ?? []).length === 0 && (
           <EmptyRow cols={6}>Nothing open. Change requests land here the moment a client sends them.</EmptyRow>
         )}

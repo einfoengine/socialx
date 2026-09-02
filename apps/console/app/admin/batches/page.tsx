@@ -1,28 +1,32 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/page-meta";
+import { pageMeta, pageColumns } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/DataTable";
 import { revisionLabel } from "@/lib/format";
 import { createBatch } from "./actions";
+import { applySiteFilter } from "@/lib/dal/scoped";
+import { adminSiteContext } from "@/lib/sites/admin";
 
-export const metadata: Metadata = { title: "Batches | socialX Admin" };
+export const metadata: Metadata = { title: "Batches | Admin" };
 
 export default async function BatchesPage() {
   await requirePermission("batches");
   const supabase = await createClient();
+  const { filterId } = await adminSiteContext();
 
   const [{ data: batches }, { data: orgs }] = await Promise.all([
-    supabase
-      .from("batches")
-      .select("id, period_start, status, due_at, quota_posts, quota_motion, revision_rounds_allowed, revision_rounds_used, org_id, organizations(name), posts(id)")
-      .order("period_start", { ascending: false }),
-    supabase
-      .from("organizations")
-      .select("id, name")
-      .eq("status", "active")
-      .order("name"),
+    applySiteFilter(
+      supabase
+        .from("batches")
+        .select("id, period_start, status, due_at, quota_posts, quota_motion, revision_rounds_allowed, revision_rounds_used, org_id, organizations(name), posts(id)"),
+      filterId
+    ).order("period_start", { ascending: false }),
+    applySiteFilter(
+      supabase.from("organizations").select("id, name").eq("status", "active"),
+      filterId
+    ).order("name"),
   ]);
 
   // Read the clock through an await rather than inline: calling Date during render
@@ -61,7 +65,7 @@ export default async function BatchesPage() {
         </p>
       </details>
 
-      <Table head={["Client", "Month", "Filled", "Revisions", "Due", "Status"]}>
+      <Table head={pageColumns("/admin/batches")}>
         {(batches ?? []).length === 0 && (
           <EmptyRow cols={6}>No batches yet. Start one above.</EmptyRow>
         )}

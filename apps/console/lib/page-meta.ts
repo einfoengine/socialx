@@ -28,6 +28,12 @@ export type PageMeta = {
   title: string;
   sub?: string;
   shape?: PageShape;
+  /* The table's column headings, for shape "table".
+     Same reasoning as title and sub, one level down. A table's headings depend on
+     nothing either: they are the same words before the query and after it, so the
+     fallback can draw the real header row and grey only the cells beneath it. The
+     page reads them from here too, so the header cannot shift when the rows land. */
+  columns?: string[];
 };
 
 export const PAGE_META = {
@@ -35,16 +41,19 @@ export const PAGE_META = {
     title: "Orders",
     sub: "Accounts that have paid but have not finished onboarding. Each one is waiting on either the client or us.",
     shape: "table",
+    columns: ["Client", "Plan", "Billing", "Onboarding", "Status", "Paid"],
   },
   "/admin/subscriptions": {
     title: "Subscriptions",
     sub: "Every subscription, what it bills, and when it renews.",
     shape: "table",
+    columns: ["Client", "Plan", "Cycle", "Billing", "Renews", "Status"],
   },
   "/admin/clients": {
     title: "Clients",
     sub: "Every organization, whatever state it is in.",
     shape: "table",
+    columns: ["Client", "Plan", "HL location", "Status", "Since"],
   },
   "/admin/packages": {
     title: "Packages",
@@ -78,11 +87,13 @@ export const PAGE_META = {
     title: "Batches",
     sub: "The monthly cycle for every client. This is what replaces the ClickUp board.",
     shape: "table",
+    columns: ["Client", "Month", "Filled", "Revisions", "Due", "Status"],
   },
   "/admin/review": {
     title: "Review queue",
     sub: "Open change requests across every client, oldest first. Each one is a revision round the client has already paid for.",
     shape: "table",
+    columns: ["Client", "Month", "Round", "What they want", "Waiting", "Action"],
   },
   "/admin/publishing": {
     title: "Publishing",
@@ -101,7 +112,12 @@ export const PAGE_META = {
   },
   "/admin/website": {
     title: "Website",
-    sub: "Named JSON the marketing site renders. Change a value here and the site picks it up without a deploy.",
+    sub: "Named JSON a website renders. Change a value here and that site picks it up without a deploy.",
+    shape: "panels",
+  },
+  "/admin/sites": {
+    title: "Sites",
+    sub: "Every website integrated with this platform. Each one owns its own brand, domains, credentials, content and clients, and reaches nothing belonging to another.",
     shape: "panels",
   },
   "/admin/people": {
@@ -111,7 +127,7 @@ export const PAGE_META = {
   },
   "/admin/settings": {
     title: "General",
-    sub: "How socialX names itself and where it points people. Read at request time, so a change here is live on the next page load.",
+    sub: "Platform-wide configuration. Anything that belongs to one website lives on that site's record instead, under Sites.",
     shape: "panels",
   },
   "/admin/settings/access": {
@@ -121,7 +137,7 @@ export const PAGE_META = {
   },
   "/admin/settings/api-keys": {
     title: "API keys",
-    sub: "Credentials for the socialX content API, each scoped to what it may do and to the domains it may be used from.",
+    sub: "Credentials belong to the site they speak for. Issue and revoke them on that site's record.",
     shape: "panels",
   },
   "/admin/settings/public-api": {
@@ -192,6 +208,11 @@ export function pageMeta(route: PageRoute): PageMeta {
  * than promising nothing: the wrong words would be on screen, confidently, until
  * the record arrived and replaced them.
  */
+/** The column headings for a table screen, read by the page and its fallback. */
+export function pageColumns(route: PageRoute): string[] {
+  return (PAGE_META[route] as PageMeta).columns ?? [];
+}
+
 export function metaForPath(pathname: string): PageMeta | null {
   const clean = pathname.replace(/\/+$/, "") || "/admin";
   return (PAGE_META as Record<string, PageMeta>)[clean] ?? null;

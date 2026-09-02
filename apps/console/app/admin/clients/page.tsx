@@ -1,27 +1,32 @@
 import type { Metadata } from "next";
-import { pageMeta } from "@/lib/page-meta";
+import { pageMeta, pageColumns } from "@/lib/page-meta";
 import Link from "next/link";
 import { requirePermission } from "@/lib/dal/permissions";
 import { createClient } from "@socialx/core/supabase/server";
 import { PageHead, Table, Row, Cell, Status, EmptyRow } from "@/components/DataTable";
+import { applySiteFilter } from "@/lib/dal/scoped";
+import { adminSiteContext } from "@/lib/sites/admin";
 
-export const metadata: Metadata = { title: "Clients | socialX Admin" };
+export const metadata: Metadata = { title: "Clients | Admin" };
 
 export default async function ClientsPage() {
   await requirePermission("clients");
   const supabase = await createClient();
+  const { filterId } = await adminSiteContext();
 
-  const { data } = await supabase
-    .from("organizations")
-    .select("id, name, owner_email, status, hl_location_id, created_at, subscriptions(status, plans(name))")
-    .order("created_at", { ascending: false });
+  const { data } = await applySiteFilter(
+    supabase
+      .from("organizations")
+      .select("id, name, owner_email, status, hl_location_id, created_at, subscriptions(status, plans(name))"),
+    filterId
+  ).order("created_at", { ascending: false });
 
   const orgs = data ?? [];
 
   return (
     <div>
       <PageHead {...pageMeta("/admin/clients")} />
-      <Table head={["Client", "Plan", "HL location", "Status", "Since"]}>
+      <Table head={pageColumns("/admin/clients")}>
         {orgs.length === 0 && (
           <EmptyRow cols={5}>
             No clients yet. They appear here automatically when a checkout completes.
