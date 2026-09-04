@@ -40,6 +40,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Per-app build output and env symlinks
-apps/*/.next/
-apps/*/.env.local
+# Per-project build output
+portal/.next/
+site/.next/
+portal/tsconfig.tsbuildinfo
+site/tsconfig.tsbuildinfo
+
+# Runtime configuration written by /setup. Holds the database password.
+portal/config/portal.json
+
+# .env.example files are documentation and ARE committed; the .env* rule above
+# would otherwise swallow them.
+!portal/.env.example
+!site/.env.example

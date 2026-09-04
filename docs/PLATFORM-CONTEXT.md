@@ -306,39 +306,67 @@ public, so decide whether comments are in scope.
 
 ## 10. Codebase map
 
-Next.js 16.2.6 (Turbopack), React 19.2.4, Tailwind v4, TypeScript. Package manager is
-**pnpm**, not npm.
+Next.js 16.2.6 (Turbopack), React 19.2.4, Tailwind v4, TypeScript. Package manager
+is **pnpm**, not npm.
+
+Two independent projects. Separate package.json, separate node_modules, separate
+install. No workspace, no root package.json, and no code shared between them.
+
+```
+portal/    the product: client portal, operator console, /api/v1
+site/      socialX's own marketing website, a consumer of that API
+docs/      this file and the integration policy
+```
+
+The only connection is HTTP. The site reads its copy, pricing and brand from the
+portal's public API with a scoped key, through `site/lib/platform.ts`, exactly as
+any customer's own website would. Nothing imports across the boundary.
+
+### portal/
 
 ```
 app/
-  layout.tsx        Fonts, metadata, theme init script, GTM (GTM-M28GQ8WJ),
-                    LeadConnector chat widget
-  page.tsx          Single landing page, composes every section in order
-  globals.css       Design tokens, square-corner reset, utility classes
-  onbording/        Onboarding route (note the spelling). Wraps an embedded
-                    HighLevel survey iframe
-components/
-  Header            Sticky nav, theme toggle, anchor links
-  Hero              H1, CTAs, Wistia demo video (media id xe9k8lhdfb)
-  TrustStrip        Scrolling benefit marquee
-  Problem           The trust gap, four pain cards, matrix canvas background
-  PortfolioMarquee  Work samples
-  HowItWorks        Three steps plus a booking CTA panel
-  Pricing           Tier data, billing-cycle logic, launch-offer toggle,
-                    order.socialx.studio checkout links
-  ClientLogos       growX / socialX / GHL Video tiles, animated year counter
-  Comparison        socialX vs DIY, agency, freelancer, AI tools
-  WhySocialX        Four reasons, spotlight hover cards
-  Includes          Six standard-across-all-plans tiles
-  Guarantees        $0 setup, 0 contracts, 100% white-label
-  WhiteLabel        Coming-soon block for the end-client tier
-  FAQ               Six accordion items
-  Booking           LeadConnector calendar embed
-  FinalCTA          Closing CTA
-  Footer            Links, newsletter, disclaimer
-  FooterReveal      Reveal effect under the footer
-  ScrollReveal      IntersectionObserver driving [data-reveal]
+  admin/          operator console, gated by the section permission matrix
+  portal/         the client's own screens: approvals, calendar, billing, team
+  api/v1/         the integration surface: content, catalog, orders, site, me
+  api/internal/   scheduled work, shared-secret auth, not versioned
+  (auth)/         login, callback, post-login, logout
+components/       shared UI for both portals
+db/
+  migrations/     numbered SQL, applied in filename order
+  seed/           catalogue and pricing, asserts the numbers
+  tests/          each file rolls itself back
+lib/
+  core/
+    config.ts     runtime configuration, env or config file, no build-time reads
+    db/           sql.ts (tagged templates), pool.ts, actor.ts (RLS identity)
+    auth/         password hashing, the owner account
+    setup.ts      first-run gate and the boot token
+    sites.ts      the site registry record and brand parsing
+    webhooks.ts   signing, emitting, delivering, retrying
+    stripe.ts, payments.ts, ratelimit.ts, urls.ts
+  dal/            the authorization boundary: session, permissions, scoped
+  api/            /api/v1 front door: keys, scopes, auth, cron
+  sites/          resolving which site a request belongs to
+scripts/          db.mjs, seeding, key minting, integration tests
+proxy.ts          cookie refresh and an optimistic redirect. Not authorization.
 ```
+
+### site/
+
+```
+app/
+  (marketing)/    the landing page, checkout, welcome
+  demos/          work samples
+  onbording/      onboarding route (note the spelling), embedded HL survey
+components/       Hero, Pricing, Problem, Comparison, FAQ, Booking, Footer, ...
+lib/
+  platform.ts     the API client. The only way this project reaches data.
+  content.ts      copy by key, with a built-in fallback for every value
+  urls.ts
+```
+
+The site holds no database credentials and no Stripe secret key.
 
 ### Section anchor ids
 
@@ -349,13 +377,44 @@ components/
 
 ### Running it
 
+Each project separately, from inside its own folder.
+
 ```bash
-pnpm install
-pnpm dev
+cd portal && pnpm install && cp .env.example .env.local && pnpm db:migrate && pnpm dev
+cd site   && pnpm install && cp .env.example .env.local && pnpm dev
 ```
 
-`AGENTS.md` warns that this Next.js version has breaking changes from older training data.
-Read `node_modules/next/dist/docs/` before writing framework code.
+Portal on 3001, site on 3000.
+
+### Database posture
+
+Plain PostgreSQL 13 or later. Supabase is one option among several rather than a
+requirement: `0000_bootstrap.sql` supplies `auth.users`, `auth.uid()` and the
+PostgREST role names when absent, so the whole migration set applies to a stock
+Postgres.
+
+Two things the schema cannot enforce and that a deployment must get right:
+
+1. Connect as `portal_app`, never a superuser. Postgres exempts superusers from
+   row level security silently, so tenant isolation stops working with no error.
+2. Every scoped read runs inside `asActor()`, which sets the caller's identity
+   transaction-locally. Outside it a query returns zero rows rather than every
+   row, so a forgotten wrapper is a visible bug and not a leak.
+
+### Migration in progress
+
+The portal is being moved off Supabase, incrementally, with both paths reaching
+the same database so the app keeps working throughout.
+
+Done: runtime config, connection pool, SQL layer, portable RLS, local auth
+schema, the whole migration set applying to plain Postgres.
+
+Not done: roughly 320 queries still use `supabase.from()`, authentication is
+still GoTrue, storage is still a Supabase bucket. New code should use
+`lib/core/db` and must not add `supabase.from()` call sites.
+
+`AGENTS.md` warns that this Next.js version has breaking changes from older
+training data. Read `node_modules/next/dist/docs/` before writing framework code.
 
 ---
 
